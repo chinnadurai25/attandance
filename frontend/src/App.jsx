@@ -20,6 +20,7 @@ const Dashboard = () => {
   const [formData, setFormData] = useState({ name: '', dob: '', gender: '', studentClass: '' });
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState({ type: '', text: '' });
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchStudents();
@@ -165,7 +166,7 @@ const Dashboard = () => {
               <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 className="text-4xl font-black text-slate-800 tracking-tighter leading-none mb-2">Academy Console</h1>
+              <h1 className="text-2xl font-black text-slate-800 tracking-tighter leading-none mb-1">Academy Console</h1>
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-slate-400 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
                   <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
@@ -254,14 +255,14 @@ const Dashboard = () => {
 
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-              className="glass-card p-10 flex items-center gap-8 group hover:bg-amber-600 transition-colors duration-500"
+              className="glass-card p-10 flex items-center gap-8 group hover:bg-amber-500 transition-all duration-300"
             >
-              <div className="w-16 h-16 bg-amber-50 rounded-[20px] flex items-center justify-center text-amber-600 group-hover:bg-white/20 group-hover:text-white transition-all">
+              <div className="w-16 h-16 bg-amber-50 rounded-[20px] flex items-center justify-center text-amber-600 group-hover:bg-white group-hover:text-amber-600 transition-all">
                 <Calendar size={32} />
               </div>
               <div>
-                <span className="text-slate-400 group-hover:text-amber-100 text-[10px] font-black uppercase tracking-[0.25em] mb-1 block">Session Days</span>
-                <div className="text-5xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none">184</div>
+                <span className="text-slate-400 group-hover:text-white/80 text-[10px] font-black uppercase tracking-[0.25em] mb-1 block">Session Days</span>
+                <div className="text-5xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">184</div>
               </div>
             </motion.div>
           </div>
@@ -277,60 +278,61 @@ const Dashboard = () => {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="glass-card p-12"
             >
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-xl font-bold text-gray-800">Student Roster</h2>
-                  <span className="px-3 py-1 bg-gray-100 text-gray-500 text-[11px] font-bold rounded-full">Academic Year 2024</span>
+              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-10 gap-8">
+                <div className="flex items-center gap-4">
+                  <h2 className="text-base font-black text-slate-800 tracking-tight">Student Roster</h2>
+                  <span className="px-4 py-1.5 bg-slate-50 text-slate-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-slate-100">Academic Year 2024</span>
                 </div>
 
-                <div className="flex items-center gap-2 w-full md:w-auto">
-                  <div className="relative flex-1 md:w-64">
-                    <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                <div className="flex items-center gap-3 w-full md:w-96">
+                  <div className="relative flex-1">
+                    <Search size={20} className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                     <input
                       type="text"
-                      placeholder="Search students..."
-                      className="w-full bg-gray-50 border border-gray-100 pl-10 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-indigo-300"
+                      placeholder="Search students or classes..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full bg-slate-50 border-2 border-slate-100 pl-14 pr-5 py-3.5 rounded-2xl text-base font-bold text-slate-700 placeholder:text-slate-400 focus:outline-none focus:border-indigo-400 focus:bg-white transition-all shadow-sm"
                     />
                   </div>
-                  <button className="p-2.5 bg-gray-50 border border-gray-100 rounded-xl text-gray-500 hover:bg-gray-100">
-                    <Filter size={18} />
+                  <button className="p-3.5 bg-slate-50 border-2 border-slate-100 rounded-2xl text-slate-500 hover:bg-slate-100 hover:border-indigo-200 shadow-sm transition-all">
+                    <Filter size={22} />
                   </button>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 max-h-[50vh] overflow-y-auto pr-4 custom-scrollbar">
-                {students.length === 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[50vh] overflow-y-auto pr-4 custom-scrollbar">
+                {students.filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()) || s.class.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 ? (
                   <div className="col-span-full text-center py-32 bg-slate-50/30 rounded-[64px] border-3 border-dashed border-slate-200">
                     <Users className="text-slate-200 mx-auto mb-8" size={96} />
                     <div className="text-3xl font-black text-slate-400 uppercase tracking-tighter mb-4">No Records Discovered</div>
-                    <button onClick={() => setView('register')} className="text-indigo-600 font-black hover:underline uppercase text-[11px] tracking-[0.2em]">Enroll New Student →</button>
+                    <button onClick={() => {setSearchTerm(''); setView('register');}} className="text-indigo-600 font-black hover:underline uppercase text-[11px] tracking-[0.2em]">Enroll New Student →</button>
                   </div>
                 ) : (
-                  students.map((student, idx) => (
+                  students
+                    .filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()) || s.class.toLowerCase().includes(searchTerm.toLowerCase()))
+                    .map((student, idx) => (
                     <motion.div
                       key={student._id}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.05 }}
-                      className="bg-white border border-gray-100 p-5 rounded-2xl flex flex-col gap-4 hover:border-indigo-200 hover:shadow-md transition-all cursor-default relative overflow-hidden group"
+                      className="bg-white border-2 border-slate-50 p-6 rounded-3xl flex flex-col gap-5 hover:border-indigo-200 hover:shadow-2xl hover:shadow-indigo-500/5 transition-all cursor-default relative group"
                     >
-                      <div className="absolute top-0 left-0 w-1 h-full bg-indigo-500 opacity-0 group-hover:opacity-100 transition-all" />
-
                       <div className="flex justify-between items-start">
-                        <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold border border-indigo-100">
+                        <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-xl border border-indigo-100 shadow-sm">
                           {student.name.charAt(0)}
                         </div>
-                        <div className="text-[10px] font-bold uppercase tracking-tighter text-indigo-500 bg-indigo-50 px-2 py-1 rounded-md">
+                        <div className="text-[10px] font-black uppercase tracking-widest text-indigo-500 bg-indigo-50/50 px-3 py-1.5 rounded-xl border border-indigo-100/50">
                           {student.class}
                         </div>
                       </div>
 
                       <div>
-                        <div className="font-bold text-gray-800 text-lg leading-tight">{student.name}</div>
-                        <div className="flex items-center gap-3 mt-2 text-[11px] text-gray-500 font-medium">
-                          <span className="flex items-center gap-1.5"><User size={12} className="text-gray-400" /> {student.gender}</span>
-                          <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                          <span className="flex items-center gap-1.5"><Calendar size={12} className="text-gray-400" /> {student.dob}</span>
+                        <div className="font-bold text-slate-800 text-xl tracking-tight leading-tight mb-2">{student.name}</div>
+                        <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 font-bold">
+                          <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><User size={13} className="text-indigo-400" /> {student.gender}</span>
+                          <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><Calendar size={13} className="text-indigo-400" /> {student.dob}</span>
                         </div>
                       </div>
                     </motion.div>
@@ -355,7 +357,7 @@ const Dashboard = () => {
                     <UserPlus size={44} />
                   </div>
                   <div>
-                    <h2 className="text-5xl font-black text-slate-800 tracking-tight leading-none mb-2">Student Registry</h2>
+                    <h2 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2">Student Registry</h2>
                     <p className="text-slate-400 font-bold text-lg">Entry Terminal Academic Session 24/25</p>
                   </div>
                 </div>
@@ -424,9 +426,9 @@ const Dashboard = () => {
               exit={{ opacity: 0, y: -30 }}
               className="glass-card p-12"
             >
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 gap-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                 <div>
-                  <h2 className="text-4xl font-black text-slate-800 tracking-tight mb-2">Attendance Calendar</h2>
+                  <h2 className="text-2xl font-black text-slate-800 tracking-tight mb-2">Attendance Calendar</h2>
                   <p className="text-slate-500 font-bold">Select a class and date to manage student records</p>
                 </div>
                 <div className="flex items-center gap-4">
@@ -467,26 +469,49 @@ const Dashboard = () => {
                   >
                     {day.day && (
                       <>
-                        <div className="flex justify-between items-start mb-4">
-                          <span className={`text-xl font-black ${day.isSunday ? 'text-rose-500' : 'text-slate-800'}`}>{day.day}</span>
+                        <div className="flex justify-between items-center mb-3">
+                          <span className={`text-2xl font-black ${day.isSunday ? 'text-rose-500' : 'text-slate-800'}`}>{day.day}</span>
                           {day.isSunday && (
-                            <span className="bg-white/80 backdrop-blur-sm border border-rose-100 px-3 py-1 rounded-lg text-[9px] font-black text-rose-500 uppercase tracking-widest shadow-sm">Holiday</span>
+                            <span className="holiday-badge">Holiday</span>
                           )}
                         </div>
 
-                        <div className="min-h-[60px] flex flex-col justify-end">
-                          {attendanceSummary[day.date] ? (
-                            <div className="space-y-1 bg-white/50 p-3 rounded-2xl border border-slate-50">
-                              <div className="flex justify-between items-center">
-                                <span className="text-[10px] font-black text-emerald-600 uppercase tracking-wider">Present</span>
-                                <span className="text-[12px] font-black text-emerald-700">{attendanceSummary[day.date].present}</span>
+                        <div className="flex-1 flex flex-col justify-end">
+                          {attendanceSummary[day.date] ? (() => {
+                            const data = attendanceSummary[day.date];
+                            const present = data.present || data.Present || 0;
+                            const absent = data.absent || data.Absent || 0;
+                            const leave = data.leave || data.Leave || 0;
+                            const hasData = present > 0 || absent > 0 || leave > 0;
+
+                            return (
+                              <div className="bg-white/90 p-1 rounded-xl border border-slate-100 shadow-sm space-y-0">
+                                {present > 0 && (
+                                  <div className="flex justify-between items-center px-1">
+                                    <span className="text-[6.5px] font-black text-emerald-600 uppercase tracking-tighter">Present</span>
+                                    <span className="text-[8px] font-black text-emerald-700">{present}</span>
+                                  </div>
+                                )}
+                                {absent > 0 && (
+                                  <div className="flex justify-between items-center px-1">
+                                    <span className="text-[6.5px] font-black text-rose-600 uppercase tracking-tighter">Absent</span>
+                                    <span className="text-[8px] font-black text-rose-700">{absent}</span>
+                                  </div>
+                                )}
+                                {leave > 0 && (
+                                  <div className="flex justify-between items-center px-1">
+                                    <span className="text-[6.5px] font-black text-amber-600 uppercase tracking-tighter">Leave</span>
+                                    <span className="text-[8px] font-black text-amber-700">{leave}</span>
+                                  </div>
+                                )}
+                                {!hasData && (
+                                  <div className="text-center py-0.5">
+                                    <span className="text-[6.5px] font-black text-slate-400 uppercase tracking-tighter">Marked</span>
+                                  </div>
+                                )}
                               </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-[10px] font-black text-rose-600 uppercase tracking-wider">Absent</span>
-                                <span className="text-[12px] font-black text-rose-700">{attendanceSummary[day.date].absent}</span>
-                              </div>
-                            </div>
-                          ) : !day.isSunday && (
+                            );
+                          })() : !day.isSunday && (
                             <motion.button
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
@@ -498,14 +523,6 @@ const Dashboard = () => {
                             >
                               Mark Day
                             </motion.button>
-                          )}
-                          
-                          {/* Indicator for marked days when not hovering */}
-                          {attendanceSummary[day.date] && (
-                            <div className="absolute bottom-4 right-4 flex gap-1 group-hover:opacity-0 transition-opacity">
-                              <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                              <div className="w-1.5 h-1.5 bg-rose-500 rounded-full" />
-                            </div>
                           )}
                         </div>
                       </>

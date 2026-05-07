@@ -126,7 +126,7 @@ body {
 .p-2 { padding: 0.5rem; }
 .p-3 { padding: 0.75rem; }
 .p-4 { padding: 1rem; }
-.p-5 { padding: 1.25rem; }
+.p-5 { padding: 1rem; }
 .p-6 { padding: 1.5rem; }
 .p-7 { padding: 1.75rem; }
 .p-8 { padding: 2rem; }
@@ -151,7 +151,12 @@ body {
 .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
 .py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
 .pl-11 { padding-left: 2.75rem; }
+.pl-12 { padding-left: 3rem; }
+.pl-14 { padding-left: 3.5rem; }
+.pl-16 { padding-left: 4rem; }
 .pr-2 { padding-right: 0.5rem; }
+.pr-4 { padding-right: 1rem; }
+.pr-5 { padding-right: 1.25rem; }
 
 /* Grid Utilities */
 .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
@@ -327,9 +332,11 @@ body {
 }
 
 .cal-day {
-  min-height: 120px;
+  min-height: 140px;
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* Allow badges to breathe */
+  display: flex;
+  flex-direction: column;
 }
 
 .cal-day-active {
@@ -348,10 +355,23 @@ body {
 }
 
 .status-glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.holiday-badge {
+  background: white;
+  border: 1px solid #fee2e2;
+  color: #ef4444;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);
 }
 
 @media (max-width: 768px) {
