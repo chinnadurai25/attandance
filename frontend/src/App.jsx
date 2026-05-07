@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  UserPlus, Users, Calendar, User, BookOpen, LogOut, 
+import {
+  UserPlus, Users, Calendar, User, BookOpen, LogOut,
   CheckCircle, AlertCircle, ArrowLeft, LayoutDashboard,
   GraduationCap, TrendingUp, Clock, Search, Filter
 } from 'lucide-react';
@@ -54,149 +54,190 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8" style={{ background: 'var(--bg-main)', position: 'relative' }}>
+    <div className="min-h-screen bg-[#fcfdfe] relative overflow-hidden font-sans">
       <div className="bg-pattern" />
-      
-      <div className="max-w-6xl mx-auto">
-        {/* Top Navbar */}
-        <motion.header 
+
+      {/* Dynamic Aura System - Replaces Static Imagery with Movement */}
+      <motion.div
+        animate={{ x: [0, 40, 0], y: [0, 20, 0] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+        className="bg-aura"
+        style={{ top: '5%', right: '15%', background: 'var(--primary)' }}
+      />
+      <motion.div
+        animate={{ x: [0, -40, 0], y: [0, -20, 0] }}
+        transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+        className="bg-aura"
+        style={{ bottom: '5%', left: '15%', background: 'var(--secondary)' }}
+      />
+
+      <div className="max-w-6xl mx-auto px-6 py-12 relative z-10">
+        {/* Elite Master Console */}
+        <motion.header
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 bg-white p-6 rounded-[24px] border border-[#e2e8f0] shadow-sm"
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-8 glass-card p-10 shadow-2xl shadow-indigo-900/5"
         >
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
-              <GraduationCap size={28} />
-            </div>
+          <div className="flex items-center gap-8">
+            <motion.div
+              whileHover={{ rotate: 10, scale: 1.1 }}
+              className="w-20 h-20 bg-gradient-to-tr from-indigo-600 to-sky-500 rounded-[28px] flex items-center justify-center text-white shadow-2xl shadow-indigo-500/20"
+            >
+              <GraduationCap size={44} />
+            </motion.div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Attendance Pro</h1>
-              <p className="text-gray-500 text-sm font-medium">Administrator: {user?.name}</p>
+              <h1 className="text-4xl font-black text-slate-800 tracking-tighter leading-none mb-2">Academy Console</h1>
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-slate-400 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
+                  <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                  Active Admin: {user?.name}
+                </span>
+              </div>
             </div>
           </div>
-          
-          <div className="flex items-center gap-3 w-full md:w-auto">
+
+          <div className="flex items-center gap-4 w-full md:w-auto">
             {view === 'list' ? (
-              <motion.button 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <motion.button
+                whileHover={{ y: -4, boxShadow: '0 15px 30px -10px rgba(79, 70, 229, 0.3)' }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setView('register')}
-                className="btn-primary" 
-                style={{ borderRadius: '16px', flex: 1 }}
+                className="btn-primary px-10 py-4"
               >
-                <UserPlus size={18} />
+                <UserPlus size={22} />
                 <span>New Enrollment</span>
               </motion.button>
             ) : (
-              <motion.button 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => { setView('list'); setMsg({type:'', text:''}); }}
-                className="flex items-center gap-2 px-6 py-3.5 bg-white border-2 border-gray-100 rounded-2xl text-gray-600 font-bold hover:bg-gray-50 transition-all shadow-sm"
-                style={{ flex: 1 }}
+              <motion.button
+                whileHover={{ y: -4, backgroundColor: 'white' }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => { setView('list'); setMsg({ type: '', text: '' }); }}
+                className="flex items-center gap-3 px-10 py-4 bg-white/60 backdrop-blur-md border border-white rounded-2xl text-slate-600 font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-indigo-500/5 flex-1 md:flex-none"
               >
-                <ArrowLeft size={18} />
-                <span>Back to Roster</span>
+                <ArrowLeft size={20} />
+                <span>Return to Console</span>
               </motion.button>
             )}
-            
-            <button 
-              onClick={handleLogout} 
-              className="p-3.5 rounded-2xl bg-rose-50 text-rose-500 border border-rose-100 hover:bg-rose-100 transition-all"
+
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 90, backgroundColor: '#fee2e2' }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleLogout}
+              className="p-5 rounded-2xl bg-rose-50/50 text-rose-500 border border-rose-100 transition-all shadow-lg shadow-rose-100"
             >
-              <LogOut size={22} />
-            </button>
+              <LogOut size={26} />
+            </motion.button>
           </div>
         </motion.header>
 
-        {/* Stats Section */}
+        {/* Dynamic Insights Grid */}
         {view === 'list' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="stat-card shadow-sm border-l-4 border-l-indigo-500">
-              <div className="flex justify-between items-start">
-                <span className="text-gray-500 text-xs font-bold uppercase tracking-wider">Total Students</span>
-                <Users className="text-indigo-500 opacity-20" size={24} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              className="glass-card p-10 flex items-center gap-8 group hover:bg-indigo-600 transition-colors duration-500"
+            >
+              <div className="w-16 h-16 bg-indigo-50 rounded-[20px] flex items-center justify-center text-indigo-600 group-hover:bg-white/20 group-hover:text-white transition-all">
+                <Users size={32} />
               </div>
-              <div className="text-3xl font-bold text-gray-800">{students.length}</div>
-              <div className="text-[11px] text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded-full inline-block self-start">Active Roster</div>
+              <div>
+                <span className="text-slate-400 group-hover:text-indigo-100 text-[10px] font-black uppercase tracking-[0.25em] mb-1 block">Population</span>
+                <div className="text-5xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none">{students.length}</div>
+              </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="stat-card shadow-sm border-l-4 border-l-emerald-500">
-              <div className="flex justify-between items-start">
-                <span className="text-gray-500 text-xs font-bold uppercase tracking-wider">Attendance Avg</span>
-                <TrendingUp className="text-emerald-500 opacity-20" size={24} />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+              className="glass-card p-10 flex items-center gap-8 group hover:bg-emerald-600 transition-colors duration-500"
+            >
+              <div className="w-16 h-16 bg-emerald-50 rounded-[20px] flex items-center justify-center text-emerald-600 group-hover:bg-white/20 group-hover:text-white transition-all">
+                <TrendingUp size={32} />
               </div>
-              <div className="text-3xl font-bold text-gray-800">94.2%</div>
-              <div className="text-[11px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full inline-block self-start">+2.4% from last week</div>
+              <div>
+                <span className="text-slate-400 group-hover:text-emerald-100 text-[10px] font-black uppercase tracking-[0.25em] mb-1 block">Avg Rate</span>
+                <div className="text-5xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none">94.2%</div>
+              </div>
             </motion.div>
 
-
+            <motion.div
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+              className="glass-card p-10 flex items-center gap-8 group hover:bg-amber-600 transition-colors duration-500"
+            >
+              <div className="w-16 h-16 bg-amber-50 rounded-[20px] flex items-center justify-center text-amber-600 group-hover:bg-white/20 group-hover:text-white transition-all">
+                <Calendar size={32} />
+              </div>
+              <div>
+                <span className="text-slate-400 group-hover:text-amber-100 text-[10px] font-black uppercase tracking-[0.25em] mb-1 block">Session Days</span>
+                <div className="text-5xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none">184</div>
+              </div>
+            </motion.div>
           </div>
         )}
 
-        {/* Content Area */}
         <AnimatePresence mode="wait">
           {view === 'list' ? (
-            <motion.div 
+            <motion.div
               key="list"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              className="glass-card p-8"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="glass-card p-12"
             >
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-xl font-bold text-gray-800">Student Roster</h2>
-                  <span className="px-3 py-1 bg-gray-100 text-gray-500 text-[11px] font-bold rounded-full">Academic Year 2024</span>
-                </div>
-                
-                <div className="flex items-center gap-2 w-full md:w-auto">
-                  <div className="relative flex-1 md:w-64">
-                    <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input 
-                      type="text" 
-                      placeholder="Search students..." 
-                      className="w-full bg-gray-50 border border-gray-100 pl-10 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-indigo-300"
-                    />
+              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-16 gap-10">
+                <div className="flex items-center gap-6">
+                  <div className="w-1.5 h-14 bg-indigo-500 rounded-full shadow-lg shadow-indigo-500/40" />
+                  <div>
+                    <h2 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Academic Registry</h2>
+                    <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em]">Comprehensive Directory 2024</p>
                   </div>
-                  <button className="p-2.5 bg-gray-50 border border-gray-100 rounded-xl text-gray-500 hover:bg-gray-100">
-                    <Filter size={18} />
-                  </button>
+                </div>
+
+                <div className="relative w-full lg:w-[450px]">
+                  <Search size={22} className="absolute left-7 top-1/2 -translate-y-1/2 text-slate-300" />
+                  <input
+                    type="text"
+                    placeholder="Search academy records..."
+                    className="w-full bg-slate-50/50 border-2 border-slate-100 pl-16 pr-8 py-5 rounded-[24px] text-sm font-bold focus:outline-none focus:border-indigo-200 focus:bg-white transition-all shadow-inner"
+                  />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[55vh] overflow-y-auto pr-2 custom-scrollbar">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 max-h-[50vh] overflow-y-auto pr-4 custom-scrollbar">
                 {students.length === 0 ? (
-                  <div className="col-span-full text-center py-24 bg-gray-50/50 rounded-3xl border-2 border-dashed border-gray-200">
-                    <Users className="mx-auto text-gray-300 mb-4" size={48} />
-                    <div className="text-gray-400 font-medium">No student records found in this roster.</div>
-                    <button onClick={() => setView('register')} className="mt-4 text-indigo-600 font-bold hover:underline">Enroll your first student</button>
+                  <div className="col-span-full text-center py-32 bg-slate-50/30 rounded-[64px] border-3 border-dashed border-slate-200">
+                    <Users className="text-slate-200 mx-auto mb-8" size={96} />
+                    <div className="text-3xl font-black text-slate-400 uppercase tracking-tighter mb-4">No Records Discovered</div>
+                    <button onClick={() => setView('register')} className="text-indigo-600 font-black hover:underline uppercase text-[11px] tracking-[0.2em]">Enroll New Student →</button>
                   </div>
                 ) : (
                   students.map((student, idx) => (
-                    <motion.div 
-                      key={student._id} 
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
+                    <motion.div
+                      key={student._id}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.05 }}
-                      className="bg-white border border-gray-100 p-5 rounded-2xl flex flex-col gap-4 hover:border-indigo-200 hover:shadow-md transition-all cursor-default relative overflow-hidden group"
+                      whileHover={{ y: -12, scale: 1.02 }}
+                      className="bg-white/40 backdrop-blur-xl border border-white p-10 rounded-[48px] hover:shadow-2xl hover:shadow-indigo-500/10 transition-all cursor-default group relative overflow-hidden"
                     >
-                      <div className="absolute top-0 left-0 w-1 h-full bg-indigo-500 opacity-0 group-hover:opacity-100 transition-all" />
-                      
-                      <div className="flex justify-between items-start">
-                        <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold border border-indigo-100">
+                      <div className="flex justify-between items-start mb-8">
+                        <div className="w-16 h-16 rounded-[24px] bg-gradient-to-br from-indigo-50 to-indigo-100/50 flex items-center justify-center text-indigo-600 font-black text-2xl border-2 border-white shadow-xl shadow-indigo-500/5">
                           {student.name.charAt(0)}
                         </div>
-                        <div className="text-[10px] font-bold uppercase tracking-tighter text-indigo-500 bg-indigo-50 px-2 py-1 rounded-md">
+                        <span className="text-[10px] font-black uppercase tracking-[0.25em] text-indigo-500 bg-indigo-50/50 px-5 py-2.5 rounded-full border border-indigo-100">
                           {student.class}
-                        </div>
+                        </span>
                       </div>
-
                       <div>
-                        <div className="font-bold text-gray-800 text-lg leading-tight">{student.name}</div>
-                        <div className="flex items-center gap-3 mt-2 text-[11px] text-gray-500 font-medium">
-                          <span className="flex items-center gap-1.5"><User size={12} className="text-gray-400" /> {student.gender}</span>
-                          <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                          <span className="flex items-center gap-1.5"><Calendar size={12} className="text-gray-400" /> {student.dob}</span>
+                        <h3 className="text-2xl font-black text-slate-800 tracking-tight leading-tight mb-5 group-hover:text-indigo-600 transition-colors">{student.name}</h3>
+                        <div className="flex flex-wrap items-center gap-4">
+                          <span className="flex items-center gap-2.5 text-[11px] text-slate-500 font-black bg-slate-100/50 px-4 py-2.5 rounded-2xl border border-slate-200/50 shadow-sm">
+                            <User size={16} className="text-indigo-300" /> {student.gender}
+                          </span>
+                          <span className="flex items-center gap-2.5 text-[11px] text-slate-500 font-black bg-slate-100/50 px-4 py-2.5 rounded-2xl border border-slate-200/50 shadow-sm">
+                            <Calendar size={16} className="text-indigo-300" /> {student.dob}
+                          </span>
                         </div>
                       </div>
                     </motion.div>
@@ -205,98 +246,78 @@ const Dashboard = () => {
               </div>
             </motion.div>
           ) : (
-            <motion.div 
+            <motion.div
               key="register"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -50 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="flex justify-center"
             >
-              <div className="glass-card p-8 md:p-10 w-full max-w-2xl">
-                <div className="flex items-center gap-4 mb-10">
-                  <div className="p-3 bg-indigo-600 rounded-2xl text-white shadow-lg shadow-indigo-200">
-                    <UserPlus size={24} />
+              <div className="glass-card p-12 md:p-16 w-full max-w-4xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-100/30 rounded-full blur-[100px] -mr-40 -mt-40" />
+
+                <div className="flex items-center gap-10 mb-16 relative z-10">
+                  <div className="p-7 bg-indigo-600 rounded-[32px] text-white shadow-2xl shadow-indigo-500/20">
+                    <UserPlus size={44} />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-800">Student Enrollment</h2>
-                    <p className="text-gray-500 text-sm">Add a new student to the academic roster</p>
+                    <h2 className="text-5xl font-black text-slate-800 tracking-tight leading-none mb-2">Student Registry</h2>
+                    <p className="text-slate-400 font-bold text-lg">Entry Terminal Academic Session 24/25</p>
                   </div>
                 </div>
 
                 {msg.text && (
-                  <motion.div 
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className={`flex items-center gap-3 p-4 rounded-2xl mb-8 text-sm font-semibold ${msg.type === 'success' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-rose-50 text-rose-600 border border-rose-100'}`}
+                  <motion.div
+                    initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+                    className={`flex items-center gap-5 p-7 rounded-[32px] mb-14 text-sm font-black relative z-10 ${msg.type === 'success' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100 shadow-xl shadow-emerald-500/5' : 'bg-rose-50 text-rose-600 border border-rose-100 shadow-xl shadow-rose-500/5'}`}
                   >
-                    {msg.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
+                    {msg.type === 'success' ? <CheckCircle size={28} /> : <AlertCircle size={28} />}
                     <span>{msg.text}</span>
                   </motion.div>
                 )}
 
-                <form onSubmit={handleRegister} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Full Student Name</label>
+                <form onSubmit={handleRegister} className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+                  <div className="space-y-4">
+                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Official Full Name</label>
                     <div className="input-container">
-                      <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                      <input 
-                        className="input-field"
-                        value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
-                        placeholder="e.g. Michael Chen" required 
-                      />
+                      <User size={24} className="absolute left-7 top-1/2 -translate-y-1/2 text-indigo-200" />
+                      <input className="input-field py-6 pl-16 pr-8 text-lg" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="e.g. Jonathan Henderson" required />
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Date of Birth</label>
+                  <div className="space-y-4">
+                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Date of Birth</label>
                     <div className="input-container">
-                      <Calendar size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                      <input 
-                        type="date" className="input-field"
-                        value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})}
-                        required 
-                      />
+                      <Calendar size={24} className="absolute left-7 top-1/2 -translate-y-1/2 text-indigo-300" />
+                      <input type="date" className="input-field py-6 pl-16 pr-8 text-lg" value={formData.dob} onChange={e => setFormData({ ...formData, dob: e.target.value })} required />
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Gender Identification</label>
+                  <div className="space-y-4">
+                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Gender Category</label>
                     <div className="input-container">
-                      <Users size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                      <select 
-                        className="input-field" style={{ appearance: 'none' }}
-                        value={formData.gender} onChange={e => setFormData({...formData, gender: e.target.value})}
-                        required
-                      >
-                        <option value="" disabled>Select Option</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                      <Users size={24} className="absolute left-7 top-1/2 -translate-y-1/2 text-indigo-200" />
+                      <select className="input-field py-6 pl-16 pr-8 text-lg appearance-none" value={formData.gender} onChange={e => setFormData({ ...formData, gender: e.target.value })} required>
+                        <option value="" disabled>Select Gender</option>
+                        <option value="Male">Male Scholar</option>
+                        <option value="Female">Female Scholar</option>
                         <option value="Other">Other</option>
                       </select>
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest ml-1">Class / Section</label>
+                  <div className="space-y-4">
+                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Academic Section</label>
                     <div className="input-container">
-                      <BookOpen size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                      <input 
-                        className="input-field"
-                        value={formData.studentClass} onChange={e => setFormData({...formData, studentClass: e.target.value})}
-                        placeholder="e.g. Class 10-A" required 
-                      />
+                      <BookOpen size={24} className="absolute left-7 top-1/2 -translate-y-1/2 text-indigo-200" />
+                      <input className="input-field py-6 pl-16 pr-8 text-lg" value={formData.studentClass} onChange={e => setFormData({ ...formData, studentClass: e.target.value })} placeholder="e.g. Class 12-B" required />
                     </div>
                   </div>
 
-                  <div className="md:col-span-2 pt-6">
-                    <motion.button 
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      type="submit" 
-                      disabled={loading} 
-                      className="btn-primary w-full py-5 text-lg"
-                    >
-                      {loading ? 'Processing Enrollment...' : 'Register to School Roster'}
+                  <div className="md:col-span-2 pt-12">
+                    <motion.button whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }} type="submit" disabled={loading} className="btn-primary w-full py-8 text-2xl tracking-tight shadow-indigo-500/30">
+                      {loading ? 'Processing Registry...' : 'Enroll into Academy Roster'}
                     </motion.button>
                   </div>
                 </form>
@@ -306,6 +327,8 @@ const Dashboard = () => {
         </AnimatePresence>
       </div>
     </div>
+
+
   );
 };
 
@@ -314,9 +337,9 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route 
-          path="/dashboard" 
-          element={localStorage.getItem('token') ? <Dashboard /> : <Navigate to="/login" />} 
+        <Route
+          path="/dashboard"
+          element={localStorage.getItem('token') ? <Dashboard /> : <Navigate to="/login" />}
         />
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>

@@ -29,7 +29,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4" style={{ position: 'relative' }}>
       <div className="bg-pattern" />
-      
+
       {/* Decorative Elements */}
       <div className="absolute top-10 left-10 text-indigo-100 opacity-20 animate-float" style={{ zIndex: -1 }}>
         <GraduationCap size={120} />
@@ -38,7 +38,7 @@ const Login = () => {
         <School size={120} />
       </div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ type: 'spring', damping: 20, stiffness: 100 }}
@@ -46,7 +46,7 @@ const Login = () => {
       >
         <div className="glass-card p-8 md:p-10">
           <div className="text-center mb-10">
-            <motion.div 
+            <motion.div
               initial={{ rotate: -10 }}
               animate={{ rotate: 0 }}
               style={{
@@ -69,7 +69,7 @@ const Login = () => {
 
           <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {error && (
-              <motion.div 
+              <motion.div
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 style={{
@@ -119,11 +119,11 @@ const Login = () => {
               </div>
             </div>
 
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              type="submit" 
-              className="btn-primary" 
+              type="submit"
+              className="btn-primary"
               disabled={loading}
               style={{ marginTop: '8px' }}
             >
