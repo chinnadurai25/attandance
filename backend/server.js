@@ -36,6 +36,15 @@ const studentSchema = new mongoose.Schema({
 
 const Student = mongoose.model('Student', studentSchema);
 
+const attendanceSchema = new mongoose.Schema({
+  date: { type: String, required: true }, // YYYY-MM-DD
+  studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Student', required: true },
+  status: { type: String, enum: ['Present', 'Absent', 'Leave'], required: true },
+  class: { type: String, required: true }
+}, { timestamps: true });
+
+const Attendance = mongoose.model('Attendance', attendanceSchema);
+
 // --- Auth Logic ---
 const MOCK_ADMINS = [
   { email: 'admin@gmail.com', password: 'admin123', role: 'admin', name: 'Admin User' },
@@ -90,6 +99,57 @@ app.get('/api/students', async (req, res) => {
   try {
     const students = await Student.find().sort({ createdAt: -1 });
     res.json(students);
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
+});
+
+// --- Attendance Logic ---
+app.post('/api/attendance', async (req, res) => {
+  const { date, attendanceData, studentClass } = req.body;
+  try {
+    // Delete existing attendance for this date and class to avoid duplicates
+    await Attendance.deleteMany({ date, class: studentClass });
+    
+    const records = attendanceData.map(item => ({
+      date,
+      studentId: item.studentId,
+      status: item.status,
+      class: studentClass
+    }));
+    
+    await Attendance.insertMany(records);
+    res.status(201).json({ message: 'Attendance recorded successfully' });
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
+});
+
+app.get('/api/attendance', async (req, res) => {
+  const { date, studentClass } = req.query;
+  try {
+    const records = await Attendance.find({ date, class: studentClass });
+    res.json(records);
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
+});
+
+app.get('/api/attendance/summary', async (req, res) => {
+  const { month } = req.query; // YYYY-MM
+  try {
+    const records = await Attendance.find({ date: { $regex: `^${month}` } });
+    
+    // Group by date and count statuses
+    const summary = records.reduce((acc, curr) => {
+      if (!acc[curr.date]) {
+        acc[curr.date] = { Present: 0, Absent: 0, Leave: 0 };
+      }
+      acc[curr.date][curr.status]++;
+      return acc;
+    }, {});
+    
+    res.json(summary);
   } catch (err) {
     res.status(500).send('Server error');
   }
