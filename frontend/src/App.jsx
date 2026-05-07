@@ -35,9 +35,11 @@ const Dashboard = () => {
     }
   };
 
-  const fetchAttendanceSummary = async (month) => {
+  const fetchAttendanceSummary = async (month, studentClass) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/attendance/summary?month=${month}`);
+      let url = `http://localhost:5000/api/attendance/summary?month=${month}`;
+      if (studentClass) url += `&studentClass=${studentClass}`;
+      const res = await axios.get(url);
       setAttendanceSummary(res.data);
     } catch (err) {
       console.error('Error fetching attendance summary');
@@ -85,7 +87,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (view === 'attendance-calendar') {
-      fetchAttendanceSummary(selectedDate.substring(0, 7));
+      fetchAttendanceSummary(selectedDate.substring(0, 7), selectedClass);
     }
     if (view === 'attendance-sheet') {
       fetchAttendanceForDate(selectedDate, selectedClass);
@@ -179,16 +181,16 @@ const Dashboard = () => {
           <div className="flex items-center gap-3 w-full md:w-auto">
             {view === 'list' ? (
               <>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setView('attendance-calendar')}
-                  className="flex items-center gap-2 px-6 py-3.5 bg-indigo-50 text-indigo-600 rounded-2xl font-bold hover:bg-indigo-100 transition-all"
-                  style={{ flex: 1 }}
-                >
-                  <Calendar size={18} />
-                  <span>Mark Attendance</span>
-                </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setView('attendance-calendar')}
+                    className="flex items-center gap-2 px-6 py-3.5 bg-indigo-50 text-indigo-600 rounded-2xl font-bold hover:bg-indigo-100 transition-all"
+                    style={{ flex: 1 }}
+                  >
+                    <Calendar size={18} />
+                    <span>Attendance</span>
+                  </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -266,6 +268,27 @@ const Dashboard = () => {
               </div>
             </motion.div>
           </div>
+        )}
+
+        {msg.text && view !== 'register' && (
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className={`mb-8 p-6 rounded-2xl flex items-center gap-4 text-sm font-bold border ${
+              msg.type === 'success' 
+                ? 'bg-emerald-50 text-emerald-600 border-emerald-100' 
+                : 'bg-rose-50 text-rose-600 border-rose-100'
+            }`}
+          >
+            {msg.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
+            <span>{msg.text}</span>
+            <button 
+              onClick={() => setMsg({ type: '', text: '' })}
+              className="ml-auto p-1 hover:bg-black/5 rounded-lg transition-colors"
+            >
+              <LogOut size={14} className="rotate-45" />
+            </button>
+          </motion.div>
         )}
 
         <AnimatePresence mode="wait">
@@ -461,10 +484,19 @@ const Dashboard = () => {
                 {getCalendarDays().map((day, idx) => (
                   <div
                     key={idx}
+                    onClick={() => {
+                      if (!day.day || day.isSunday) return;
+                      if (!selectedClass) {
+                        setMsg({ type: 'error', text: 'Please select a class first!' });
+                        return;
+                      }
+                      setSelectedDate(day.date);
+                      setView('attendance-sheet');
+                    }}
                     className={`cal-day p-5 rounded-[32px] border-2 transition-all relative group ${
                       !day.day ? 'opacity-0 pointer-events-none' :
-                      day.isSunday ? 'bg-rose-50/30 border-rose-100/50' :
-                      'bg-white border-slate-100 hover:border-indigo-300 hover:shadow-2xl hover:shadow-indigo-500/10'
+                      day.isSunday ? 'bg-rose-50/30 border-rose-100/50 cursor-not-allowed' :
+                      'bg-white border-slate-100 hover:border-indigo-300 hover:shadow-2xl hover:shadow-indigo-500/10 cursor-pointer'
                     }`}
                   >
                     {day.day && (
@@ -488,20 +520,20 @@ const Dashboard = () => {
                               <div className="bg-white/90 p-1 rounded-xl border border-slate-100 shadow-sm space-y-0">
                                 {present > 0 && (
                                   <div className="flex justify-between items-center px-1">
-                                    <span className="text-[6.5px] font-black text-emerald-600 uppercase tracking-tighter">Present</span>
-                                    <span className="text-[8px] font-black text-emerald-700">{present}</span>
+                                    <span className="text-[6.5px] font-black text-green-600 uppercase tracking-tighter">Present</span>
+                                    <span className="text-[8px] font-black text-green-700">{present}</span>
                                   </div>
                                 )}
                                 {absent > 0 && (
                                   <div className="flex justify-between items-center px-1">
-                                    <span className="text-[6.5px] font-black text-rose-600 uppercase tracking-tighter">Absent</span>
-                                    <span className="text-[8px] font-black text-rose-700">{absent}</span>
+                                    <span className="text-[6.5px] font-black text-red-600 uppercase tracking-tighter">Absent</span>
+                                    <span className="text-[8px] font-black text-red-700">{absent}</span>
                                   </div>
                                 )}
                                 {leave > 0 && (
                                   <div className="flex justify-between items-center px-1">
-                                    <span className="text-[6.5px] font-black text-amber-600 uppercase tracking-tighter">Leave</span>
-                                    <span className="text-[8px] font-black text-amber-700">{leave}</span>
+                                    <span className="text-[6.5px] font-black text-orange-600 uppercase tracking-tighter">Leave</span>
+                                    <span className="text-[8px] font-black text-orange-700">{leave}</span>
                                   </div>
                                 )}
                                 {!hasData && (
@@ -512,17 +544,9 @@ const Dashboard = () => {
                               </div>
                             );
                           })() : !day.isSunday && (
-                            <motion.button
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => {
-                                setSelectedDate(day.date);
-                                setView('attendance-sheet');
-                              }}
-                              className="w-full py-2 bg-indigo-600 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-indigo-500/30 opacity-0 group-hover:opacity-100 transition-all"
-                            >
+                            <div className="w-full py-2 bg-indigo-50 text-indigo-600 rounded-xl text-[9px] font-black uppercase tracking-widest text-center opacity-0 group-hover:opacity-100 transition-all">
                               Mark Day
-                            </motion.button>
+                            </div>
                           )}
                         </div>
                       </>
@@ -546,7 +570,11 @@ const Dashboard = () => {
                   </div>
                   <div>
                     <h2 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2">Mark Attendance</h2>
-                    <p className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">{new Date(selectedDate).toLocaleDateString('en-US', { dateStyle: 'full' })}</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">{new Date(selectedDate).toLocaleDateString('en-US', { dateStyle: 'full' })}</span>
+                      <span className="w-1.5 h-1.5 bg-slate-200 rounded-full"></span>
+                      <span className="text-indigo-600 font-black uppercase text-[10px] tracking-widest">{selectedClass}</span>
+                    </div>
                   </div>
                 </div>
 
@@ -588,9 +616,9 @@ const Dashboard = () => {
                             }}
                             className={`px-6 py-2.5 rounded-xl font-black text-[11px] uppercase tracking-widest transition-all ${
                               record.status === status
-                                ? status === 'Present' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20'
-                                : status === 'Absent' ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20'
-                                : 'bg-amber-500 text-white shadow-lg shadow-amber-500/20'
+                                ? status === 'Present' ? 'bg-green-500 text-white shadow-lg shadow-green-500/20'
+                                : status === 'Absent' ? 'bg-red-500 text-white shadow-lg shadow-red-500/20'
+                                : 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
                                 : 'bg-slate-50 text-slate-400 hover:bg-slate-100'
                             }`}
                           >

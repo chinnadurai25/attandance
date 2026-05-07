@@ -136,9 +136,13 @@ app.get('/api/attendance', async (req, res) => {
 });
 
 app.get('/api/attendance/summary', async (req, res) => {
-  const { month } = req.query; // YYYY-MM
+  const { month, studentClass } = req.query; // YYYY-MM
   try {
-    const records = await Attendance.find({ date: { $regex: `^${month}` } });
+    let query = { date: { $regex: `^${month}` } };
+    if (studentClass) {
+      query.class = studentClass;
+    }
+    const records = await Attendance.find(query);
     
     // Group by date and count statuses
     const summary = records.reduce((acc, curr) => {
