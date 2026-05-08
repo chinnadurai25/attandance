@@ -53,14 +53,20 @@ const MOCK_ADMINS = [
 
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
+  const cleanEmail = email?.trim().toLowerCase();
+  const cleanPassword = password?.trim();
+  
+  console.log('Login attempt:', { cleanEmail, passwordLength: cleanPassword?.length });
+
   try {
-    const mockUser = MOCK_ADMINS.find(u => u.email === email && u.password === password);
+    const mockUser = MOCK_ADMINS.find(u => u.email.toLowerCase() === cleanEmail && u.password === cleanPassword);
     let user;
     if (mockUser) {
       user = mockUser;
     } else {
-      user = await User.findOne({ email });
-      if (!user || user.password !== password) {
+      user = await User.findOne({ email: cleanEmail });
+      if (!user || user.password !== cleanPassword) {
+        console.log('Login failed for:', cleanEmail);
         return res.status(400).json({ message: 'Invalid credentials' });
       }
     }
@@ -99,6 +105,35 @@ app.get('/api/students', async (req, res) => {
   try {
     const students = await Student.find().sort({ createdAt: -1 });
     res.json(students);
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
+});
+
+app.put('/api/students/:id', async (req, res) => {
+  const { name, dob, gender, studentClass } = req.body;
+  try {
+    const student = await Student.findByIdAndUpdate(
+      req.params.id,
+      { name, dob, gender, class: studentClass },
+      { new: true }
+    );
+    if (!student) return res.status(404).json({ message: 'Student not found' });
+    res.json(student);
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
+});
+
+app.delete('/api/students/:id', async (req, res) => {
+  try {
+    const student = await Student.findByIdAndDelete(req.params.id);
+    if (!student) return res.status(404).json({ message: 'Student not found' });
+    
+    // Optional: Delete student's attendance records
+    await Attendance.deleteMany({ studentId: req.params.id });
+    
+    res.json({ message: 'Student deleted successfully' });
   } catch (err) {
     res.status(500).send('Server error');
   }

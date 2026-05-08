@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   UserPlus, Users, Calendar, User, BookOpen, LogOut,
   CheckCircle, AlertCircle, ArrowLeft, LayoutDashboard,
-  GraduationCap, TrendingUp, Clock, Search, Filter
+  GraduationCap, TrendingUp, Clock, Search, Filter,
+  Edit2, Trash2
 } from 'lucide-react';
 import axios from 'axios';
 import Login from './pages/Login';
@@ -21,6 +22,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState({ type: '', text: '' });
   const [searchTerm, setSearchTerm] = useState('');
+  const [editingStudent, setEditingStudent] = useState(null);
 
   useEffect(() => {
     fetchStudents();
@@ -105,15 +107,43 @@ const Dashboard = () => {
     setMsg({ type: '', text: '' });
 
     try {
-      await axios.post('http://localhost:5000/api/students', formData);
-      setMsg({ type: 'success', text: 'Student successfully enrolled!' });
+      if (editingStudent) {
+        await axios.put(`http://localhost:5000/api/students/${editingStudent._id}`, formData);
+        setMsg({ type: 'success', text: 'Student details updated successfully!' });
+      } else {
+        await axios.post('http://localhost:5000/api/students', formData);
+        setMsg({ type: 'success', text: 'Student successfully enrolled!' });
+      }
       setFormData({ name: '', dob: '', gender: '', studentClass: '' });
+      setEditingStudent(null);
       fetchStudents();
       setTimeout(() => setView('list'), 1500);
     } catch (err) {
-      setMsg({ type: 'error', text: 'Enrollment failed. Please try again.' });
+      setMsg({ type: 'error', text: editingStudent ? 'Update failed. Please try again.' : 'Enrollment failed. Please try again.' });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleEdit = (student) => {
+    setEditingStudent(student);
+    setFormData({
+      name: student.name,
+      dob: student.dob,
+      gender: student.gender,
+      studentClass: student.class
+    });
+    setView('register');
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this student? All attendance records for this student will also be removed.')) return;
+    try {
+      await axios.delete(`http://localhost:5000/api/students/${id}`);
+      setMsg({ type: 'success', text: 'Student deleted successfully!' });
+      fetchStudents();
+    } catch (err) {
+      setMsg({ type: 'error', text: 'Failed to delete student.' });
     }
   };
 
@@ -206,7 +236,12 @@ const Dashboard = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => { setView('list'); setMsg({ type: '', text: '' }); }}
+                onClick={() => { 
+                  setView('list'); 
+                  setMsg({ type: '', text: '' }); 
+                  setEditingStudent(null);
+                  setFormData({ name: '', dob: '', gender: '', studentClass: '' });
+                }}
                 className="flex items-center gap-2 px-6 py-3.5 bg-white border-2 border-gray-100 rounded-2xl text-gray-600 font-bold hover:bg-gray-50 transition-all shadow-sm"
                 style={{ flex: 1 }}
               >
@@ -353,9 +388,28 @@ const Dashboard = () => {
 
                       <div>
                         <div className="font-bold text-slate-800 text-xl tracking-tight leading-tight mb-2">{student.name}</div>
-                        <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 font-bold">
-                          <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><User size={13} className="text-indigo-400" /> {student.gender}</span>
-                          <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><Calendar size={13} className="text-indigo-400" /> {student.dob}</span>
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 font-bold">
+                            <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><User size={13} className="text-indigo-400" /> {student.gender}</span>
+                            <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><Calendar size={13} className="text-indigo-400" /> {student.dob}</span>
+                          </div>
+                          
+                          <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <button 
+                              onClick={() => handleEdit(student)}
+                              className="p-2 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                              title="Edit Student"
+                            >
+                              <Edit2 size={14} />
+                            </button>
+                            <button 
+                              onClick={() => handleDelete(student._id)}
+                              className="p-2 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all shadow-sm"
+                              title="Delete Student"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </motion.div>
@@ -380,8 +434,12 @@ const Dashboard = () => {
                     <UserPlus size={44} />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2">Student Registry</h2>
-                    <p className="text-slate-400 font-bold text-lg">Entry Terminal Academic Session 24/25</p>
+                    <h2 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2">
+                      {editingStudent ? 'Edit Student Details' : 'Student Registry'}
+                    </h2>
+                    <p className="text-slate-400 font-bold text-lg">
+                      {editingStudent ? `Updating records for ${editingStudent.name}` : 'Entry Terminal Academic Session 24/25'}
+                    </p>
                   </div>
                 </div>
 
@@ -435,7 +493,7 @@ const Dashboard = () => {
 
                   <div className="md:col-span-2 pt-12">
                     <motion.button whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }} type="submit" disabled={loading} className="btn-primary w-full py-8 text-2xl tracking-tight shadow-indigo-500/30">
-                      {loading ? 'Processing Registry...' : 'Enroll into Academy Roster'}
+                      {loading ? (editingStudent ? 'Updating Records...' : 'Processing Registry...') : (editingStudent ? 'Update Student Information' : 'Enroll into Academy Roster')}
                     </motion.button>
                   </div>
                 </form>
