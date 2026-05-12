@@ -34,11 +34,15 @@ const Login = () => {
       <div className="bg-pattern" />
       
       {/* Decorative Elements */}
-      <div className="absolute top-10 left-10 text-indigo-500 opacity-5 animate-float hidden lg:block" style={{ zIndex: -1 }}>
-        <GraduationCap size={160} />
+      <div className="absolute top-10 left-10 text-primary opacity-10 animate-float hidden lg:block" style={{ zIndex: -1 }}>
+        <motion.div animate={{ rotate: [0, 10, 0] }} transition={{ duration: 4, repeat: Infinity }}>
+          <School size={160} />
+        </motion.div>
       </div>
-      <div className="absolute bottom-10 right-10 text-indigo-500 opacity-5 animate-float hidden lg:block" style={{ zIndex: -1, animationDelay: '2s' }}>
-        <School size={160} />
+      <div className="absolute bottom-10 right-10 text-secondary opacity-10 animate-float hidden lg:block" style={{ zIndex: -1, animationDelay: '2s' }}>
+        <motion.div animate={{ rotate: [0, -10, 0] }} transition={{ duration: 5, repeat: Infinity }}>
+          <GraduationCap size={160} />
+        </motion.div>
       </div>
 
       <motion.div 
@@ -51,12 +55,12 @@ const Login = () => {
             <motion.div 
               initial={{ scale: 0.5, rotate: -15 }}
               animate={{ scale: 1, rotate: 0 }}
-              className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl mb-6 shadow-sm border border-gray-100 overflow-hidden p-2"
+              className="inline-flex items-center justify-center w-32 h-32 bg-white rounded-[40px] mb-8 shadow-2xl border-8 border-accent overflow-hidden p-3 animate-wiggle"
             >
               <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
             </motion.div>
-            <h1 className="text-3xl font-bold text-gray-800 tracking-tight mb-2">Attendance Pro</h1>
-            <p className="text-gray-500 font-medium">Secure School Portal Access</p>
+            <h1 className="text-5xl font-black text-slate-800 tracking-tight mb-3">Sunny Days</h1>
+            <p className="text-secondary font-black text-2xl">Teacher's Playground</p>
           </div>
 
           <form onSubmit={handleLogin} className="flex flex-col gap-6">
@@ -102,16 +106,17 @@ const Login = () => {
             </div>
 
             <motion.button 
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
+              whileHover={{ scale: 1.05, y: -4 }}
+              whileTap={{ scale: 0.95 }}
               type="submit" 
-              className="btn-primary w-full py-4 text-lg" 
+              className="w-full py-6 text-2xl text-white rounded-[32px] shadow-2xl shadow-primary/40 border-b-8 border-primary-hover font-black flex items-center justify-center gap-3 transition-all hover:brightness-110" 
+              style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent))' }}
               disabled={loading}
             >
-              {loading ? 'Authenticating...' : (
+              {loading ? 'Opening Gates...' : (
                 <>
-                  <span>Sign In to Portal</span>
-                  <LogIn size={22} />
+                  <span>Enter Playground</span>
+                  <LogIn size={28} />
                 </>
               )}
             </motion.button>

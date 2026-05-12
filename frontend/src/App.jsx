@@ -191,47 +191,49 @@ const Dashboard = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-8 glass-card p-10 shadow-2xl shadow-indigo-900/5"
+          className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-8 glass-card p-10 shadow-2xl shadow-primary/10 border-b-8 border-accent"
         >
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm p-2">
-              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+          <div className="flex items-center gap-6">
+            <div className="w-24 h-24 bg-white rounded-[32px] flex items-center justify-center overflow-hidden border-4 border-accent shadow-2xl animate-wiggle">
+              <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
             </div>
             <div>
-              <h1 className="text-2xl font-black text-slate-800 tracking-tighter leading-none mb-1">Academy Console</h1>
+              <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Teacher's Corner</h1>
               <div className="flex items-center gap-3">
-                <span className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-slate-400 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
-                  <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                  Active Admin: {user?.name}
+                <span className="flex items-center gap-2 text-[12px] font-black uppercase tracking-widest text-primary bg-white px-4 py-2 rounded-full border-2 border-accent shadow-sm">
+                  <span className="w-3 h-3 bg-primary rounded-full animate-pulse"></span>
+                  Storyteller: {user?.name}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
             {view === 'list' ? (
-              <>
+              <div className="flex flex-row gap-3 w-full sm:w-auto">
+                    <motion.button
+                      whileHover={{ scale: 1.05, rotate: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setView('attendance-calendar')}
+                      className="flex items-center justify-center gap-2 px-4 md:px-8 py-4 bg-gradient-to-r from-secondary to-success text-white rounded-3xl font-black hover:brightness-110 transition-all shadow-xl shadow-secondary/30 border-b-4 border-secondary-hover text-sm md:text-base flex-1 sm:flex-none"
+                      style={{ background: 'linear-gradient(135deg, var(--secondary), var(--success))' }}
+                    >
+                      <Calendar size={20} />
+                      <span className="hidden sm:inline">Mark Attendance</span>
+                      <span className="sm:hidden text-xs">Attendance</span>
+                    </motion.button>
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.05, rotate: 2 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setView('attendance-calendar')}
-                    className="flex items-center gap-2 px-6 py-3.5 bg-indigo-50 text-indigo-600 rounded-2xl font-bold hover:bg-indigo-100 transition-all"
-                    style={{ flex: 1 }}
+                    onClick={() => setView('register')}
+                    className="flex items-center justify-center gap-2 px-4 md:px-8 py-4 text-white rounded-3xl font-black hover:brightness-110 transition-all shadow-xl shadow-primary/30 border-b-4 border-primary-hover text-sm md:text-base flex-1 sm:flex-none"
+                    style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent))' }}
                   >
-                    <Calendar size={18} />
-                    <span>Attendance</span>
+                    <UserPlus size={20} />
+                    <span className="hidden sm:inline">Add Little Star</span>
+                    <span className="sm:hidden text-xs">Add Star</span>
                   </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setView('register')}
-                  className="btn-primary"
-                  style={{ borderRadius: '16px', flex: 1 }}
-                >
-                  <UserPlus size={18} />
-                  <span>New Enrollment</span>
-                </motion.button>
-              </>
+              </div>
             ) : (
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -242,8 +244,7 @@ const Dashboard = () => {
                   setEditingStudent(null);
                   setFormData({ name: '', dob: '', gender: '', studentClass: '' });
                 }}
-                className="flex items-center gap-2 px-6 py-3.5 bg-white border-2 border-gray-100 rounded-2xl text-gray-600 font-bold hover:bg-gray-50 transition-all shadow-sm"
-                style={{ flex: 1 }}
+                className="flex items-center justify-center gap-2 px-8 py-4 bg-slate-800 text-white border-2 border-slate-700 rounded-3xl font-bold hover:bg-slate-900 transition-all shadow-xl w-full sm:w-auto"
               >
                 <ArrowLeft size={18} />
                 <span>Back to Roster</span>
@@ -251,10 +252,11 @@ const Dashboard = () => {
             )}
 
             <motion.button
-              whileHover={{ scale: 1.1, rotate: 90, backgroundColor: '#fee2e2' }}
+              whileHover={{ scale: 1.1, rotate: 90, filter: 'brightness(1.2)' }}
               whileTap={{ scale: 0.9 }}
               onClick={handleLogout}
-              className="p-5 rounded-2xl bg-rose-50/50 text-rose-500 border border-rose-100 transition-all shadow-lg shadow-rose-100"
+              className="p-4 md:p-5 rounded-2xl text-white border-2 border-white transition-all shadow-xl shadow-danger/40 ml-auto sm:ml-0"
+              style={{ background: 'linear-gradient(135deg, var(--danger), #ff8b3d)' }}
             >
               <LogOut size={26} />
             </motion.button>
@@ -266,40 +268,40 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="glass-card p-10 flex items-center gap-8 group hover:bg-indigo-600 transition-colors duration-500"
+              className="glass-card p-10 flex items-center gap-8 group hover:bg-primary transition-colors duration-500 border-l-8 border-primary"
             >
-              <div className="w-16 h-16 bg-indigo-50 rounded-[20px] flex items-center justify-center text-indigo-600 group-hover:bg-white/20 group-hover:text-white transition-all">
-                <Users size={32} />
+              <div className="w-20 h-20 bg-red-50 rounded-[28px] flex items-center justify-center text-primary group-hover:bg-white/20 group-hover:text-white transition-all shadow-inner">
+                <Users size={40} />
               </div>
               <div>
-                <span className="text-slate-400 group-hover:text-indigo-100 text-[10px] font-black uppercase tracking-[0.25em] mb-1 block">Population</span>
-                <div className="text-5xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none">{students.length}</div>
+                <span className="text-primary font-black uppercase tracking-[0.2em] mb-1 block font-heading">Our Buddies</span>
+                <div className="text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none">{students.length}</div>
               </div>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="glass-card p-10 flex items-center gap-8 group hover:bg-emerald-600 transition-colors duration-500"
+              className="glass-card p-10 flex items-center gap-8 group hover:bg-secondary transition-colors duration-500 border-l-8 border-secondary"
             >
-              <div className="w-16 h-16 bg-emerald-50 rounded-[20px] flex items-center justify-center text-emerald-600 group-hover:bg-white/20 group-hover:text-white transition-all">
-                <TrendingUp size={32} />
+              <div className="w-20 h-20 bg-blue-50 rounded-[28px] flex items-center justify-center text-secondary group-hover:bg-white/20 group-hover:text-white transition-all shadow-inner">
+                <TrendingUp size={40} />
               </div>
               <div>
-                <span className="text-slate-400 group-hover:text-emerald-100 text-[10px] font-black uppercase tracking-[0.25em] mb-1 block">Avg Rate</span>
-                <div className="text-5xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none">94.2%</div>
+                <span className="text-secondary font-black uppercase tracking-[0.2em] mb-1 block font-heading">Happy Score</span>
+                <div className="text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none">94.2%</div>
               </div>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-              className="glass-card p-10 flex items-center gap-8 group hover:bg-amber-500 transition-all duration-300"
+              className="glass-card p-10 flex items-center gap-8 group hover:bg-accent transition-all duration-300 border-l-8 border-accent"
             >
-              <div className="w-16 h-16 bg-amber-50 rounded-[20px] flex items-center justify-center text-amber-600 group-hover:bg-white group-hover:text-amber-600 transition-all">
-                <Calendar size={32} />
+              <div className="w-20 h-20 bg-yellow-50 rounded-[28px] flex items-center justify-center text-yellow-600 group-hover:bg-white group-hover:text-yellow-600 transition-all shadow-inner">
+                <Calendar size={40} />
               </div>
               <div>
-                <span className="text-slate-400 group-hover:text-white/80 text-[10px] font-black uppercase tracking-[0.25em] mb-1 block">Session Days</span>
-                <div className="text-5xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">184</div>
+                <span className="text-yellow-600 group-hover:text-slate-600 font-black uppercase tracking-[0.2em] mb-1 block font-heading">Adventure Days</span>
+                <div className="text-6xl font-black text-slate-800 group-hover:text-slate-900 tracking-tighter leading-none transition-colors">184</div>
               </div>
             </motion.div>
           </div>
@@ -338,8 +340,8 @@ const Dashboard = () => {
             >
               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-10 gap-8">
                 <div className="flex items-center gap-4">
-                  <h2 className="text-base font-black text-slate-800 tracking-tight">Student Roster</h2>
-                  <span className="px-4 py-1.5 bg-slate-50 text-slate-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-slate-100">Academic Year 2024</span>
+                  <h2 className="text-2xl font-black text-slate-800 tracking-tight">Class Buddies</h2>
+                  <span className="px-5 py-2 bg-accent text-slate-700 text-[11px] font-black uppercase tracking-widest rounded-full border-2 border-white shadow-sm">Little Explorers 2024</span>
                 </div>
 
                 <div className="flex items-center gap-3 w-full md:w-96">
@@ -430,15 +432,15 @@ const Dashboard = () => {
                 <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-100/30 rounded-full blur-[100px] -mr-40 -mt-40" />
 
                 <div className="flex items-center gap-10 mb-16 relative z-10">
-                  <div className="p-7 bg-indigo-600 rounded-[32px] text-white shadow-2xl shadow-indigo-500/20">
+                  <div className="p-8 bg-primary rounded-[32px] text-white shadow-2xl shadow-primary/30 animate-bounce">
                     <UserPlus size={44} />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2">
-                      {editingStudent ? 'Edit Student Details' : 'Student Registry'}
+                    <h2 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-3">
+                      {editingStudent ? 'Update Star Details' : 'New Little Star'}
                     </h2>
-                    <p className="text-slate-400 font-bold text-lg">
-                      {editingStudent ? `Updating records for ${editingStudent.name}` : 'Entry Terminal Academic Session 24/25'}
+                    <p className="text-slate-400 font-bold text-xl">
+                      {editingStudent ? `Updating records for ${editingStudent.name}` : 'Welcome to the Playground!'}
                     </p>
                   </div>
                 </div>
@@ -492,8 +494,8 @@ const Dashboard = () => {
                   </div>
 
                   <div className="md:col-span-2 pt-12">
-                    <motion.button whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }} type="submit" disabled={loading} className="btn-primary w-full py-8 text-2xl tracking-tight shadow-indigo-500/30">
-                      {loading ? (editingStudent ? 'Updating Records...' : 'Processing Registry...') : (editingStudent ? 'Update Student Information' : 'Enroll into Academy Roster')}
+                    <motion.button whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }} type="submit" disabled={loading} className="btn-primary w-full py-8 text-2xl tracking-tight shadow-primary/30 rounded-[32px]">
+                      {loading ? (editingStudent ? 'Updating Stars...' : 'Saving Buddy...') : (editingStudent ? 'Update Little Star' : 'Add to the Playground!')}
                     </motion.button>
                   </div>
                 </form>
@@ -512,18 +514,18 @@ const Dashboard = () => {
                   <h2 className="text-2xl font-black text-slate-800 tracking-tight mb-2">Attendance Calendar</h2>
                   <p className="text-slate-500 font-bold">Select a class and date to manage student records</p>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-3">
-                    <Calendar size={18} className="text-indigo-500" />
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full sm:w-auto">
+                  <div className="bg-white p-3 rounded-2xl border-2 border-slate-100 shadow-sm flex items-center gap-3 w-full sm:w-auto">
+                    <Calendar size={18} className="text-secondary" />
                     <input
                       type="month"
-                      className="bg-transparent border-none font-black text-slate-700 focus:outline-none"
+                      className="bg-transparent border-none font-black text-slate-700 focus:outline-none w-full"
                       value={selectedDate.substring(0, 7)}
                       onChange={(e) => setSelectedDate(`${e.target.value}-01`)}
                     />
                   </div>
                   <select
-                    className="bg-slate-50 border border-slate-100 p-3.5 rounded-2xl font-black text-slate-700 appearance-none min-w-[200px] shadow-sm"
+                    className="bg-white border-2 border-slate-100 p-3.5 rounded-2xl font-black text-slate-700 appearance-none w-full sm:min-w-[200px] shadow-sm"
                     value={selectedClass}
                     onChange={(e) => setSelectedClass(e.target.value)}
                   >
@@ -535,9 +537,9 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-7 gap-6">
+              <div className="grid grid-cols-7 gap-2 md:gap-6">
                 {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(d => (
-                  <div key={d} className="text-center text-[11px] font-black tracking-[0.2em] text-slate-400 mb-6">{d}</div>
+                   <div key={d} className="text-center text-[9px] md:text-[11px] font-black tracking-widest text-slate-400 mb-2 md:mb-6">{d}</div>
                 ))}
                 {getCalendarDays().map((day, idx) => (
                   <div
@@ -575,35 +577,33 @@ const Dashboard = () => {
                             const hasData = present > 0 || absent > 0 || leave > 0;
 
                             return (
-                              <div className="bg-white/90 p-1 rounded-xl border border-slate-100 shadow-sm space-y-0">
+                              <div className="bg-white/90 p-0.5 md:p-1 rounded-xl border border-slate-100 shadow-sm space-y-0.5">
                                 {present > 0 && (
                                   <div className="flex justify-between items-center px-1">
-                                    <span className="text-[6.5px] font-black text-green-600 uppercase tracking-tighter">Present</span>
-                                    <span className="text-[8px] font-black text-green-700">{present}</span>
+                                    <span className="hidden md:block text-[6.5px] font-black text-green-600 uppercase tracking-tighter">Present</span>
+                                    <span className="md:hidden w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                    <span className="text-[7px] md:text-[8px] font-black text-green-700">{present}</span>
                                   </div>
                                 )}
                                 {absent > 0 && (
                                   <div className="flex justify-between items-center px-1">
-                                    <span className="text-[6.5px] font-black text-red-600 uppercase tracking-tighter">Absent</span>
-                                    <span className="text-[8px] font-black text-red-700">{absent}</span>
+                                    <span className="hidden md:block text-[6.5px] font-black text-red-600 uppercase tracking-tighter">Absent</span>
+                                    <span className="md:hidden w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                                    <span className="text-[7px] md:text-[8px] font-black text-red-700">{absent}</span>
                                   </div>
                                 )}
                                 {leave > 0 && (
                                   <div className="flex justify-between items-center px-1">
-                                    <span className="text-[6.5px] font-black text-orange-600 uppercase tracking-tighter">Leave</span>
-                                    <span className="text-[8px] font-black text-orange-700">{leave}</span>
-                                  </div>
-                                )}
-                                {!hasData && (
-                                  <div className="text-center py-0.5">
-                                    <span className="text-[6.5px] font-black text-slate-400 uppercase tracking-tighter">Marked</span>
+                                    <span className="hidden md:block text-[6.5px] font-black text-orange-600 uppercase tracking-tighter">Leave</span>
+                                    <span className="md:hidden w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
+                                    <span className="text-[7px] md:text-[8px] font-black text-orange-700">{leave}</span>
                                   </div>
                                 )}
                               </div>
                             );
                           })() : !day.isSunday && (
-                            <div className="w-full py-2 bg-indigo-50 text-indigo-600 rounded-xl text-[9px] font-black uppercase tracking-widest text-center opacity-0 group-hover:opacity-100 transition-all">
-                              Mark Day
+                             <div className="w-full py-1 bg-indigo-50 text-indigo-600 rounded-lg text-[7px] md:text-[9px] font-black uppercase tracking-widest text-center opacity-0 group-hover:opacity-100 transition-all">
+                              Mark
                             </div>
                           )}
                         </div>
@@ -636,9 +636,9 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 w-full md:w-auto">
                   <select
-                    className="bg-slate-50 border border-slate-100 px-6 py-3.5 rounded-2xl font-bold text-slate-600 appearance-none min-w-[200px]"
+                    className="bg-white border-2 border-slate-100 px-6 py-3.5 rounded-2xl font-bold text-slate-600 appearance-none w-full md:min-w-[200px] shadow-sm"
                     value={selectedClass}
                     onChange={(e) => setSelectedClass(e.target.value)}
                   >
@@ -692,12 +692,13 @@ const Dashboard = () => {
               {selectedClass && (
                 <div className="flex justify-end gap-4 mt-8">
                   <motion.button
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{ scale: 1.02, y: -4 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={saveAttendance}
                     disabled={loading}
-                    className="btn-primary px-12 py-5 text-lg"
+                    className="flex items-center justify-center gap-3 px-12 py-5 bg-success text-white rounded-3xl font-black text-xl shadow-2xl shadow-success/30 border-b-8 border-emerald-700 hover:bg-emerald-600 transition-all"
                   >
+                    <CheckCircle size={24} />
                     {loading ? 'Submitting Data...' : 'Finalize Attendance'}
                   </motion.button>
                 </div>
