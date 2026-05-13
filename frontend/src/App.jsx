@@ -41,7 +41,7 @@ const Dashboard = () => {
 
   const fetchStaff = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/staff');
+      const res = await axios.get('http://31.97.237.122:5004/api/staff');
       setStaff(res.data);
     } catch (err) {
       console.error('Error fetching staff');
@@ -50,7 +50,7 @@ const Dashboard = () => {
 
   const fetchStudents = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/students');
+      const res = await axios.get('http://31.97.237.122:5004/api/students');
       setStudents(res.data);
     } catch (err) {
       console.error('Error fetching students');
@@ -60,8 +60,8 @@ const Dashboard = () => {
   const fetchAttendanceSummary = async (month, studentClass) => {
     try {
       let url = activeTab === 'students' 
-        ? `http://localhost:5000/api/attendance/summary?month=${month}`
-        : `http://localhost:5000/api/staff-attendance/summary?month=${month}`;
+        ? `http://31.97.237.122:5004/api/attendance/summary?month=${month}`
+        : `http://31.97.237.122:5004/api/staff-attendance/summary?month=${month}`;
       
       if (activeTab === 'students' && studentClass) url += `&studentClass=${studentClass}`;
       const res = await axios.get(url);
@@ -74,7 +74,7 @@ const Dashboard = () => {
   const fetchAttendanceForDate = async (date, studentClass) => {
     try {
       if (activeTab === 'students') {
-        const res = await axios.get(`http://localhost:5000/api/attendance?date=${date}&studentClass=${studentClass}`);
+        const res = await axios.get(`http://31.97.237.122:5004/api/attendance?date=${date}&studentClass=${studentClass}`);
         const records = res.data;
         const classStudents = students.filter(s => s.class === studentClass);
         const list = classStudents.map(student => {
@@ -87,7 +87,7 @@ const Dashboard = () => {
         });
         setAttendanceList(list);
       } else {
-        const res = await axios.get(`http://localhost:5000/api/staff-attendance?date=${date}`);
+        const res = await axios.get(`http://31.97.237.122:5004/api/staff-attendance?date=${date}`);
         const records = res.data;
         const list = staff.map(s => {
           const record = records.find(r => r.staffId === s._id);
@@ -124,7 +124,7 @@ const Dashboard = () => {
           attendanceData: attendanceList
         });
       } else {
-        await axios.post('http://localhost:5000/api/staff-attendance', {
+        await axios.post('http://31.97.237.122:5004/api/staff-attendance', {
           date: selectedDate,
           attendanceData: attendanceList
         });
@@ -161,10 +161,10 @@ const Dashboard = () => {
     try {
       if (activeTab === 'students') {
         if (editingStudent) {
-          await axios.put(`http://localhost:5000/api/students/${editingStudent._id}`, formData);
+          await axios.put(`http://31.97.237.122:5004/api/students/${editingStudent._id}`, formData);
           setMsg({ type: 'success', text: 'Student details updated successfully!' });
         } else {
-          await axios.post('http://localhost:5000/api/students', formData);
+          await axios.post('http://31.97.237.122:5004/api/students', formData);
           setMsg({ type: 'success', text: 'Student successfully enrolled!' });
         }
         setFormData({ 
@@ -176,10 +176,10 @@ const Dashboard = () => {
         fetchStudents();
       } else {
         if (editingStaff) {
-          await axios.put(`http://localhost:5000/api/staff/${editingStaff._id}`, staffFormData);
+          await axios.put(`http://31.97.237.122:5004/api/staff/${editingStaff._id}`, staffFormData);
           setMsg({ type: 'success', text: 'Staff details updated successfully!' });
         } else {
-          await axios.post('http://localhost:5000/api/staff', staffFormData);
+          await axios.post('http://31.97.237.122:5004/api/staff', staffFormData);
           setMsg({ type: 'success', text: 'Staff successfully enrolled!' });
         }
         setStaffFormData({ name: '', age: '', phoneNumber: '', address: '', qualification: '', experience: '', mailId: '' });
@@ -230,10 +230,10 @@ const Dashboard = () => {
     if (!window.confirm(`Are you sure you want to delete this ${type}? All attendance records will also be removed.`)) return;
     try {
       if (activeTab === 'students') {
-        await axios.delete(`http://localhost:5000/api/students/${id}`);
+        await axios.delete(`http://31.97.237.122:5004/api/students/${id}`);
         fetchStudents();
       } else {
-        await axios.delete(`http://localhost:5000/api/staff/${id}`);
+        await axios.delete(`http://31.97.237.122:5004/api/staff/${id}`);
         fetchStaff();
       }
       setMsg({ type: 'success', text: `${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully!` });
