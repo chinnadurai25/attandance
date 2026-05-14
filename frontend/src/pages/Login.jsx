@@ -15,9 +15,9 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('http://31.97.237.122:5004/api/auth/login', { 
-        email: email.trim(), 
-        password: password.trim() 
+      const res = await axios.post('http://localhost:5004/api/auth/login', {
+        email: email.trim(),
+        password: password.trim()
       });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
@@ -32,7 +32,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative">
       <div className="bg-pattern" />
-      
+
       {/* Decorative Elements */}
       <div className="absolute top-10 left-10 text-primary opacity-10 animate-float hidden lg:block" style={{ zIndex: -1 }}>
         <motion.div animate={{ rotate: [0, 10, 0] }} transition={{ duration: 4, repeat: Infinity }}>
@@ -45,27 +45,27 @@ const Login = () => {
         </motion.div>
       </div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md"
       >
         <div className="glass-card p-10">
           <div className="text-center mb-10">
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.5, rotate: -15 }}
               animate={{ scale: 1, rotate: 0 }}
               className="inline-flex items-center justify-center w-32 h-32 bg-white rounded-[40px] mb-8 shadow-2xl border-8 border-accent overflow-hidden p-3 animate-wiggle"
             >
               <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
             </motion.div>
-            <h1 className="text-5xl font-black text-slate-800 tracking-tight mb-3">Sunny Days</h1>
+            <h1 className="text-5xl font-black text-slate-800 tracking-tight mb-3">Little Explorers</h1>
             <p className="text-secondary font-black text-2xl">Teacher's Playground</p>
           </div>
 
           <form onSubmit={handleLogin} className="flex flex-col gap-6">
             {error && (
-              <motion.div 
+              <motion.div
                 initial={{ x: -10, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 className="flex items-center gap-3 p-4 bg-rose-50 border border-rose-100 rounded-2xl text-rose-600 text-sm font-semibold"
@@ -105,11 +105,11 @@ const Login = () => {
               </div>
             </div>
 
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.05, y: -4 }}
               whileTap={{ scale: 0.95 }}
-              type="submit" 
-              className="w-full py-6 text-2xl text-white rounded-[32px] shadow-2xl shadow-primary/40 border-b-8 border-primary-hover font-black flex items-center justify-center gap-3 transition-all hover:brightness-110" 
+              type="submit"
+              className="w-full py-6 text-2xl text-white rounded-[32px] shadow-2xl shadow-primary/40 border-b-8 border-primary-hover font-black flex items-center justify-center gap-3 transition-all hover:brightness-110"
               style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent))' }}
               disabled={loading}
             >

@@ -20,7 +20,7 @@ const Dashboard = () => {
   const [selectedClass, setSelectedClass] = useState('');
   const [attendanceSummary, setAttendanceSummary] = useState({});
   const [attendanceList, setAttendanceList] = useState([]);
-  const [formData, setFormData] = useState({ 
+  const [formData, setFormData] = useState({
     name: '', dob: '', gender: '', studentClass: '',
     fatherName: '', motherName: '', fatherOccupation: '', motherOccupation: '',
     address: '', phoneNumber: '', age: ''
@@ -41,7 +41,7 @@ const Dashboard = () => {
 
   const fetchStaff = async () => {
     try {
-      const res = await axios.get('http://31.97.237.122:5004/api/staff');
+      const res = await axios.get('http://localhost:5004/api/staff');
       setStaff(res.data);
     } catch (err) {
       console.error('Error fetching staff');
@@ -50,7 +50,7 @@ const Dashboard = () => {
 
   const fetchStudents = async () => {
     try {
-      const res = await axios.get('http://31.97.237.122:5004/api/students');
+      const res = await axios.get('http://localhost:5004/api/students');
       setStudents(res.data);
     } catch (err) {
       console.error('Error fetching students');
@@ -59,10 +59,10 @@ const Dashboard = () => {
 
   const fetchAttendanceSummary = async (month, studentClass) => {
     try {
-      let url = activeTab === 'students' 
-        ? `http://31.97.237.122:5004/api/attendance/summary?month=${month}`
-        : `http://31.97.237.122:5004/api/staff-attendance/summary?month=${month}`;
-      
+      let url = activeTab === 'students'
+        ? `http://localhost:5004/api/attendance/summary?month=${month}`
+        : `http://localhost:5004/api/staff-attendance/summary?month=${month}`;
+
       if (activeTab === 'students' && studentClass) url += `&studentClass=${studentClass}`;
       const res = await axios.get(url);
       setAttendanceSummary(res.data);
@@ -74,7 +74,7 @@ const Dashboard = () => {
   const fetchAttendanceForDate = async (date, studentClass) => {
     try {
       if (activeTab === 'students') {
-        const res = await axios.get(`http://31.97.237.122:5004/api/attendance?date=${date}&studentClass=${studentClass}`);
+        const res = await axios.get(`http://localhost:5004/api/attendance?date=${date}&studentClass=${studentClass}`);
         const records = res.data;
         const classStudents = students.filter(s => s.class === studentClass);
         const list = classStudents.map(student => {
@@ -87,7 +87,7 @@ const Dashboard = () => {
         });
         setAttendanceList(list);
       } else {
-        const res = await axios.get(`http://31.97.237.122:5004/api/staff-attendance?date=${date}`);
+        const res = await axios.get(`http://localhost:5004/api/staff-attendance?date=${date}`);
         const records = res.data;
         const list = staff.map(s => {
           const record = records.find(r => r.staffId === s._id);
@@ -118,13 +118,13 @@ const Dashboard = () => {
     setLoading(true);
     try {
       if (activeTab === 'students') {
-        await axios.post('http://localhost:5000/api/attendance', {
+        await axios.post('http://localhost:5004/api/attendance', {
           date: selectedDate,
           studentClass: selectedClass,
           attendanceData: attendanceList
         });
       } else {
-        await axios.post('http://31.97.237.122:5004/api/staff-attendance', {
+        await axios.post('http://localhost:5004/api/staff-attendance', {
           date: selectedDate,
           attendanceData: attendanceList
         });
@@ -161,13 +161,13 @@ const Dashboard = () => {
     try {
       if (activeTab === 'students') {
         if (editingStudent) {
-          await axios.put(`http://31.97.237.122:5004/api/students/${editingStudent._id}`, formData);
+          await axios.put(`http://localhost:5004/api/students/${editingStudent._id}`, formData);
           setMsg({ type: 'success', text: 'Student details updated successfully!' });
         } else {
-          await axios.post('http://31.97.237.122:5004/api/students', formData);
+          await axios.post('http://localhost:5004/api/students', formData);
           setMsg({ type: 'success', text: 'Student successfully enrolled!' });
         }
-        setFormData({ 
+        setFormData({
           name: '', dob: '', gender: '', studentClass: '',
           fatherName: '', motherName: '', fatherOccupation: '', motherOccupation: '',
           address: '', phoneNumber: '', age: ''
@@ -176,10 +176,10 @@ const Dashboard = () => {
         fetchStudents();
       } else {
         if (editingStaff) {
-          await axios.put(`http://31.97.237.122:5004/api/staff/${editingStaff._id}`, staffFormData);
+          await axios.put(`http://localhost:5004/api/staff/${editingStaff._id}`, staffFormData);
           setMsg({ type: 'success', text: 'Staff details updated successfully!' });
         } else {
-          await axios.post('http://31.97.237.122:5004/api/staff', staffFormData);
+          await axios.post('http://localhost:5004/api/staff', staffFormData);
           setMsg({ type: 'success', text: 'Staff successfully enrolled!' });
         }
         setStaffFormData({ name: '', age: '', phoneNumber: '', address: '', qualification: '', experience: '', mailId: '' });
@@ -230,10 +230,10 @@ const Dashboard = () => {
     if (!window.confirm(`Are you sure you want to delete this ${type}? All attendance records will also be removed.`)) return;
     try {
       if (activeTab === 'students') {
-        await axios.delete(`http://31.97.237.122:5004/api/students/${id}`);
+        await axios.delete(`http://localhost:5004/api/students/${id}`);
         fetchStudents();
       } else {
-        await axios.delete(`http://31.97.237.122:5004/api/staff/${id}`);
+        await axios.delete(`http://localhost:5004/api/staff/${id}`);
         fetchStaff();
       }
       setMsg({ type: 'success', text: `${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully!` });
@@ -295,13 +295,13 @@ const Dashboard = () => {
             <div>
               <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-4">Master Console</h1>
               <div className="flex items-center gap-4">
-                <button 
+                <button
                   onClick={() => setActiveTab('students')}
                   className={`px-6 py-2 rounded-full font-black text-[11px] uppercase tracking-widest transition-all ${activeTab === 'students' ? 'bg-primary text-white shadow-lg' : 'bg-white text-slate-400 border-2 border-slate-100 hover:bg-slate-50'}`}
                 >
                   Students
                 </button>
-                <button 
+                <button
                   onClick={() => setActiveTab('staff')}
                   className={`px-6 py-2 rounded-full font-black text-[11px] uppercase tracking-widest transition-all ${activeTab === 'staff' ? 'bg-secondary text-white shadow-lg' : 'bg-white text-slate-400 border-2 border-slate-100 hover:bg-slate-50'}`}
                 >
@@ -314,39 +314,39 @@ const Dashboard = () => {
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
             {view === 'list' ? (
               <div className="flex flex-row gap-3 w-full sm:w-auto">
-                    <motion.button
-                      whileHover={{ scale: 1.05, rotate: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => setView('attendance-calendar')}
-                      className="flex items-center justify-center gap-2 px-4 md:px-8 py-4 bg-gradient-to-r from-secondary to-success text-white rounded-3xl font-black hover:brightness-110 transition-all shadow-xl shadow-secondary/30 border-b-4 border-secondary-hover text-sm md:text-base flex-1 sm:flex-none"
-                      style={{ background: 'linear-gradient(135deg, var(--secondary), var(--success))' }}
-                    >
-                      <Calendar size={20} />
-                      <span className="hidden sm:inline">Mark Attendance</span>
-                      <span className="sm:hidden text-xs">Attendance</span>
-                    </motion.button>
-                    <motion.button
-                    whileHover={{ scale: 1.05, rotate: 2 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setView('register')}
-                    className="flex items-center justify-center gap-2 px-4 md:px-8 py-4 text-white rounded-3xl font-black hover:brightness-110 transition-all shadow-xl shadow-primary/30 border-b-4 border-primary-hover text-sm md:text-base flex-1 sm:flex-none"
-                    style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent))' }}
-                  >
-                    <UserPlus size={20} />
-                    <span className="hidden sm:inline">{activeTab === 'students' ? 'Add Little Star' : 'Add Staff Member'}</span>
-                    <span className="sm:hidden text-xs">Add</span>
-                  </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05, rotate: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setView('attendance-calendar')}
+                  className="flex items-center justify-center gap-2 px-4 md:px-8 py-4 bg-gradient-to-r from-secondary to-success text-white rounded-3xl font-black hover:brightness-110 transition-all shadow-xl shadow-secondary/30 border-b-4 border-secondary-hover text-sm md:text-base flex-1 sm:flex-none"
+                  style={{ background: 'linear-gradient(135deg, var(--secondary), var(--success))' }}
+                >
+                  <Calendar size={20} />
+                  <span className="hidden sm:inline">Mark Attendance</span>
+                  <span className="sm:hidden text-xs">Attendance</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05, rotate: 2 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setView('register')}
+                  className="flex items-center justify-center gap-2 px-4 md:px-8 py-4 text-white rounded-3xl font-black hover:brightness-110 transition-all shadow-xl shadow-primary/30 border-b-4 border-primary-hover text-sm md:text-base flex-1 sm:flex-none"
+                  style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent))' }}
+                >
+                  <UserPlus size={20} />
+                  <span className="hidden sm:inline">{activeTab === 'students' ? 'Add Little Star' : 'Add Staff Member'}</span>
+                  <span className="sm:hidden text-xs">Add</span>
+                </motion.button>
               </div>
             ) : (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => { 
-                  setView('list'); 
-                  setMsg({ type: '', text: '' }); 
+                onClick={() => {
+                  setView('list');
+                  setMsg({ type: '', text: '' });
                   setEditingStudent(null);
                   setEditingStaff(null);
-                  setFormData({ 
+                  setFormData({
                     name: '', dob: '', gender: '', studentClass: '',
                     fatherName: '', motherName: '', fatherOccupation: '', motherOccupation: '',
                     address: '', phoneNumber: '', age: ''
@@ -420,15 +420,14 @@ const Dashboard = () => {
           <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className={`mb-8 p-6 rounded-2xl flex items-center gap-4 text-sm font-bold border ${
-              msg.type === 'success' 
-                ? 'bg-emerald-50 text-emerald-600 border-emerald-100' 
+            className={`mb-8 p-6 rounded-2xl flex items-center gap-4 text-sm font-bold border ${msg.type === 'success'
+                ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
                 : 'bg-rose-50 text-rose-600 border-rose-100'
-            }`}
+              }`}
           >
             {msg.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
             <span>{msg.text}</span>
-            <button 
+            <button
               onClick={() => setMsg({ type: '', text: '' })}
               className="ml-auto p-1 hover:bg-black/5 rounded-lg transition-colors"
             >
@@ -478,112 +477,112 @@ const Dashboard = () => {
                     <div className="col-span-full text-center py-32 bg-slate-50/30 rounded-[64px] border-3 border-dashed border-slate-200">
                       <Users className="text-slate-200 mx-auto mb-8" size={96} />
                       <div className="text-3xl font-black text-slate-400 uppercase tracking-tighter mb-4">No Students Discovered</div>
-                      <button onClick={() => {setSearchTerm(''); setView('register');}} className="text-indigo-600 font-black hover:underline uppercase text-[11px] tracking-[0.2em]">Enroll New Student →</button>
+                      <button onClick={() => { setSearchTerm(''); setView('register'); }} className="text-indigo-600 font-black hover:underline uppercase text-[11px] tracking-[0.2em]">Enroll New Student →</button>
                     </div>
                   ) : (
                     students
                       .filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()) || s.class.toLowerCase().includes(searchTerm.toLowerCase()))
                       .map((student, idx) => (
-                      <motion.div
-                        key={student._id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.05 }}
-                        className="bg-white border-2 border-slate-50 p-6 rounded-3xl flex flex-col gap-5 hover:border-indigo-200 hover:shadow-2xl hover:shadow-indigo-500/5 transition-all cursor-default relative group"
-                      >
-                        <div className="flex justify-between items-start">
-                          <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-xl border border-indigo-100 shadow-sm">
-                            {student.name.charAt(0)}
+                        <motion.div
+                          key={student._id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: idx * 0.05 }}
+                          className="bg-white border-2 border-slate-50 p-6 rounded-3xl flex flex-col gap-5 hover:border-indigo-200 hover:shadow-2xl hover:shadow-indigo-500/5 transition-all cursor-default relative group"
+                        >
+                          <div className="flex justify-between items-start">
+                            <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-xl border border-indigo-100 shadow-sm">
+                              {student.name.charAt(0)}
+                            </div>
+                            <div className="text-[10px] font-black uppercase tracking-widest text-indigo-500 bg-indigo-50/50 px-3 py-1.5 rounded-xl border border-indigo-100/50">
+                              {student.class}
+                            </div>
                           </div>
-                          <div className="text-[10px] font-black uppercase tracking-widest text-indigo-500 bg-indigo-50/50 px-3 py-1.5 rounded-xl border border-indigo-100/50">
-                            {student.class}
-                          </div>
-                        </div>
 
-                        <div>
-                          <div className="font-bold text-slate-800 text-xl tracking-tight leading-tight mb-2">{student.name}</div>
-                          <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 font-bold">
-                              <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><User size={13} className="text-indigo-400" /> {student.gender}</span>
-                              <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><Calendar size={13} className="text-indigo-400" /> {student.dob}</span>
-                            </div>
-                            
-                            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                              <button 
-                                onClick={() => handleEdit(student)}
-                                className="p-2 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
-                                title="Edit Student"
-                              >
-                                <Edit2 size={14} />
-                              </button>
-                              <button 
-                                onClick={() => handleDelete(student._id)}
-                                className="p-2 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all shadow-sm"
-                                title="Delete Student"
-                              >
-                                <Trash2 size={14} />
-                              </button>
+                          <div>
+                            <div className="font-bold text-slate-800 text-xl tracking-tight leading-tight mb-2">{student.name}</div>
+                            <div className="flex flex-wrap items-center justify-between gap-3">
+                              <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 font-bold">
+                                <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><User size={13} className="text-indigo-400" /> {student.gender}</span>
+                                <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><Calendar size={13} className="text-indigo-400" /> {student.dob}</span>
+                              </div>
+
+                              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                <button
+                                  onClick={() => handleEdit(student)}
+                                  className="p-2 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                                  title="Edit Student"
+                                >
+                                  <Edit2 size={14} />
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(student._id)}
+                                  className="p-2 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all shadow-sm"
+                                  title="Delete Student"
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </motion.div>
-                    ))
+                        </motion.div>
+                      ))
                   )
                 ) : (
                   staff.filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 ? (
                     <div className="col-span-full text-center py-32 bg-slate-50/30 rounded-[64px] border-3 border-dashed border-slate-200">
                       <Users className="text-slate-200 mx-auto mb-8" size={96} />
                       <div className="text-3xl font-black text-slate-400 uppercase tracking-tighter mb-4">No Staff Discovered</div>
-                      <button onClick={() => {setSearchTerm(''); setView('register');}} className="text-indigo-600 font-black hover:underline uppercase text-[11px] tracking-[0.2em]">Add New Staff →</button>
+                      <button onClick={() => { setSearchTerm(''); setView('register'); }} className="text-indigo-600 font-black hover:underline uppercase text-[11px] tracking-[0.2em]">Add New Staff →</button>
                     </div>
                   ) : (
                     staff
                       .filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()))
                       .map((member, idx) => (
-                      <motion.div
-                        key={member._id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.05 }}
-                        className="bg-white border-2 border-slate-50 p-6 rounded-3xl flex flex-col gap-5 hover:border-secondary/20 hover:shadow-2xl hover:shadow-secondary/5 transition-all cursor-default relative group"
-                      >
-                        <div className="flex justify-between items-start">
-                          <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 font-black text-xl border border-blue-100 shadow-sm">
-                            {member.name.charAt(0)}
+                        <motion.div
+                          key={member._id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: idx * 0.05 }}
+                          className="bg-white border-2 border-slate-50 p-6 rounded-3xl flex flex-col gap-5 hover:border-secondary/20 hover:shadow-2xl hover:shadow-secondary/5 transition-all cursor-default relative group"
+                        >
+                          <div className="flex justify-between items-start">
+                            <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 font-black text-xl border border-blue-100 shadow-sm">
+                              {member.name.charAt(0)}
+                            </div>
+                            <div className="text-[10px] font-black uppercase tracking-widest text-blue-500 bg-blue-50/50 px-3 py-1.5 rounded-xl border border-blue-100/50">
+                              {member.qualification || 'Staff'}
+                            </div>
                           </div>
-                          <div className="text-[10px] font-black uppercase tracking-widest text-blue-500 bg-blue-50/50 px-3 py-1.5 rounded-xl border border-blue-100/50">
-                            {member.qualification || 'Staff'}
-                          </div>
-                        </div>
 
-                        <div>
-                          <div className="font-bold text-slate-800 text-xl tracking-tight leading-tight mb-2">{member.name}</div>
-                          <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 font-bold">
-                              <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><User size={13} className="text-blue-400" /> {member.age} yrs</span>
-                              <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><TrendingUp size={13} className="text-blue-400" /> {member.experience} exp</span>
-                            </div>
-                            
-                            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                              <button 
-                                onClick={() => handleEdit(member)}
-                                className="p-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm"
-                                title="Edit Staff"
-                              >
-                                <Edit2 size={14} />
-                              </button>
-                              <button 
-                                onClick={() => handleDelete(member._id)}
-                                className="p-2 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all shadow-sm"
-                                title="Delete Staff"
-                              >
-                                <Trash2 size={14} />
-                              </button>
+                          <div>
+                            <div className="font-bold text-slate-800 text-xl tracking-tight leading-tight mb-2">{member.name}</div>
+                            <div className="flex flex-wrap items-center justify-between gap-3">
+                              <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 font-bold">
+                                <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><User size={13} className="text-blue-400" /> {member.age} yrs</span>
+                                <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><TrendingUp size={13} className="text-blue-400" /> {member.experience} exp</span>
+                              </div>
+
+                              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                <button
+                                  onClick={() => handleEdit(member)}
+                                  className="p-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm"
+                                  title="Edit Staff"
+                                >
+                                  <Edit2 size={14} />
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(member._id)}
+                                  className="p-2 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all shadow-sm"
+                                  title="Delete Staff"
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </motion.div>
-                    ))
+                        </motion.div>
+                      ))
                   )
                 )}
               </div>
@@ -606,7 +605,7 @@ const Dashboard = () => {
                   </div>
                   <div>
                     <h2 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-3">
-                      {activeTab === 'students' 
+                      {activeTab === 'students'
                         ? (editingStudent ? 'Update Star Details' : 'New Little Star')
                         : (editingStaff ? 'Update Staff Details' : 'New Staff Member')}
                     </h2>
@@ -770,11 +769,11 @@ const Dashboard = () => {
 
                   <div className="md:col-span-2 pt-6">
                     <motion.button whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }} type="submit" disabled={loading} className={`${activeTab === 'students' ? 'btn-primary shadow-primary/30' : 'bg-secondary text-white shadow-secondary/30'} w-full py-6 text-xl tracking-tight rounded-[24px] font-black transition-all hover:brightness-110`}>
-                      {loading 
-                        ? (activeTab === 'students' ? 'Saving Star...' : 'Saving Staff...') 
-                        : (activeTab === 'students' 
-                            ? (editingStudent ? 'Update Little Star' : 'Add to Playground!') 
-                            : (editingStaff ? 'Update Staff Member' : 'Add to Team!'))}
+                      {loading
+                        ? (activeTab === 'students' ? 'Saving Star...' : 'Saving Staff...')
+                        : (activeTab === 'students'
+                          ? (editingStudent ? 'Update Little Star' : 'Add to Playground!')
+                          : (editingStaff ? 'Update Staff Member' : 'Add to Team!'))}
                     </motion.button>
                   </div>
                 </form>
@@ -820,7 +819,7 @@ const Dashboard = () => {
 
               <div className="grid grid-cols-7 gap-2 md:gap-6">
                 {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(d => (
-                   <div key={d} className="text-center text-[9px] md:text-[11px] font-black tracking-widest text-slate-400 mb-2 md:mb-6">{d}</div>
+                  <div key={d} className="text-center text-[9px] md:text-[11px] font-black tracking-widest text-slate-400 mb-2 md:mb-6">{d}</div>
                 ))}
                 {getCalendarDays().map((day, idx) => (
                   <div
@@ -834,11 +833,10 @@ const Dashboard = () => {
                       setSelectedDate(day.date);
                       setView('attendance-sheet');
                     }}
-                    className={`cal-day p-5 rounded-[32px] border-2 transition-all relative group ${
-                      !day.day ? 'opacity-0 pointer-events-none' :
-                      day.isSunday ? 'bg-rose-50/30 border-rose-100/50 cursor-not-allowed' :
-                      'bg-white border-slate-100 hover:border-indigo-300 hover:shadow-2xl hover:shadow-indigo-500/10 cursor-pointer'
-                    }`}
+                    className={`cal-day p-5 rounded-[32px] border-2 transition-all relative group ${!day.day ? 'opacity-0 pointer-events-none' :
+                        day.isSunday ? 'bg-rose-50/30 border-rose-100/50 cursor-not-allowed' :
+                          'bg-white border-slate-100 hover:border-indigo-300 hover:shadow-2xl hover:shadow-indigo-500/10 cursor-pointer'
+                      }`}
                   >
                     {day.day && (
                       <>
@@ -883,7 +881,7 @@ const Dashboard = () => {
                               </div>
                             );
                           })() : !day.isSunday && (
-                             <div className="w-full py-1 bg-indigo-50 text-indigo-600 rounded-lg text-[7px] md:text-[9px] font-black uppercase tracking-widest text-center opacity-0 group-hover:opacity-100 transition-all">
+                            <div className="w-full py-1 bg-indigo-50 text-indigo-600 rounded-lg text-[7px] md:text-[9px] font-black uppercase tracking-widest text-center opacity-0 group-hover:opacity-100 transition-all">
                               Mark
                             </div>
                           )}
@@ -959,13 +957,12 @@ const Dashboard = () => {
                               newList[idx].status = status;
                               setAttendanceList(newList);
                             }}
-                            className={`px-6 py-2.5 rounded-xl font-black text-[11px] uppercase tracking-widest transition-all ${
-                              record.status === status
+                            className={`px-6 py-2.5 rounded-xl font-black text-[11px] uppercase tracking-widest transition-all ${record.status === status
                                 ? status === 'Present' ? 'bg-green-500 text-white shadow-lg shadow-green-500/20'
-                                : status === 'Absent' ? 'bg-red-500 text-white shadow-lg shadow-red-500/20'
-                                : 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+                                  : status === 'Absent' ? 'bg-red-500 text-white shadow-lg shadow-red-500/20'
+                                    : 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
                                 : 'bg-slate-50 text-slate-400 hover:bg-slate-100'
-                            }`}
+                              }`}
                           >
                             {status}
                           </button>
