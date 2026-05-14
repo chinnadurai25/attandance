@@ -65,9 +65,11 @@ h3,
 h4,
 h5,
 h6,
-.font-heading {
-  font-family: var(--heading-font);
-  letter-spacing: 0.02em;
+.font-heading,
+.btn-premium,
+button {
+  font-family: var(--heading-font) !important;
+  letter-spacing: 0.05em;
 }
 
 /* Layout Utilities */
@@ -1397,3 +1399,82 @@ h6,
 .duration-500 {
   transition-duration: 500ms;
 }
+
+/* Premium Buttons */
+.btn-premium {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3) !important;
+  border: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white !important;
+}
+
+.btn-premium:hover {
+  transform: translateY(-5px) scale(1.02) !important;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4) !important;
+  filter: brightness(1.1);
+}
+
+.btn-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.6s;
+}
+
+.btn-premium:hover::before {
+  left: 100%;
+}
+
+/* Input Fields */
+.input-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.input-field {
+  width: 100%;
+  padding: 1.25rem 1.5rem 1.25rem 4rem !important;
+  border-radius: 1.5rem !important;
+  border: 2.5px solid #f1f5f9 !important;
+  background-color: #f8fafc !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+  font-size: 1rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.input-field:focus {
+  outline: none !important;
+  border-color: var(--secondary) !important;
+  background-color: white !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 180, 216, 0.15) !important;
+  transform: translateY(-2px);
+}
+
+.input-container svg {
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus + svg, 
+.input-field:focus ~ svg {
+  color: var(--secondary) !important;
+  transform: translateY(-50%) scale(1.1);
+}
+

@@ -5,7 +5,7 @@ import {
   UserPlus, Users, Calendar, User, BookOpen, LogOut,
   CheckCircle, AlertCircle, ArrowLeft, LayoutDashboard,
   GraduationCap, TrendingUp, Clock, Search, Filter,
-  Edit2, Trash2
+  Edit2, Trash2, Mail
 } from 'lucide-react';
 import axios from 'axios';
 import Login from './pages/Login';
@@ -333,7 +333,7 @@ const Dashboard = () => {
                   whileHover={{ scale: 1.05, rotate: 2 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setView('register')}
-                  className="flex items-center justify-center gap-2 px-4 md:px-8 py-4 text-white rounded-3xl font-black hover:brightness-110 transition-all shadow-xl shadow-primary/30 border-b-4 border-primary-hover text-sm md:text-base flex-1 sm:flex-none"
+                  className="btn-premium flex items-center justify-center gap-2 px-4 md:px-8 py-4 text-white rounded-3xl font-black transition-all text-sm md:text-base flex-1 sm:flex-none"
                   style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent))' }}
                 >
                   <UserPlus size={20} />
@@ -357,10 +357,11 @@ const Dashboard = () => {
                   });
                   setStaffFormData({ name: '', age: '', phoneNumber: '', address: '', qualification: '', experience: '', mailId: '' });
                 }}
-                className="flex items-center justify-center gap-2 px-8 py-4 bg-slate-800 text-white border-2 border-slate-700 rounded-3xl font-bold hover:bg-slate-900 transition-all shadow-xl w-full sm:w-auto"
+                className="btn-premium flex items-center justify-center gap-3 px-10 py-4 text-white rounded-3xl font-black shadow-2xl transition-all w-full sm:w-auto"
+                style={{ backgroundColor: '#1e293b', border: '3px solid #334155' }}
               >
-                <ArrowLeft size={18} />
-                <span>Back to Roster</span>
+                <ArrowLeft size={22} className="text-secondary" />
+                <span className="text-lg">Back to Roster</span>
               </motion.button>
             )}
 
@@ -482,7 +483,13 @@ const Dashboard = () => {
                     <div className="col-span-full text-center py-32 bg-slate-50/30 rounded-[64px] border-3 border-dashed border-slate-200">
                       <Users className="text-slate-200 mx-auto mb-8" size={96} />
                       <div className="text-3xl font-black text-slate-400 uppercase tracking-tighter mb-4">No Students Discovered</div>
-                      <button onClick={() => { setSearchTerm(''); setView('register'); }} className="text-indigo-600 font-black hover:underline uppercase text-[11px] tracking-[0.2em]">Enroll New Student →</button>
+                      <button 
+                        onClick={() => { setSearchTerm(''); setView('register'); }} 
+                        className="btn-premium px-10 py-5 text-white rounded-[24px] font-black uppercase text-sm tracking-[0.1em] shadow-2xl transition-all"
+                        style={{ backgroundColor: 'var(--primary)' }}
+                      >
+                        Enroll New Students →
+                      </button>
                     </div>
                   ) : (
                     students
@@ -538,7 +545,13 @@ const Dashboard = () => {
                     <div className="col-span-full text-center py-32 bg-slate-50/30 rounded-[64px] border-3 border-dashed border-slate-200">
                       <Users className="text-slate-200 mx-auto mb-8" size={96} />
                       <div className="text-3xl font-black text-slate-400 uppercase tracking-tighter mb-4">No Staff Discovered</div>
-                      <button onClick={() => { setSearchTerm(''); setView('register'); }} className="text-indigo-600 font-black hover:underline uppercase text-[11px] tracking-[0.2em]">Add New Staff →</button>
+                      <button 
+                        onClick={() => { setSearchTerm(''); setView('register'); }} 
+                        className="btn-premium px-10 py-5 text-white rounded-[24px] font-black uppercase text-sm tracking-[0.1em] shadow-2xl transition-all"
+                        style={{ backgroundColor: 'var(--secondary)' }}
+                      >
+                        Add New Staff Members →
+                      </button>
                     </div>
                   ) : (
                     staff
@@ -602,6 +615,7 @@ const Dashboard = () => {
               className="flex justify-center"
             >
               <div className="glass-card p-12 md:p-16 w-full max-w-4xl relative overflow-hidden">
+                <img src="/logo.png" alt="" className="absolute top-8 right-8 w-24 h-24 opacity-10 pointer-events-none grayscale" />
                 <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-100/30 rounded-full blur-[100px] -mr-40 -mt-40" />
 
                 <div className="flex items-center gap-10 mb-16 relative z-10">
@@ -636,23 +650,23 @@ const Dashboard = () => {
                   {activeTab === 'students' ? (
                     <>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Full Name</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Full Name</label>
                         <div className="input-container">
-                          <User size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-indigo-200" />
+                          <User size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
                           <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="Jonathan Henderson" required />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Date of Birth</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Date of Birth</label>
                         <div className="input-container">
-                          <Calendar size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-indigo-300" />
+                          <Calendar size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
                           <input type="date" className="input-field py-4 pl-14 pr-6 text-base" value={formData.dob} onChange={e => setFormData({ ...formData, dob: e.target.value })} required />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Gender</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Gender</label>
                         <div className="input-container">
-                          <Users size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-indigo-200" />
+                          <Users size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
                           <select className="input-field py-4 pl-14 pr-6 text-base appearance-none" value={formData.gender} onChange={e => setFormData({ ...formData, gender: e.target.value })} required>
                             <option value="" disabled>Select Gender</option>
                             <option value="Male">Male Scholar</option>
@@ -662,58 +676,58 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Class</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Class</label>
                         <div className="input-container">
-                          <BookOpen size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-indigo-200" />
+                          <BookOpen size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
                           <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.studentClass} onChange={e => setFormData({ ...formData, studentClass: e.target.value })} placeholder="e.g. Class 12-B" required />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Father's Name</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Father's Name</label>
                         <div className="input-container">
-                          <User size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-indigo-200" />
+                          <User size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
                           <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.fatherName} onChange={e => setFormData({ ...formData, fatherName: e.target.value })} placeholder="Father's Name" />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Mother's Name</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Mother's Name</label>
                         <div className="input-container">
-                          <User size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-indigo-200" />
+                          <User size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
                           <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.motherName} onChange={e => setFormData({ ...formData, motherName: e.target.value })} placeholder="Mother's Name" />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Father's Occupation</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Father's Occupation</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-indigo-200" />
+                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
                           <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.fatherOccupation} onChange={e => setFormData({ ...formData, fatherOccupation: e.target.value })} placeholder="Father's Occupation" />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Mother's Occupation</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Mother's Occupation</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-indigo-200" />
+                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
                           <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.motherOccupation} onChange={e => setFormData({ ...formData, motherOccupation: e.target.value })} placeholder="Mother's Occupation" />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Age</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Age</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-indigo-200" />
+                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
                           <input type="number" className="input-field py-4 pl-14 pr-6 text-base" value={formData.age} onChange={e => setFormData({ ...formData, age: e.target.value })} placeholder="Age" />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Phone Number</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Phone Number</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-indigo-200" />
+                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
                           <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.phoneNumber} onChange={e => setFormData({ ...formData, phoneNumber: e.target.value })} placeholder="Phone Number" />
                         </div>
                       </div>
                       <div className="md:col-span-2 space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Address</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Address</label>
                         <div className="input-container">
-                          <BookOpen size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-indigo-200" />
+                          <BookOpen size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
                           <textarea className="input-field py-4 pl-14 pr-6 text-base min-h-[100px]" value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })} placeholder="Full Address" />
                         </div>
                       </div>
@@ -721,51 +735,51 @@ const Dashboard = () => {
                   ) : (
                     <>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Staff Name</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Staff Name</label>
                         <div className="input-container">
-                          <User size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-blue-200" />
+                          <User size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
                           <input className="input-field py-4 pl-14 pr-6 text-base" value={staffFormData.name} onChange={e => setStaffFormData({ ...staffFormData, name: e.target.value })} placeholder="Staff Full Name" required />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Age</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Age</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-blue-200" />
+                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
                           <input type="number" className="input-field py-4 pl-14 pr-6 text-base" value={staffFormData.age} onChange={e => setStaffFormData({ ...staffFormData, age: e.target.value })} placeholder="Age" />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Phone Number</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Phone Number</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-blue-200" />
+                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
                           <input className="input-field py-4 pl-14 pr-6 text-base" value={staffFormData.phoneNumber} onChange={e => setStaffFormData({ ...staffFormData, phoneNumber: e.target.value })} placeholder="Phone Number" />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Mail ID</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Mail ID</label>
                         <div className="input-container">
-                          <BookOpen size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-blue-200" />
+                          <Mail size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
                           <input type="email" className="input-field py-4 pl-14 pr-6 text-base" value={staffFormData.mailId} onChange={e => setStaffFormData({ ...staffFormData, mailId: e.target.value })} placeholder="email@example.com" />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Qualification</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Qualification</label>
                         <div className="input-container">
-                          <GraduationCap size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-blue-200" />
+                          <GraduationCap size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
                           <input className="input-field py-4 pl-14 pr-6 text-base" value={staffFormData.qualification} onChange={e => setStaffFormData({ ...staffFormData, qualification: e.target.value })} placeholder="e.g. M.Ed, PhD" />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Experience</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Experience</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-blue-200" />
+                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
                           <input className="input-field py-4 pl-14 pr-6 text-base" value={staffFormData.experience} onChange={e => setStaffFormData({ ...staffFormData, experience: e.target.value })} placeholder="e.g. 5 Years" />
                         </div>
                       </div>
                       <div className="md:col-span-2 space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">Address</label>
+                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Address</label>
                         <div className="input-container">
-                          <BookOpen size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-blue-200" />
+                          <BookOpen size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
                           <textarea className="input-field py-4 pl-14 pr-6 text-base min-h-[80px]" value={staffFormData.address} onChange={e => setStaffFormData({ ...staffFormData, address: e.target.value })} placeholder="Full Address" />
                         </div>
                       </div>
@@ -773,7 +787,14 @@ const Dashboard = () => {
                   )}
 
                   <div className="md:col-span-2 pt-6">
-                    <motion.button whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }} type="submit" disabled={loading} className={`${activeTab === 'students' ? 'btn-primary shadow-primary/30' : 'bg-secondary text-white shadow-secondary/30'} w-full py-6 text-xl tracking-tight rounded-[24px] font-black transition-all hover:brightness-110`}>
+                    <motion.button 
+                      whileHover={{ scale: 1.02, y: -4 }} 
+                      whileTap={{ scale: 0.98 }} 
+                      type="submit" 
+                      disabled={loading} 
+                      className="btn-premium w-full py-6 text-2xl text-white tracking-tight rounded-[24px] font-black transition-all shadow-2xl"
+                      style={{ backgroundColor: activeTab === 'students' ? 'var(--primary)' : 'var(--secondary)' }}
+                    >
                       {loading
                         ? (activeTab === 'students' ? 'Saving Star...' : 'Saving Staff...')
                         : (activeTab === 'students'
