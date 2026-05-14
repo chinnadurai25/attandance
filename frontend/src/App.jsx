@@ -10,6 +10,8 @@ import {
 import axios from 'axios';
 import Login from './pages/Login';
 
+const API_URL = `http://${window.location.hostname}:5004`;
+
 const Dashboard = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const [students, setStudents] = useState([]);
@@ -41,7 +43,7 @@ const Dashboard = () => {
 
   const fetchStaff = async () => {
     try {
-      const res = await axios.get('http://localhost:5004/api/staff');
+      const res = await axios.get(`${API_URL}/api/staff`);
       setStaff(res.data);
     } catch (err) {
       console.error('Error fetching staff');
@@ -50,7 +52,7 @@ const Dashboard = () => {
 
   const fetchStudents = async () => {
     try {
-      const res = await axios.get('http://localhost:5004/api/students');
+      const res = await axios.get(`${API_URL}/api/students`);
       setStudents(res.data);
     } catch (err) {
       console.error('Error fetching students');
@@ -60,8 +62,8 @@ const Dashboard = () => {
   const fetchAttendanceSummary = async (month, studentClass) => {
     try {
       let url = activeTab === 'students'
-        ? `http://localhost:5004/api/attendance/summary?month=${month}`
-        : `http://localhost:5004/api/staff-attendance/summary?month=${month}`;
+        ? `${API_URL}/api/attendance/summary?month=${month}`
+        : `${API_URL}/api/staff-attendance/summary?month=${month}`;
 
       if (activeTab === 'students' && studentClass) url += `&studentClass=${studentClass}`;
       const res = await axios.get(url);
@@ -74,7 +76,7 @@ const Dashboard = () => {
   const fetchAttendanceForDate = async (date, studentClass) => {
     try {
       if (activeTab === 'students') {
-        const res = await axios.get(`http://localhost:5004/api/attendance?date=${date}&studentClass=${studentClass}`);
+        const res = await axios.get(`${API_URL}/api/attendance?date=${date}&studentClass=${studentClass}`);
         const records = res.data;
         const classStudents = students.filter(s => s.class === studentClass);
         const list = classStudents.map(student => {
@@ -87,7 +89,7 @@ const Dashboard = () => {
         });
         setAttendanceList(list);
       } else {
-        const res = await axios.get(`http://localhost:5004/api/staff-attendance?date=${date}`);
+        const res = await axios.get(`${API_URL}/api/staff-attendance?date=${date}`);
         const records = res.data;
         const list = staff.map(s => {
           const record = records.find(r => r.staffId === s._id);
@@ -118,13 +120,13 @@ const Dashboard = () => {
     setLoading(true);
     try {
       if (activeTab === 'students') {
-        await axios.post('http://localhost:5004/api/attendance', {
+        await axios.post(`${API_URL}/api/attendance`, {
           date: selectedDate,
           studentClass: selectedClass,
           attendanceData: attendanceList
         });
       } else {
-        await axios.post('http://localhost:5004/api/staff-attendance', {
+        await axios.post(`${API_URL}/api/staff-attendance`, {
           date: selectedDate,
           attendanceData: attendanceList
         });
@@ -161,10 +163,10 @@ const Dashboard = () => {
     try {
       if (activeTab === 'students') {
         if (editingStudent) {
-          await axios.put(`http://localhost:5004/api/students/${editingStudent._id}`, formData);
+          await axios.put(`${API_URL}/api/students/${editingStudent._id}`, formData);
           setMsg({ type: 'success', text: 'Student details updated successfully!' });
         } else {
-          await axios.post('http://localhost:5004/api/students', formData);
+          await axios.post(`${API_URL}/api/students`, formData);
           setMsg({ type: 'success', text: 'Student successfully enrolled!' });
         }
         setFormData({
@@ -176,10 +178,10 @@ const Dashboard = () => {
         fetchStudents();
       } else {
         if (editingStaff) {
-          await axios.put(`http://localhost:5004/api/staff/${editingStaff._id}`, staffFormData);
+          await axios.put(`${API_URL}/api/staff/${editingStaff._id}`, staffFormData);
           setMsg({ type: 'success', text: 'Staff details updated successfully!' });
         } else {
-          await axios.post('http://localhost:5004/api/staff', staffFormData);
+          await axios.post(`${API_URL}/api/staff`, staffFormData);
           setMsg({ type: 'success', text: 'Staff successfully enrolled!' });
         }
         setStaffFormData({ name: '', age: '', phoneNumber: '', address: '', qualification: '', experience: '', mailId: '' });
@@ -230,10 +232,10 @@ const Dashboard = () => {
     if (!window.confirm(`Are you sure you want to delete this ${type}? All attendance records will also be removed.`)) return;
     try {
       if (activeTab === 'students') {
-        await axios.delete(`http://localhost:5004/api/students/${id}`);
+        await axios.delete(`${API_URL}/api/students/${id}`);
         fetchStudents();
       } else {
-        await axios.delete(`http://localhost:5004/api/staff/${id}`);
+        await axios.delete(`${API_URL}/api/staff/${id}`);
         fetchStaff();
       }
       setMsg({ type: 'success', text: `${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully!` });
@@ -263,8 +265,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fcfdfe] relative overflow-hidden font-sans">
-      <div className="bg-pattern" />
+    <div className="min-h-screen bg-slate-100 relative overflow-hidden font-sans">
+      <div className="bg-pattern" style={{ opacity: 0.4 }} />
 
       {/* Dynamic Aura System - Replaces Static Imagery with Movement */}
       <motion.div
@@ -295,15 +297,17 @@ const Dashboard = () => {
             <div>
               <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-4">Master Console</h1>
               <div className="flex items-center gap-4">
-                <button
+                <button 
                   onClick={() => setActiveTab('students')}
-                  className={`px-6 py-2 rounded-full font-black text-[11px] uppercase tracking-widest transition-all ${activeTab === 'students' ? 'bg-primary text-white shadow-lg' : 'bg-white text-slate-400 border-2 border-slate-100 hover:bg-slate-50'}`}
+                  className={`px-6 py-2 rounded-full font-black text-[11px] uppercase tracking-widest transition-all ${activeTab === 'students' ? 'text-white shadow-lg' : 'bg-white text-slate-400 border-2 border-slate-100 hover:bg-slate-50'}`}
+                  style={{ backgroundColor: activeTab === 'students' ? 'var(--primary)' : 'white' }}
                 >
                   Students
                 </button>
-                <button
+                <button 
                   onClick={() => setActiveTab('staff')}
-                  className={`px-6 py-2 rounded-full font-black text-[11px] uppercase tracking-widest transition-all ${activeTab === 'staff' ? 'bg-secondary text-white shadow-lg' : 'bg-white text-slate-400 border-2 border-slate-100 hover:bg-slate-50'}`}
+                  className={`px-6 py-2 rounded-full font-black text-[11px] uppercase tracking-widest transition-all ${activeTab === 'staff' ? 'text-white shadow-lg' : 'bg-white text-slate-400 border-2 border-slate-100 hover:bg-slate-50'}`}
+                  style={{ backgroundColor: activeTab === 'staff' ? 'var(--secondary)' : 'white' }}
                 >
                   Staff
                 </button>
@@ -377,40 +381,41 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="glass-card p-10 flex items-center gap-8 group hover:bg-primary transition-colors duration-500 border-l-8 border-primary"
+              className="glass-card p-10 flex items-center gap-8 group hover:bg-primary transition-all duration-500 border-l-8 border-primary"
+              style={{ '--hover-bg': 'var(--primary)' }}
             >
               <div className="w-20 h-20 bg-red-50 rounded-[28px] flex items-center justify-center text-primary group-hover:bg-white/20 group-hover:text-white transition-all shadow-inner">
                 <Users size={40} />
               </div>
               <div>
-                <span className="text-primary font-black uppercase tracking-[0.2em] mb-1 block font-heading">{activeTab === 'students' ? 'Our Buddies' : 'Our Team'}</span>
-                <div className="text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none">{activeTab === 'students' ? students.length : staff.length}</div>
+                <span className="text-primary group-hover:text-white font-black uppercase tracking-[0.2em] mb-1 block font-heading transition-colors">{activeTab === 'students' ? 'Our Buddies' : 'Our Team'}</span>
+                <div className="text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">{activeTab === 'students' ? students.length : staff.length}</div>
               </div>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="glass-card p-10 flex items-center gap-8 group hover:bg-secondary transition-colors duration-500 border-l-8 border-secondary"
+              className="glass-card p-10 flex items-center gap-8 group hover:bg-secondary transition-all duration-500 border-l-8 border-secondary"
             >
               <div className="w-20 h-20 bg-blue-50 rounded-[28px] flex items-center justify-center text-secondary group-hover:bg-white/20 group-hover:text-white transition-all shadow-inner">
                 <TrendingUp size={40} />
               </div>
               <div>
-                <span className="text-secondary font-black uppercase tracking-[0.2em] mb-1 block font-heading">Happy Score</span>
-                <div className="text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none">94.2%</div>
+                <span className="text-secondary group-hover:text-white font-black uppercase tracking-[0.2em] mb-1 block font-heading transition-colors">Happy Score</span>
+                <div className="text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">94.2%</div>
               </div>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-              className="glass-card p-10 flex items-center gap-8 group hover:bg-accent transition-all duration-300 border-l-8 border-accent"
+              className="glass-card p-10 flex items-center gap-8 group hover:bg-accent transition-all duration-500 border-l-8 border-accent"
             >
-              <div className="w-20 h-20 bg-yellow-50 rounded-[28px] flex items-center justify-center text-yellow-600 group-hover:bg-white group-hover:text-yellow-600 transition-all shadow-inner">
+              <div className="w-20 h-20 bg-yellow-50 rounded-[28px] flex items-center justify-center text-yellow-600 group-hover:bg-white/20 group-hover:text-white transition-all shadow-inner">
                 <Calendar size={40} />
               </div>
               <div>
-                <span className="text-yellow-600 group-hover:text-slate-600 font-black uppercase tracking-[0.2em] mb-1 block font-heading">Adventure Days</span>
-                <div className="text-6xl font-black text-slate-800 group-hover:text-slate-900 tracking-tighter leading-none transition-colors">184</div>
+                <span className="text-yellow-600 group-hover:text-white font-black uppercase tracking-[0.2em] mb-1 block font-heading transition-colors">Adventure Days</span>
+                <div className="text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">184</div>
               </div>
             </motion.div>
           </div>

@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { LogIn, Mail, Lock, GraduationCap, School, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 
+const API_URL = `http://${window.location.hostname}:5004`;
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,7 +17,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('http://localhost:5004/api/auth/login', {
+      const res = await axios.post(`${API_URL}/api/auth/login`, {
         email: email.trim(),
         password: password.trim()
       });
