@@ -297,14 +297,14 @@ const Dashboard = () => {
             <div>
               <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-4">Master Console</h1>
               <div className="flex items-center gap-4">
-                <button 
+                <button
                   onClick={() => setActiveTab('students')}
                   className={`px-6 py-2 rounded-full font-black text-[11px] uppercase tracking-widest transition-all ${activeTab === 'students' ? 'text-white shadow-lg' : 'bg-white text-slate-400 border-2 border-slate-100 hover:bg-slate-50'}`}
                   style={{ backgroundColor: activeTab === 'students' ? 'var(--primary)' : 'white' }}
                 >
                   Students
                 </button>
-                <button 
+                <button
                   onClick={() => setActiveTab('staff')}
                   className={`px-6 py-2 rounded-full font-black text-[11px] uppercase tracking-widest transition-all ${activeTab === 'staff' ? 'text-white shadow-lg' : 'bg-white text-slate-400 border-2 border-slate-100 hover:bg-slate-50'}`}
                   style={{ backgroundColor: activeTab === 'staff' ? 'var(--secondary)' : 'white' }}
@@ -427,8 +427,8 @@ const Dashboard = () => {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             className={`mb-8 p-6 rounded-2xl flex items-center gap-4 text-sm font-bold border ${msg.type === 'success'
-                ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
-                : 'bg-rose-50 text-rose-600 border-rose-100'
+              ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
+              : 'bg-rose-50 text-rose-600 border-rose-100'
               }`}
           >
             {msg.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
@@ -483,8 +483,8 @@ const Dashboard = () => {
                     <div className="col-span-full text-center py-32 bg-slate-50/30 rounded-[64px] border-3 border-dashed border-slate-200">
                       <Users className="text-slate-200 mx-auto mb-8" size={96} />
                       <div className="text-3xl font-black text-slate-400 uppercase tracking-tighter mb-4">No Students Discovered</div>
-                      <button 
-                        onClick={() => { setSearchTerm(''); setView('register'); }} 
+                      <button
+                        onClick={() => { setSearchTerm(''); setView('register'); }}
                         className="btn-premium px-10 py-5 text-white rounded-[24px] font-black uppercase text-sm tracking-[0.1em] shadow-2xl transition-all"
                         style={{ backgroundColor: 'var(--primary)' }}
                       >
@@ -545,8 +545,8 @@ const Dashboard = () => {
                     <div className="col-span-full text-center py-32 bg-slate-50/30 rounded-[64px] border-3 border-dashed border-slate-200">
                       <Users className="text-slate-200 mx-auto mb-8" size={96} />
                       <div className="text-3xl font-black text-slate-400 uppercase tracking-tighter mb-4">No Staff Discovered</div>
-                      <button 
-                        onClick={() => { setSearchTerm(''); setView('register'); }} 
+                      <button
+                        onClick={() => { setSearchTerm(''); setView('register'); }}
                         className="btn-premium px-10 py-5 text-white rounded-[24px] font-black uppercase text-sm tracking-[0.1em] shadow-2xl transition-all"
                         style={{ backgroundColor: 'var(--secondary)' }}
                       >
@@ -787,11 +787,11 @@ const Dashboard = () => {
                   )}
 
                   <div className="md:col-span-2 pt-6">
-                    <motion.button 
-                      whileHover={{ scale: 1.02, y: -4 }} 
-                      whileTap={{ scale: 0.98 }} 
-                      type="submit" 
-                      disabled={loading} 
+                    <motion.button
+                      whileHover={{ scale: 1.02, y: -4 }}
+                      whileTap={{ scale: 0.98 }}
+                      type="submit"
+                      disabled={loading}
                       className="btn-premium w-full py-6 text-2xl text-white tracking-tight rounded-[24px] font-black transition-all shadow-2xl"
                       style={{ backgroundColor: activeTab === 'students' ? 'var(--primary)' : 'var(--secondary)' }}
                     >
@@ -860,8 +860,8 @@ const Dashboard = () => {
                       setView('attendance-sheet');
                     }}
                     className={`cal-day p-5 rounded-[32px] border-2 transition-all relative group ${!day.day ? 'opacity-0 pointer-events-none' :
-                        day.isSunday ? 'bg-rose-50/30 border-rose-100/50 cursor-not-allowed' :
-                          'bg-white border-slate-100 hover:border-indigo-300 hover:shadow-2xl hover:shadow-indigo-500/10 cursor-pointer'
+                      day.isSunday ? 'bg-rose-50/30 border-rose-100/50 cursor-not-allowed' :
+                        'bg-white border-slate-100 hover:border-indigo-300 hover:shadow-2xl hover:shadow-indigo-500/10 cursor-pointer'
                       }`}
                   >
                     {day.day && (
@@ -984,10 +984,10 @@ const Dashboard = () => {
                               setAttendanceList(newList);
                             }}
                             className={`px-6 py-2.5 rounded-xl font-black text-[11px] uppercase tracking-widest transition-all ${record.status === status
-                                ? status === 'Present' ? 'bg-green-500 text-white shadow-lg shadow-green-500/20'
-                                  : status === 'Absent' ? 'bg-red-500 text-white shadow-lg shadow-red-500/20'
-                                    : 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
-                                : 'bg-slate-50 text-slate-400 hover:bg-slate-100'
+                              ? status === 'Present' ? 'bg-green-500 text-white shadow-lg shadow-green-500/20'
+                                : status === 'Absent' ? 'bg-red-500 text-white shadow-lg shadow-red-500/20'
+                                  : 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+                              : 'bg-slate-50 text-slate-400 hover:bg-slate-100'
                               }`}
                           >
                             {status}
