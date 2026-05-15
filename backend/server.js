@@ -208,7 +208,8 @@ app.post('/api/attendance', async (req, res) => {
     await Attendance.insertMany(records);
     res.status(201).json({ message: 'Attendance recorded successfully' });
   } catch (err) {
-    res.status(500).send('Server error');
+    console.error('Attendance Save Error:', err);
+    res.status(500).send('Server error: ' + err.message);
   }
 });
 
@@ -320,7 +321,8 @@ app.post('/api/staff-attendance', async (req, res) => {
     await StaffAttendance.insertMany(records);
     res.status(201).json({ message: 'Staff attendance recorded successfully' });
   } catch (err) {
-    res.status(500).send('Server error');
+    console.error('Staff Attendance Save Error:', err);
+    res.status(500).send('Server error: ' + err.message);
   }
 });
 

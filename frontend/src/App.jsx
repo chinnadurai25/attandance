@@ -5,7 +5,7 @@ import {
   UserPlus, Users, Calendar, User, BookOpen, LogOut,
   CheckCircle, AlertCircle, ArrowLeft, LayoutDashboard,
   GraduationCap, TrendingUp, Clock, Search, Filter,
-  Edit2, Trash2, Mail
+  Edit2, Trash2, Mail, CreditCard
 } from 'lucide-react';
 import axios from 'axios';
 import Login from './pages/Login';
@@ -20,6 +20,9 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('students'); // 'students' or 'staff'
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedClass, setSelectedClass] = useState('');
+  const [selectedFeeMonth, setSelectedFeeMonth] = useState(new Date().toISOString().slice(0, 7));
+  const [selectedStudent, setSelectedStudent] = useState('');
+  const [feesList, setFeesList] = useState([]);
   const [attendanceSummary, setAttendanceSummary] = useState({});
   const [attendanceList, setAttendanceList] = useState([]);
   const [formData, setFormData] = useState({
@@ -73,6 +76,22 @@ const Dashboard = () => {
     }
   };
 
+  const fetchFees = async (month, studentClass) => {
+    try {
+      const res = await axios.get(`${API_URL}/api/fees?month=${month}${studentClass ? `&studentClass=${studentClass}` : ''}`);
+      const records = res.data;
+      let listStudents = studentClass ? students.filter(s => s.class === studentClass) : students;
+      if (selectedStudent && !listStudents.find(s => String(s._id) === String(selectedStudent))) {
+        const target = students.find(s => String(s._id) === String(selectedStudent));
+        if (target) listStudents = [target, ...listStudents];
+      }
+      setFeesList(listStudents.map(student => {
+        const record = records.find(r => String(r.studentId) === String(student._id));
+        return { studentId: student._id, name: student.name, class: student.class, status: record ? record.status : 'Unpaid' };
+      }));
+    } catch (err) { console.error('Error fetching fees'); }
+  };
+
   const fetchAttendanceForDate = async (date, studentClass) => {
     try {
       if (activeTab === 'students') {
@@ -119,7 +138,9 @@ const Dashboard = () => {
 
     setLoading(true);
     try {
+      console.log('Saving attendance...', { activeTab, selectedDate, selectedClass, attendanceList });
       if (activeTab === 'students') {
+        if (!selectedClass) throw new Error('Class not selected');
         await axios.post(`${API_URL}/api/attendance`, {
           date: selectedDate,
           studentClass: selectedClass,
@@ -135,7 +156,8 @@ const Dashboard = () => {
       fetchAttendanceSummary(selectedDate.substring(0, 7), selectedClass);
       setTimeout(() => setView('attendance-calendar'), 1500);
     } catch (err) {
-      setMsg({ type: 'error', text: 'Failed to save attendance.' });
+      console.error('Save Attendance Error:', err.response?.data || err.message);
+      setMsg({ type: 'error', text: `Failed to save attendance: ${err.response?.data?.message || err.message}` });
     } finally {
       setLoading(false);
     }
@@ -148,7 +170,10 @@ const Dashboard = () => {
     if (view === 'attendance-sheet') {
       fetchAttendanceForDate(selectedDate, selectedClass);
     }
-  }, [view, selectedDate, selectedClass]);
+    if (view === 'fees-sheet') {
+      fetchFees(selectedFeeMonth, selectedClass);
+    }
+  }, [view, selectedDate, selectedClass, selectedFeeMonth, selectedStudent]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -325,6 +350,16 @@ const Dashboard = () => {
                 <motion.button
                   whileHover={{ scale: 1.05, rotate: -2 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => setView('fees-sheet')}
+                  className="flex items-center justify-center gap-2 px-4 md:px-8 py-4 bg-orange-500 text-white rounded-3xl font-black hover:brightness-110 transition-all shadow-xl shadow-orange-500/30 border-b-4 border-orange-700 text-sm md:text-base flex-1 sm:flex-none"
+                >
+                  <CreditCard size={20} />
+                  <span className="hidden sm:inline">Fees Registry</span>
+                  <span className="sm:hidden text-xs">Fees</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05, rotate: -2 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => setView('attendance-calendar')}
                   className="flex items-center justify-center gap-2 px-4 md:px-8 py-4 bg-gradient-to-r from-secondary to-success text-white rounded-3xl font-black hover:brightness-110 transition-all shadow-xl shadow-secondary/30 border-b-4 border-secondary-hover text-sm md:text-base flex-1 sm:flex-none"
                   style={{ background: 'linear-gradient(135deg, var(--secondary), var(--success))' }}
@@ -480,7 +515,12 @@ const Dashboard = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-h-[55vh] overflow-y-auto pr-4 custom-scrollbar">
                 {activeTab === 'students' ? (
-                  students.filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()) || s.class.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 ? (
+                  students.filter(s => {
+                    const name = s.name ? s.name.toLowerCase() : '';
+                    const sClass = s.class ? s.class.toLowerCase() : '';
+                    const term = searchTerm.toLowerCase();
+                    return name.includes(term) || sClass.includes(term);
+                  }).length === 0 ? (
                     <div className="col-span-full text-center py-32 bg-slate-50/30 rounded-[64px] border-3 border-dashed border-slate-200">
                       <Users className="text-slate-200 mx-auto mb-8" size={96} />
                       <div className="text-3xl font-black text-slate-400 uppercase tracking-tighter mb-4">No Students Discovered</div>
@@ -494,7 +534,12 @@ const Dashboard = () => {
                     </div>
                   ) : (
                     students
-                      .filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()) || s.class.toLowerCase().includes(searchTerm.toLowerCase()))
+                      .filter(s => {
+                        const name = s.name ? s.name.toLowerCase() : '';
+                        const sClass = s.class ? s.class.toLowerCase() : '';
+                        const term = searchTerm.toLowerCase();
+                        return name.includes(term) || sClass.includes(term);
+                      })
                       .map((student, idx) => (
                         <motion.div
                           key={student._id}
@@ -808,6 +853,62 @@ const Dashboard = () => {
                 </form>
               </div>
             </motion.div>
+          ) : view === 'fees-sheet' ? (
+            <motion.div key="fees" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} className="glass-card p-12">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
+                <div>
+                  <h2 className="text-3xl font-black text-slate-800 tracking-tight mb-2">Monthly Fee Registry</h2>
+                  <p className="text-slate-500 font-bold tracking-widest uppercase text-[10px]">LITTLE EXPLORERS 2024</p>
+                </div>
+                <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
+                  <div className="bg-white p-3.5 rounded-2xl border-2 border-slate-100 shadow-sm flex items-center gap-3">
+                    <Calendar size={18} className="text-orange-500" />
+                    <input type="month" className="bg-transparent border-none font-black text-slate-700 focus:outline-none" value={selectedFeeMonth} onChange={(e) => setSelectedFeeMonth(e.target.value)} />
+                  </div>
+                  <select className="bg-white border-2 border-slate-100 p-3.5 rounded-2xl font-black text-slate-700 shadow-sm outline-none" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
+                    <option value="">All Classes</option>
+                    {[...new Set(students.map(s => s.class))].map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                  <select 
+                    className="bg-white border-2 border-slate-100 p-3.5 rounded-2xl font-black text-slate-700 shadow-sm outline-none" 
+                    value={selectedStudent} 
+                    onChange={(e) => {
+                      setSelectedStudent(e.target.value);
+                      const s = students.find(item => String(item._id) === String(e.target.value));
+                      if (s) setSelectedClass(s.class);
+                    }}
+                  >
+                    <option value="">Search Student</option>
+                    {students.filter(s => !selectedClass || s.class === selectedClass).map(s => <option key={s._id} value={s._id}>{s.name}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 gap-6 max-h-[55vh] overflow-y-auto pr-4 custom-scrollbar">
+                {feesList.map((record, idx) => (
+                  <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: idx * 0.05 }} key={record.studentId} className="flex flex-col sm:flex-row items-center justify-between p-8 bg-white border border-slate-100 rounded-[40px] hover:border-orange-200 transition-all gap-8">
+                    <div className="flex items-center gap-8">
+                      <div className="w-16 h-16 bg-orange-50 rounded-[24px] flex items-center justify-center font-black text-2xl text-orange-600 border border-orange-100 shadow-inner">{idx + 1}</div>
+                      <div>
+                        <span className="text-2xl font-black text-slate-800 block mb-1">{record.name}</span>
+                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{record.class}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 w-full sm:w-auto">
+                      {['Paid', 'Unpaid'].map(status => (
+                        <button key={status} onClick={async () => {
+                          try {
+                            const newList = [...feesList]; const localIdx = newList.findIndex(item => item.studentId === record.studentId);
+                            if (localIdx !== -1) { newList[localIdx].status = status; setFeesList(newList); }
+                            await axios.post(`${API_URL}/api/fees`, { month: selectedFeeMonth, feeData: [{ studentId: record.studentId, status }] });
+                            setMsg({ type: 'success', text: `${record.name} marked as ${status}` });
+                          } catch (err) { setMsg({ type: 'error', text: 'Update failed' }); }
+                        }} className={`flex-1 sm:flex-none px-6 py-2.5 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${record.status === status ? status === 'Paid' ? 'bg-emerald-500 text-white shadow-xl shadow-emerald-500/20' : 'bg-rose-500 text-white shadow-xl shadow-rose-500/20' : 'bg-slate-50 text-slate-300 hover:bg-slate-100'}`}>{status}</button>
+                      ))}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
           ) : view === 'attendance-calendar' ? (
             <motion.div
               key="calendar"
@@ -1016,7 +1117,8 @@ const Dashboard = () => {
                     whileTap={{ scale: 0.98 }}
                     onClick={saveAttendance}
                     disabled={loading}
-                    className={`flex items-center justify-center gap-3 px-12 py-5 bg-success text-white rounded-3xl font-black text-xl shadow-2xl shadow-success/30 border-b-8 border-emerald-700 hover:bg-emerald-600 transition-all`}
+                    className="flex items-center justify-center gap-3 px-12 py-5 text-white rounded-3xl font-black text-xl shadow-2xl shadow-pink-500/30 border-b-8 border-[#9d174d] hover:brightness-110 transition-all"
+                    style={{ backgroundColor: '#ff4d6d' }}
                   >
                     <CheckCircle size={24} />
                     {loading ? 'Submitting Data...' : 'Finalize Attendance'}
