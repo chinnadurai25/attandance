@@ -1510,6 +1510,51 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-family: var(--heading-font);
 }
 
+/* Clean sans-serif override — removes italic/cursive look from headings */
+.font-clean {
+  font-family: var(--sans) !important;
+  font-style: normal !important;
+  letter-spacing: -0.02em;
+}
+
+/* Colorful gradient text variants */
+.gradient-text-pink {
+  background: linear-gradient(135deg, #ff4d6d, #ff8fab);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--sans) !important;
+  font-style: normal !important;
+}
+
+.gradient-text-blue {
+  background: linear-gradient(135deg, #00b4d8, #48cae4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--sans) !important;
+  font-style: normal !important;
+}
+
+.gradient-text-yellow {
+  background: linear-gradient(135deg, #ffb703, #ffd60a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--sans) !important;
+  font-style: normal !important;
+}
+
+.gradient-text-roster {
+  background: linear-gradient(135deg, #ff4d6d 0%, #ffb703 50%, #00b4d8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--sans) !important;
+  font-style: normal !important;
+  letter-spacing: -0.03em;
+}
+
 .rainbow-border {
   position: relative;
   border: none !important;

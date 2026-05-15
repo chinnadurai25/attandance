@@ -73,6 +73,15 @@ const staffAttendanceSchema = new mongoose.Schema({
 
 const StaffAttendance = mongoose.model('StaffAttendance', staffAttendanceSchema);
 
+const feeSchema = new mongoose.Schema({
+  month: { type: String, required: true }, // YYYY-MM
+  studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Student', required: true },
+  status: { type: String, enum: ['Paid', 'Unpaid'], default: 'Unpaid' }
+}, { timestamps: true });
+feeSchema.index({ month: 1, studentId: 1 }, { unique: true });
+
+const Fee = mongoose.model('Fee', feeSchema);
+
 // --- Auth Logic ---
 const MOCK_ADMINS = [
   { email: 'admin@gmail.com', password: 'admin123', role: 'admin', name: 'Admin User' },
@@ -350,6 +359,43 @@ app.get('/api/staff-attendance/summary', async (req, res) => {
     res.json(summary);
   } catch (err) {
     res.status(500).send('Server error');
+  }
+});
+
+// --- Fees Logic ---
+app.get('/api/fees', async (req, res) => {
+  const { month, studentClass } = req.query;
+  try {
+    let query = { month };
+    if (studentClass) {
+      // Find student IDs in the given class, then filter fees
+      const classStudents = await Student.find({ class: studentClass }).select('_id');
+      const studentIds = classStudents.map(s => s._id);
+      query.studentId = { $in: studentIds };
+    }
+    const records = await Fee.find(query);
+    res.json(records);
+  } catch (err) {
+    console.error('Fees Fetch Error:', err);
+    res.status(500).send('Server error: ' + err.message);
+  }
+});
+
+app.post('/api/fees', async (req, res) => {
+  const { month, feeData } = req.body;
+  try {
+    const ops = feeData.map(item => ({
+      updateOne: {
+        filter: { month, studentId: item.studentId },
+        update: { $set: { status: item.status } },
+        upsert: true
+      }
+    }));
+    await Fee.bulkWrite(ops);
+    res.json({ message: 'Fee status updated successfully' });
+  } catch (err) {
+    console.error('Fees Save Error:', err);
+    res.status(500).send('Server error: ' + err.message);
   }
 });
 

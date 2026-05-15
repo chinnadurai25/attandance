@@ -173,7 +173,7 @@ const Dashboard = () => {
     if (view === 'fees-sheet') {
       fetchFees(selectedFeeMonth, selectedClass);
     }
-  }, [view, selectedDate, selectedClass, selectedFeeMonth, selectedStudent]);
+  }, [view, selectedDate, selectedClass, selectedFeeMonth, selectedStudent, students]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -324,7 +324,7 @@ const Dashboard = () => {
               <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
             </motion.div>
             <div>
-              <h1 className="text-3xl md:text-5xl font-black text-slate-800 tracking-tighter leading-none mb-2 md:mb-3 rainbow-text">Little Explorers</h1>
+              <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-none mb-2 md:mb-3 font-clean" style={{ background: 'linear-gradient(135deg, #ff4d6d, #ffb703, #00b4d8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Little Explorers</h1>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setActiveTab('students')}
@@ -347,36 +347,38 @@ const Dashboard = () => {
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
             {view === 'list' ? (
               <div className="flex flex-row gap-3 w-full sm:w-auto">
+                {/* Fees — Vibrant Orange */}
                 <motion.button
                   whileHover={{ scale: 1.05, rotate: -2 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setView('fees-sheet')}
-                  className="flex items-center justify-center gap-2 px-4 md:px-8 py-4 bg-orange-500 text-white rounded-3xl font-black hover:brightness-110 transition-all shadow-xl shadow-orange-500/30 border-b-4 border-orange-700 text-sm md:text-base flex-1 sm:flex-none"
+                  className="flex items-center justify-center gap-2 px-4 md:px-7 py-3.5 text-white rounded-2xl font-black hover:brightness-110 transition-all shadow-lg text-sm flex-1 sm:flex-none"
+                  style={{ background: 'linear-gradient(135deg, #fb923c, #f97316)', boxShadow: '0 4px 15px rgba(249,115,22,0.4)' }}
                 >
-                  <CreditCard size={20} />
-                  <span className="hidden sm:inline">Fees Registry</span>
-                  <span className="sm:hidden text-xs">Fees</span>
+                  <CreditCard size={18} />
+                  <span className="hidden sm:inline">Fees</span>
                 </motion.button>
+                {/* Attendance — Teal/Emerald */}
                 <motion.button
                   whileHover={{ scale: 1.05, rotate: -2 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setView('attendance-calendar')}
-                  className="flex items-center justify-center gap-2 px-4 md:px-8 py-4 bg-gradient-to-r from-secondary to-success text-white rounded-3xl font-black hover:brightness-110 transition-all shadow-xl shadow-secondary/30 border-b-4 border-secondary-hover text-sm md:text-base flex-1 sm:flex-none"
-                  style={{ background: 'linear-gradient(135deg, var(--secondary), var(--success))' }}
+                  className="flex items-center justify-center gap-2 px-4 md:px-7 py-3.5 text-white rounded-2xl font-black hover:brightness-110 transition-all shadow-lg text-sm flex-1 sm:flex-none"
+                  style={{ background: 'linear-gradient(135deg, #10b981, #059669)', boxShadow: '0 4px 15px rgba(16,185,129,0.4)' }}
                 >
-                  <Calendar size={20} />
-                  <span className="hidden sm:inline">Mark Attendance</span>
-                  <span className="sm:hidden text-xs">Attendance</span>
+                  <Calendar size={18} />
+                  <span className="hidden sm:inline">Attendance</span>
                 </motion.button>
+                {/* Add — Purple/Violet */}
                 <motion.button
                   whileHover={{ scale: 1.05, rotate: 2 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setView('register')}
-                  className="btn-premium flex items-center justify-center gap-2 px-4 md:px-8 py-4 text-white rounded-3xl font-black transition-all text-sm md:text-base flex-1 sm:flex-none"
-                  style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent))' }}
+                  className="flex items-center justify-center gap-2 px-4 md:px-7 py-3.5 text-white rounded-2xl font-black transition-all shadow-lg text-sm flex-1 sm:flex-none"
+                  style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 4px 15px rgba(139,92,246,0.4)' }}
                 >
-                  <UserPlus size={20} />
-                  <span className="hidden sm:inline">{activeTab === 'students' ? 'Add Little Star' : 'Add Staff Member'}</span>
+                  <UserPlus size={18} />
+                  <span className="hidden sm:inline">{activeTab === 'students' ? 'Add Student' : 'Add Staff'}</span>
                   <span className="sm:hidden text-xs">Add</span>
                 </motion.button>
               </div>
@@ -400,18 +402,19 @@ const Dashboard = () => {
                 style={{ backgroundColor: '#1e293b', border: '3px solid #334155' }}
               >
                 <ArrowLeft size={22} className="text-secondary" />
-                <span className="text-lg">Back to Roster</span>
+                <span className="text-lg">Back</span>
               </motion.button>
             )}
 
+            {/* Logout — Distinct warm red */}
             <motion.button
               whileHover={{ scale: 1.1, rotate: 90, filter: 'brightness(1.2)' }}
               whileTap={{ scale: 0.9 }}
               onClick={handleLogout}
-              className="p-3 md:p-5 rounded-2xl md:rounded-3xl text-white border-2 border-white/50 transition-all shadow-xl shadow-danger/20 ml-auto sm:ml-0"
-              style={{ background: 'linear-gradient(135deg, var(--danger), #ff8b3d)' }}
+              className="p-3 md:p-4 rounded-2xl text-white transition-all shadow-lg ml-auto sm:ml-0"
+              style={{ background: 'linear-gradient(135deg, #ef4444, #dc2626)', boxShadow: '0 4px 15px rgba(239,68,68,0.4)' }}
             >
-              <LogOut size={20} className="md:w-7 md:h-7" />
+              <LogOut size={20} className="md:w-6 md:h-6" />
             </motion.button>
           </div>
         </motion.header>
@@ -428,7 +431,10 @@ const Dashboard = () => {
                 <Users size={28} className="md:w-10 md:h-10" />
               </div>
               <div>
-                <span className="text-primary group-hover:text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs mb-1 block font-heading transition-colors">{activeTab === 'students' ? 'Our Buddies' : 'Our Team'}</span>
+                <span className="relative block mb-1">
+                  <span className="gradient-text-pink font-black uppercase tracking-[0.2em] text-[10px] md:text-xs transition-opacity group-hover:opacity-0">{activeTab === 'students' ? 'Our Buddies' : 'Our Team'}</span>
+                  <span className="absolute inset-0 font-black uppercase tracking-[0.2em] text-[10px] md:text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity font-clean">{activeTab === 'students' ? 'Our Buddies' : 'Our Team'}</span>
+                </span>
                 <div className="text-4xl md:text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">{activeTab === 'students' ? students.length : staff.length}</div>
               </div>
             </motion.div>
@@ -441,7 +447,10 @@ const Dashboard = () => {
                 <TrendingUp size={28} className="md:w-10 md:h-10" />
               </div>
               <div>
-                <span className="text-secondary group-hover:text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs mb-1 block font-heading transition-colors">Happy Score</span>
+                <span className="relative block mb-1">
+                  <span className="gradient-text-blue font-black uppercase tracking-[0.2em] text-[10px] md:text-xs transition-opacity group-hover:opacity-0">Happy Score</span>
+                  <span className="absolute inset-0 font-black uppercase tracking-[0.2em] text-[10px] md:text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity font-clean">Happy Score</span>
+                </span>
                 <div className="text-4xl md:text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">94.2%</div>
               </div>
             </motion.div>
@@ -454,7 +463,10 @@ const Dashboard = () => {
                 <Calendar size={28} className="md:w-10 md:h-10" />
               </div>
               <div>
-                <span className="text-yellow-600 group-hover:text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs mb-1 block font-heading transition-colors">Adventure Days</span>
+                <span className="relative block mb-1">
+                  <span className="gradient-text-yellow font-black uppercase tracking-[0.2em] text-[10px] md:text-xs transition-opacity group-hover:opacity-0">Adventure Days</span>
+                  <span className="absolute inset-0 font-black uppercase tracking-[0.2em] text-[10px] md:text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity font-clean">Adventure Days</span>
+                </span>
                 <div className="text-4xl md:text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">184</div>
               </div>
             </motion.div>
@@ -493,7 +505,7 @@ const Dashboard = () => {
             >
               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-12 gap-8">
                 <div className="flex items-center gap-4 md:gap-6">
-                  <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">Current Roster</h2>
+                  <h2 className="text-2xl md:text-3xl font-black tracking-tighter gradient-text-roster">Current Roster</h2>
                   <span className="px-6 py-2.5 bg-accent/10 text-accent text-[12px] font-black uppercase tracking-widest rounded-2xl border-2 border-accent/20">
                     {activeTab === 'students' ? 'Little Explorers' : 'Master Guides'}
                   </span>
@@ -501,13 +513,13 @@ const Dashboard = () => {
 
                 <div className="flex items-center gap-4 w-full md:w-96">
                   <div className="relative flex-1 group">
-                    <Search size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-secondary transition-colors" />
+                    <Search size={20} className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-secondary transition-colors" />
                     <input
                       type="text"
                       placeholder={activeTab === 'students' ? "Find a star..." : "Find a guide..."}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full bg-slate-50/50 border-2 border-slate-100 pl-16 pr-6 py-4 rounded-[24px] text-base font-bold text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-secondary focus:bg-white transition-all shadow-sm"
+                      className="w-full bg-white border-2 border-slate-200 pl-14 pr-6 py-3.5 rounded-full text-sm font-bold text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-secondary focus:bg-white focus:shadow-lg focus:shadow-secondary/10 transition-all shadow-sm"
                     />
                   </div>
                 </div>
@@ -546,44 +558,49 @@ const Dashboard = () => {
                           initial={{ opacity: 0, y: 30 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: idx * 0.08, type: "spring", stiffness: 100 }}
-                          className="bg-white/50 border-2 border-slate-50 p-5 md:p-8 rounded-[28px] md:rounded-[36px] flex flex-col gap-4 md:gap-6 hover:border-secondary/30 hover:bg-white transition-all cursor-default relative group shadow-sm hover:shadow-2xl hover:shadow-secondary/10 overflow-hidden"
+                          className="relative overflow-hidden flex flex-col gap-4 p-5 md:p-7 rounded-3xl border-2 border-transparent bg-white cursor-default group shadow-md hover:shadow-2xl hover:shadow-secondary/15 transition-all duration-300"
+                          style={{ background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, #e0f7fa, #fce4ec) border-box' }}
                         >
-                          <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-secondary/5 to-transparent rounded-bl-full pointer-events-none" />
-                          
-                          <div className="flex justify-between items-start relative z-10">
-                            <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-3xl bg-secondary/10 flex items-center justify-center text-secondary font-black text-xl md:text-2xl border-2 border-secondary/20 shadow-inner">
+                          {/* Top color strip */}
+                          <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ background: 'linear-gradient(90deg, var(--secondary), var(--primary), var(--accent))' }} />
+                          {/* Decorative corner blob */}
+                          <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-bl from-secondary/8 to-transparent rounded-bl-full pointer-events-none" />
+
+                          <div className="flex justify-between items-start relative z-10 mt-1">
+                            <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center font-black text-xl md:text-2xl text-white shadow-lg" style={{ background: 'linear-gradient(135deg, var(--secondary), var(--primary))' }}>
                               {student.name.charAt(0)}
                             </div>
-                            <div className="text-[11px] font-black uppercase tracking-widest text-secondary bg-secondary/10 px-4 py-2 rounded-2xl border border-secondary/10">
+                            <div className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border" style={{ color: 'var(--secondary)', background: 'rgba(0,180,216,0.08)', borderColor: 'rgba(0,180,216,0.2)' }}>
                               {student.class}
                             </div>
                           </div>
 
-                          <div className="relative z-10">
-                            <div className="font-bold text-slate-800 text-xl md:text-2xl tracking-tighter leading-tight mb-2 md:mb-3">{student.name}</div>
-                            <div className="flex flex-col gap-3">
-                              <div className="flex items-center gap-3 text-[12px] text-slate-500 font-bold">
-                                <span className="flex items-center gap-2 bg-slate-100/50 px-3 py-1.5 rounded-xl border border-slate-100"><User size={14} className="text-secondary" /> {student.gender}</span>
-                                <span className="flex items-center gap-2 bg-slate-100/50 px-3 py-1.5 rounded-xl border border-slate-100"><Calendar size={14} className="text-secondary" /> {student.dob}</span>
-                              </div>
-
-                              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                                <button
-                                  onClick={() => handleEdit(student)}
-                                  className="p-2 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
-                                  title="Edit Student"
-                                >
-                                  <Edit2 size={14} />
-                                </button>
-                                <button
-                                  onClick={() => handleDelete(student._id)}
-                                  className="p-2 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all shadow-sm"
-                                  title="Delete Student"
-                                >
-                                  <Trash2 size={14} />
-                                </button>
+                          <div className="relative z-10 flex-1">
+                            <div className="font-black text-slate-800 text-lg md:text-xl tracking-tight leading-tight mb-2">{student.name}</div>
+                            <div className="flex flex-col gap-2">
+                              <div className="flex items-center gap-2 text-[11px] text-slate-500 font-bold">
+                                <span className="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-100"><User size={12} className="text-secondary" /> {student.gender}</span>
+                                <span className="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-100"><Calendar size={12} className="text-primary" /> {student.dob}</span>
                               </div>
                             </div>
+                          </div>
+
+                          {/* Always-visible action bar */}
+                          <div className="relative z-10 flex items-center gap-2 pt-2 border-t border-slate-100 mt-auto">
+                            <button
+                              onClick={() => handleEdit(student)}
+                              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-2xl text-[11px] font-black text-indigo-600 bg-indigo-50 hover:bg-indigo-600 hover:text-white transition-all shadow-sm border border-indigo-100"
+                              title="Edit Student"
+                            >
+                              <Edit2 size={12} /> Edit
+                            </button>
+                            <button
+                              onClick={() => handleDelete(student._id)}
+                              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-2xl text-[11px] font-black text-rose-500 bg-rose-50 hover:bg-rose-500 hover:text-white transition-all shadow-sm border border-rose-100"
+                              title="Delete Student"
+                            >
+                              <Trash2 size={12} /> Delete
+                            </button>
                           </div>
                         </motion.div>
                       ))
@@ -671,12 +688,12 @@ const Dashboard = () => {
                     <UserPlus size={activeTab === 'students' ? 32 : 32} className="md:w-11 md:h-11" />
                   </div>
                   <div>
-                    <h2 className="text-2xl md:text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 md:mb-3">
+                    <h2 className="text-2xl md:text-4xl font-black tracking-tight leading-none mb-2 md:mb-3 font-clean" style={{ background: 'linear-gradient(135deg, #ff4d6d, #ffb703, #00b4d8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                       {activeTab === 'students'
                         ? (editingStudent ? 'Update Star Details' : 'New Little Star')
                         : (editingStaff ? 'Update Staff Details' : 'New Staff Member')}
                     </h2>
-                    <p className="text-slate-400 font-bold text-base md:text-xl">
+                    <p className="text-slate-500 font-bold text-sm md:text-base font-clean">
                       {activeTab === 'students'
                         ? (editingStudent ? `Updating records for ${editingStudent.name}` : 'Welcome to the Playground!')
                         : (editingStaff ? `Updating records for ${editingStaff.name}` : 'Join our Elite Team!')}
@@ -697,138 +714,138 @@ const Dashboard = () => {
                 <form onSubmit={handleRegister} className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 relative z-10">
                   {activeTab === 'students' ? (
                     <>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Full Name</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--primary)' }}>Full Name</label>
                         <div className="input-container">
-                          <User size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
-                          <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="Jonathan Henderson" required />
+                          <User size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary opacity-70" />
+                          <input className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="Full Name" required />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Date of Birth</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--secondary)' }}>Date of Birth</label>
                         <div className="input-container">
-                          <Calendar size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
-                          <input type="date" className="input-field py-4 pl-14 pr-6 text-base" value={formData.dob} onChange={e => setFormData({ ...formData, dob: e.target.value })} required />
+                          <Calendar size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary opacity-70" />
+                          <input type="date" className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={formData.dob} onChange={e => setFormData({ ...formData, dob: e.target.value })} required />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Gender</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--primary)' }}>Gender</label>
                         <div className="input-container">
-                          <Users size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
-                          <select className="input-field py-4 pl-14 pr-6 text-base appearance-none" value={formData.gender} onChange={e => setFormData({ ...formData, gender: e.target.value })} required>
+                          <Users size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary opacity-70" />
+                          <select className="input-field py-3.5 pl-11 pr-4 text-sm font-clean appearance-none" value={formData.gender} onChange={e => setFormData({ ...formData, gender: e.target.value })} required>
                             <option value="" disabled>Select Gender</option>
-                            <option value="Male">Male Scholar</option>
-                            <option value="Female">Female Scholar</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
                             <option value="Other">Other</option>
                           </select>
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Class</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--secondary)' }}>Class</label>
                         <div className="input-container">
-                          <BookOpen size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
-                          <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.studentClass} onChange={e => setFormData({ ...formData, studentClass: e.target.value })} placeholder="e.g. Class 12-B" required />
+                          <BookOpen size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary opacity-70" />
+                          <input className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={formData.studentClass} onChange={e => setFormData({ ...formData, studentClass: e.target.value })} placeholder="e.g. Class 12-B" required />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Father's Name</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--primary)' }}>Father's Name</label>
                         <div className="input-container">
-                          <User size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
-                          <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.fatherName} onChange={e => setFormData({ ...formData, fatherName: e.target.value })} placeholder="Father's Name" />
+                          <User size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary opacity-70" />
+                          <input className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={formData.fatherName} onChange={e => setFormData({ ...formData, fatherName: e.target.value })} placeholder="Father's Name" />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Mother's Name</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--secondary)' }}>Mother's Name</label>
                         <div className="input-container">
-                          <User size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
-                          <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.motherName} onChange={e => setFormData({ ...formData, motherName: e.target.value })} placeholder="Mother's Name" />
+                          <User size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary opacity-70" />
+                          <input className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={formData.motherName} onChange={e => setFormData({ ...formData, motherName: e.target.value })} placeholder="Mother's Name" />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Father's Occupation</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--primary)' }}>Father's Occupation</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
-                          <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.fatherOccupation} onChange={e => setFormData({ ...formData, fatherOccupation: e.target.value })} placeholder="Father's Occupation" />
+                          <TrendingUp size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary opacity-70" />
+                          <input className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={formData.fatherOccupation} onChange={e => setFormData({ ...formData, fatherOccupation: e.target.value })} placeholder="Father's Occupation" />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Mother's Occupation</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--secondary)' }}>Mother's Occupation</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
-                          <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.motherOccupation} onChange={e => setFormData({ ...formData, motherOccupation: e.target.value })} placeholder="Mother's Occupation" />
+                          <TrendingUp size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary opacity-70" />
+                          <input className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={formData.motherOccupation} onChange={e => setFormData({ ...formData, motherOccupation: e.target.value })} placeholder="Mother's Occupation" />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Age</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--primary)' }}>Age</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
-                          <input type="number" className="input-field py-4 pl-14 pr-6 text-base" value={formData.age} onChange={e => setFormData({ ...formData, age: e.target.value })} placeholder="Age" />
+                          <TrendingUp size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary opacity-70" />
+                          <input type="number" className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={formData.age} onChange={e => setFormData({ ...formData, age: e.target.value })} placeholder="Age" />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Phone Number</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--secondary)' }}>Phone Number</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
-                          <input className="input-field py-4 pl-14 pr-6 text-base" value={formData.phoneNumber} onChange={e => setFormData({ ...formData, phoneNumber: e.target.value })} placeholder="Phone Number" />
+                          <Mail size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary opacity-70" />
+                          <input className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={formData.phoneNumber} onChange={e => setFormData({ ...formData, phoneNumber: e.target.value })} placeholder="Phone Number" />
                         </div>
                       </div>
-                      <div className="md:col-span-2 space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Address</label>
+                      <div className="md:col-span-2 space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--primary)' }}>Address</label>
                         <div className="input-container">
-                          <BookOpen size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary" />
-                          <textarea className="input-field py-4 pl-14 pr-6 text-base min-h-[100px]" value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })} placeholder="Full Address" />
+                          <BookOpen size={17} className="absolute left-4 top-4 text-primary opacity-70" />
+                          <textarea className="input-field py-3.5 pl-11 pr-4 text-sm min-h-[90px] font-clean" value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })} placeholder="Full Address" />
                         </div>
                       </div>
                     </>
                   ) : (
                     <>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Staff Name</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--secondary)' }}>Staff Name</label>
                         <div className="input-container">
-                          <User size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
-                          <input className="input-field py-4 pl-14 pr-6 text-base" value={staffFormData.name} onChange={e => setStaffFormData({ ...staffFormData, name: e.target.value })} placeholder="Staff Full Name" required />
+                          <User size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary opacity-70" />
+                          <input className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={staffFormData.name} onChange={e => setStaffFormData({ ...staffFormData, name: e.target.value })} placeholder="Staff Full Name" required />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Age</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--primary)' }}>Age</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
-                          <input type="number" className="input-field py-4 pl-14 pr-6 text-base" value={staffFormData.age} onChange={e => setStaffFormData({ ...staffFormData, age: e.target.value })} placeholder="Age" />
+                          <TrendingUp size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary opacity-70" />
+                          <input type="number" className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={staffFormData.age} onChange={e => setStaffFormData({ ...staffFormData, age: e.target.value })} placeholder="Age" />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Phone Number</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--secondary)' }}>Phone Number</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
-                          <input className="input-field py-4 pl-14 pr-6 text-base" value={staffFormData.phoneNumber} onChange={e => setStaffFormData({ ...staffFormData, phoneNumber: e.target.value })} placeholder="Phone Number" />
+                          <Mail size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary opacity-70" />
+                          <input className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={staffFormData.phoneNumber} onChange={e => setStaffFormData({ ...staffFormData, phoneNumber: e.target.value })} placeholder="Phone Number" />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Mail ID</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--primary)' }}>Mail ID</label>
                         <div className="input-container">
-                          <Mail size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
-                          <input type="email" className="input-field py-4 pl-14 pr-6 text-base" value={staffFormData.mailId} onChange={e => setStaffFormData({ ...staffFormData, mailId: e.target.value })} placeholder="email@example.com" />
+                          <Mail size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary opacity-70" />
+                          <input type="email" className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={staffFormData.mailId} onChange={e => setStaffFormData({ ...staffFormData, mailId: e.target.value })} placeholder="email@example.com" />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Qualification</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--secondary)' }}>Qualification</label>
                         <div className="input-container">
-                          <GraduationCap size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
-                          <input className="input-field py-4 pl-14 pr-6 text-base" value={staffFormData.qualification} onChange={e => setStaffFormData({ ...staffFormData, qualification: e.target.value })} placeholder="e.g. M.Ed, PhD" />
+                          <GraduationCap size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary opacity-70" />
+                          <input className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={staffFormData.qualification} onChange={e => setStaffFormData({ ...staffFormData, qualification: e.target.value })} placeholder="e.g. M.Ed, PhD" />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Experience</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--primary)' }}>Experience</label>
                         <div className="input-container">
-                          <TrendingUp size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
-                          <input className="input-field py-4 pl-14 pr-6 text-base" value={staffFormData.experience} onChange={e => setStaffFormData({ ...staffFormData, experience: e.target.value })} placeholder="e.g. 5 Years" />
+                          <TrendingUp size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary opacity-70" />
+                          <input className="input-field py-3.5 pl-11 pr-4 text-sm font-clean" value={staffFormData.experience} onChange={e => setStaffFormData({ ...staffFormData, experience: e.target.value })} placeholder="e.g. 5 Years" />
                         </div>
                       </div>
-                      <div className="md:col-span-2 space-y-2">
-                        <label className="text-[11px] font-black text-slate-600 uppercase tracking-[0.3em] ml-2">Address</label>
+                      <div className="md:col-span-2 space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-[0.25em] ml-1 font-clean" style={{ color: 'var(--secondary)' }}>Address</label>
                         <div className="input-container">
-                          <BookOpen size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-secondary" />
-                          <textarea className="input-field py-4 pl-14 pr-6 text-base min-h-[80px]" value={staffFormData.address} onChange={e => setStaffFormData({ ...staffFormData, address: e.target.value })} placeholder="Full Address" />
+                          <BookOpen size={17} className="absolute left-4 top-4 text-secondary opacity-70" />
+                          <textarea className="input-field py-3.5 pl-11 pr-4 text-sm min-h-[80px] font-clean" value={staffFormData.address} onChange={e => setStaffFormData({ ...staffFormData, address: e.target.value })} placeholder="Full Address" />
                         </div>
                       </div>
                     </>
@@ -857,7 +874,7 @@ const Dashboard = () => {
             <motion.div key="fees" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} className="glass-card p-6 md:p-12">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight mb-1 md:mb-2">Monthly Fee Registry</h2>
+                  <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-1 md:mb-2 gradient-text-roster">Monthly Fee Registry</h2>
                   <p className="text-slate-500 font-bold tracking-widest uppercase text-[10px]">LITTLE EXPLORERS 2024</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
