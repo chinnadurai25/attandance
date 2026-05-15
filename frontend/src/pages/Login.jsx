@@ -52,17 +52,19 @@ const Login = () => {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md"
       >
-        <div className="glass-card p-10">
-          <div className="text-center mb-10">
+        <div className="glass-card p-12 md:p-16 border-none rainbow-border">
+          <div className="text-center mb-12">
             <motion.div
               initial={{ scale: 0.5, rotate: -15 }}
               animate={{ scale: 1, rotate: 0 }}
-              className="inline-flex items-center justify-center w-32 h-32 bg-white rounded-[40px] mb-8 shadow-2xl border-8 border-accent overflow-hidden p-3 animate-wiggle"
+              transition={{ type: "spring", stiffness: 200, damping: 15 }}
+              className="inline-flex items-center justify-center w-36 h-36 bg-white rounded-[44px] mb-8 shadow-2xl border-8 border-accent overflow-hidden p-4 relative group"
             >
-              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
             </motion.div>
-            <h1 className="text-5xl font-black text-slate-800 tracking-tight mb-3">Little Explorers</h1>
-            <p className="text-secondary font-black text-2xl">Teacher's Playground</p>
+            <h1 className="text-6xl font-black text-slate-800 tracking-tighter mb-2 rainbow-text">Little Explorers</h1>
+            <p className="text-secondary font-black text-2xl tracking-widest uppercase opacity-70">Guide's Portal</p>
           </div>
 
           <form onSubmit={handleLogin} className="flex flex-col gap-6">
@@ -108,10 +110,10 @@ const Login = () => {
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.05, y: -4 }}
+              whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
               type="submit"
-              className="w-full py-6 text-2xl text-white rounded-[32px] shadow-2xl shadow-primary/40 border-b-8 border-primary-hover font-black flex items-center justify-center gap-3 transition-all hover:brightness-110"
+              className="btn-premium w-full py-6 text-2xl text-white rounded-[32px] shadow-2xl font-black flex items-center justify-center gap-4 transition-all"
               style={{ background: 'linear-gradient(135deg, var(--primary), var(--accent))' }}
               disabled={loading}
             >

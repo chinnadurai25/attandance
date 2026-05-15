@@ -285,31 +285,35 @@ const Dashboard = () => {
       <div className="max-w-6xl mx-auto px-6 py-12 relative z-10">
         {/* Elite Master Console */}
         <motion.header
-          initial={{ y: -20, opacity: 0 }}
+          initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-8 glass-card p-10 shadow-2xl shadow-primary/10 border-b-8 border-accent"
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-8 glass-card p-8 md:p-12 shadow-2xl border-none rainbow-border"
         >
-          <div className="flex items-center gap-6">
-            <div className="w-24 h-24 bg-white rounded-[32px] flex items-center justify-center overflow-hidden border-4 border-accent shadow-2xl animate-wiggle">
-              <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
-            </div>
+          <div className="flex items-center gap-8">
+            <motion.div 
+              whileHover={{ scale: 1.1, rotate: [0, -10, 10, 0] }}
+              className="w-24 h-24 bg-white rounded-[32px] flex items-center justify-center overflow-hidden border-4 border-accent shadow-2xl relative"
+            >
+              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain p-2" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
+            </motion.div>
             <div>
-              <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-4">Master Console</h1>
-              <div className="flex items-center gap-4">
+              <h1 className="text-5xl font-black text-slate-800 tracking-tighter leading-none mb-3 rainbow-text">Little Explorers</h1>
+              <div className="flex items-center gap-3">
                 <button
                   onClick={() => setActiveTab('students')}
-                  className={`px-6 py-2 rounded-full font-black text-[11px] uppercase tracking-widest transition-all ${activeTab === 'students' ? 'text-white shadow-lg' : 'bg-white text-slate-400 border-2 border-slate-100 hover:bg-slate-50'}`}
-                  style={{ backgroundColor: activeTab === 'students' ? 'var(--primary)' : 'white' }}
+                  className={`px-8 py-2.5 rounded-2xl font-black text-[12px] uppercase tracking-widest transition-all duration-500 ${activeTab === 'students' ? 'text-white shadow-xl scale-105' : 'bg-slate-50 text-slate-400 border-2 border-slate-100 hover:bg-slate-100'}`}
+                  style={{ backgroundColor: activeTab === 'students' ? 'var(--primary)' : '' }}
                 >
-                  Students
+                  Stars
                 </button>
                 <button
                   onClick={() => setActiveTab('staff')}
-                  className={`px-6 py-2 rounded-full font-black text-[11px] uppercase tracking-widest transition-all ${activeTab === 'staff' ? 'text-white shadow-lg' : 'bg-white text-slate-400 border-2 border-slate-100 hover:bg-slate-50'}`}
-                  style={{ backgroundColor: activeTab === 'staff' ? 'var(--secondary)' : 'white' }}
+                  className={`px-8 py-2.5 rounded-2xl font-black text-[12px] uppercase tracking-widest transition-all duration-500 ${activeTab === 'staff' ? 'text-white shadow-xl scale-105' : 'bg-slate-50 text-slate-400 border-2 border-slate-100 hover:bg-slate-100'}`}
+                  style={{ backgroundColor: activeTab === 'staff' ? 'var(--secondary)' : '' }}
                 >
-                  Staff
+                  Guides
                 </button>
               </div>
             </div>
@@ -369,10 +373,10 @@ const Dashboard = () => {
               whileHover={{ scale: 1.1, rotate: 90, filter: 'brightness(1.2)' }}
               whileTap={{ scale: 0.9 }}
               onClick={handleLogout}
-              className="p-4 md:p-5 rounded-2xl text-white border-2 border-white transition-all shadow-xl shadow-danger/40 ml-auto sm:ml-0"
+              className="p-5 rounded-3xl text-white border-2 border-white/50 transition-all shadow-xl shadow-danger/20 ml-auto sm:ml-0"
               style={{ background: 'linear-gradient(135deg, var(--danger), #ff8b3d)' }}
             >
-              <LogOut size={26} />
+              <LogOut size={28} />
             </motion.button>
           </div>
         </motion.header>
@@ -452,32 +456,29 @@ const Dashboard = () => {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="glass-card p-12"
             >
-              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-10 gap-8">
-                <div className="flex items-center gap-4">
-                  <h2 className="text-2xl font-black text-slate-800 tracking-tight">{activeTab === 'students' ? 'Class Buddies' : 'Staff Members'}</h2>
-                  <span className="px-5 py-2 bg-accent text-slate-700 text-[11px] font-black uppercase tracking-widest rounded-full border-2 border-white shadow-sm">
-                    {activeTab === 'students' ? 'Little Explorers 2024' : 'Elite Educators'}
+              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-12 gap-8">
+                <div className="flex items-center gap-6">
+                  <h2 className="text-3xl font-black text-slate-800 tracking-tighter">Current Roster</h2>
+                  <span className="px-6 py-2.5 bg-accent/10 text-accent text-[12px] font-black uppercase tracking-widest rounded-2xl border-2 border-accent/20">
+                    {activeTab === 'students' ? 'Little Explorers' : 'Master Guides'}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-3 w-full md:w-96">
-                  <div className="relative flex-1">
-                    <Search size={20} className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                <div className="flex items-center gap-4 w-full md:w-96">
+                  <div className="relative flex-1 group">
+                    <Search size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-secondary transition-colors" />
                     <input
                       type="text"
-                      placeholder={activeTab === 'students' ? "Search students or classes..." : "Search staff members..."}
+                      placeholder={activeTab === 'students' ? "Find a star..." : "Find a guide..."}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full bg-slate-50 border-2 border-slate-100 pl-14 pr-5 py-3.5 rounded-2xl text-base font-bold text-slate-700 placeholder:text-slate-400 focus:outline-none focus:border-indigo-400 focus:bg-white transition-all shadow-sm"
+                      className="w-full bg-slate-50/50 border-2 border-slate-100 pl-16 pr-6 py-4 rounded-[24px] text-base font-bold text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-secondary focus:bg-white transition-all shadow-sm"
                     />
                   </div>
-                  <button className="p-3.5 bg-slate-50 border-2 border-slate-100 rounded-2xl text-slate-500 hover:bg-slate-100 hover:border-indigo-200 shadow-sm transition-all">
-                    <Filter size={22} />
-                  </button>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[50vh] overflow-y-auto pr-4 custom-scrollbar">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-h-[55vh] overflow-y-auto pr-4 custom-scrollbar">
                 {activeTab === 'students' ? (
                   students.filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()) || s.class.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 ? (
                     <div className="col-span-full text-center py-32 bg-slate-50/30 rounded-[64px] border-3 border-dashed border-slate-200">
@@ -497,26 +498,28 @@ const Dashboard = () => {
                       .map((student, idx) => (
                         <motion.div
                           key={student._id}
-                          initial={{ opacity: 0, y: 20 }}
+                          initial={{ opacity: 0, y: 30 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: idx * 0.05 }}
-                          className="bg-white border-2 border-slate-50 p-6 rounded-3xl flex flex-col gap-5 hover:border-indigo-200 hover:shadow-2xl hover:shadow-indigo-500/5 transition-all cursor-default relative group"
+                          transition={{ delay: idx * 0.08, type: "spring", stiffness: 100 }}
+                          className="bg-white/50 border-2 border-slate-50 p-8 rounded-[36px] flex flex-col gap-6 hover:border-secondary/30 hover:bg-white transition-all cursor-default relative group shadow-sm hover:shadow-2xl hover:shadow-secondary/10 overflow-hidden"
                         >
-                          <div className="flex justify-between items-start">
-                            <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-xl border border-indigo-100 shadow-sm">
+                          <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-secondary/5 to-transparent rounded-bl-full pointer-events-none" />
+                          
+                          <div className="flex justify-between items-start relative z-10">
+                            <div className="w-16 h-16 rounded-3xl bg-secondary/10 flex items-center justify-center text-secondary font-black text-2xl border-2 border-secondary/20 shadow-inner">
                               {student.name.charAt(0)}
                             </div>
-                            <div className="text-[10px] font-black uppercase tracking-widest text-indigo-500 bg-indigo-50/50 px-3 py-1.5 rounded-xl border border-indigo-100/50">
+                            <div className="text-[11px] font-black uppercase tracking-widest text-secondary bg-secondary/10 px-4 py-2 rounded-2xl border border-secondary/10">
                               {student.class}
                             </div>
                           </div>
 
-                          <div>
-                            <div className="font-bold text-slate-800 text-xl tracking-tight leading-tight mb-2">{student.name}</div>
-                            <div className="flex flex-wrap items-center justify-between gap-3">
-                              <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 font-bold">
-                                <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><User size={13} className="text-indigo-400" /> {student.gender}</span>
-                                <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><Calendar size={13} className="text-indigo-400" /> {student.dob}</span>
+                          <div className="relative z-10">
+                            <div className="font-bold text-slate-800 text-2xl tracking-tighter leading-tight mb-3">{student.name}</div>
+                            <div className="flex flex-col gap-3">
+                              <div className="flex items-center gap-3 text-[12px] text-slate-500 font-bold">
+                                <span className="flex items-center gap-2 bg-slate-100/50 px-3 py-1.5 rounded-xl border border-slate-100"><User size={14} className="text-secondary" /> {student.gender}</span>
+                                <span className="flex items-center gap-2 bg-slate-100/50 px-3 py-1.5 rounded-xl border border-slate-100"><Calendar size={14} className="text-secondary" /> {student.dob}</span>
                               </div>
 
                               <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -853,23 +856,24 @@ const Dashboard = () => {
                     onClick={() => {
                       if (!day.day || day.isSunday) return;
                       if (activeTab === 'students' && !selectedClass) {
-                        setMsg({ type: 'error', text: 'Please select a class first!' });
+                        setMsg({ type: 'error', text: 'Select a star class first! ✨' });
                         return;
                       }
                       setSelectedDate(day.date);
                       setView('attendance-sheet');
                     }}
-                    className={`cal-day p-5 rounded-[32px] border-2 transition-all relative group ${!day.day ? 'opacity-0 pointer-events-none' :
-                      day.isSunday ? 'bg-rose-50/30 border-rose-100/50 cursor-not-allowed' :
-                        'bg-white border-slate-100 hover:border-indigo-300 hover:shadow-2xl hover:shadow-indigo-500/10 cursor-pointer'
+                    className={`cal-day p-6 rounded-[40px] border-2 transition-all relative group overflow-hidden ${!day.day ? 'opacity-0 pointer-events-none' :
+                      day.isSunday ? 'bg-rose-50/20 border-rose-100/30 cursor-not-allowed' :
+                        'bg-white/80 border-slate-100 hover:border-secondary hover:bg-white hover:shadow-premium cursor-pointer'
                       }`}
                   >
+                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-slate-50 to-transparent rounded-bl-full opacity-50 group-hover:from-secondary/10" />
                     {day.day && (
                       <>
-                        <div className="flex justify-between items-center mb-3">
-                          <span className={`text-2xl font-black ${day.isSunday ? 'text-rose-500' : 'text-slate-800'}`}>{day.day}</span>
+                        <div className="flex justify-between items-center mb-4 relative z-10">
+                          <span className={`text-3xl font-black ${day.isSunday ? 'text-rose-300' : 'text-slate-800'}`}>{day.day}</span>
                           {day.isSunday && (
-                            <span className="holiday-badge">Holiday</span>
+                            <span className="holiday-badge scale-90">Off</span>
                           )}
                         </div>
 
