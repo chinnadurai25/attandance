@@ -38,11 +38,27 @@ const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [editingStudent, setEditingStudent] = useState(null);
   const [editingStaff, setEditingStaff] = useState(null);
+  const [dashboardFees, setDashboardFees] = useState({});
 
   useEffect(() => {
     fetchStudents();
     fetchStaff();
+    fetchDashboardFees();
   }, []);
+
+  const fetchDashboardFees = async () => {
+    try {
+      const currentMonth = new Date().toISOString().substring(0, 7);
+      const res = await axios.get(`${API_URL}/api/fees?month=${currentMonth}`);
+      const feesMap = {};
+      res.data.forEach(fee => {
+        feesMap[fee.studentId] = fee.status;
+      });
+      setDashboardFees(feesMap);
+    } catch (err) {
+      console.error('Error fetching dashboard fees', err);
+    }
+  };
 
   const fetchStaff = async () => {
     try {
@@ -126,16 +142,6 @@ const Dashboard = () => {
   };
 
   const saveAttendance = async () => {
-    const now = new Date();
-    if (activeTab === 'staff') {
-      const currentHour = now.getHours();
-      const currentMinute = now.getMinutes();
-      if ((currentHour > 9) || (currentHour === 9 && currentMinute > 30)) {
-        setMsg({ type: 'error', text: 'Staff attendance can only be marked before 9:30 AM!' });
-        return;
-      }
-    }
-
     setLoading(true);
     try {
       console.log('Saving attendance...', { activeTab, selectedDate, selectedClass, attendanceList });
@@ -398,8 +404,8 @@ const Dashboard = () => {
                   });
                   setStaffFormData({ name: '', age: '', phoneNumber: '', address: '', qualification: '', experience: '', mailId: '' });
                 }}
-                className="btn-premium flex items-center justify-center gap-3 px-10 py-4 text-white rounded-3xl font-black shadow-2xl transition-all w-full sm:w-auto"
-                style={{ backgroundColor: '#1e293b', border: '3px solid #334155' }}
+                className="flex items-center justify-center gap-3 px-10 py-4 text-white rounded-3xl font-black shadow-2xl transition-all w-full sm:w-auto"
+                style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)', boxShadow: '0 4px 15px rgba(59,130,246,0.4)' }}
               >
                 <ArrowLeft size={22} className="text-secondary" />
                 <span className="text-lg">Back</span>
@@ -570,8 +576,15 @@ const Dashboard = () => {
                             <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center font-black text-xl md:text-2xl text-white shadow-lg" style={{ background: 'linear-gradient(135deg, var(--secondary), var(--primary))' }}>
                               {student.name.charAt(0)}
                             </div>
-                            <div className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border" style={{ color: 'var(--secondary)', background: 'rgba(0,180,216,0.08)', borderColor: 'rgba(0,180,216,0.2)' }}>
-                              {student.class}
+                            <div className="flex items-center gap-2">
+                              <div className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border" style={{ color: 'var(--secondary)', background: 'rgba(0,180,216,0.08)', borderColor: 'rgba(0,180,216,0.2)' }}>
+                                {student.class}
+                              </div>
+                              {dashboardFees[student._id] && (
+                                <div className={`text-[9px] font-black uppercase tracking-widest px-2.5 py-1.5 rounded-full border ${dashboardFees[student._id] === 'Paid' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-rose-50 text-rose-600 border-rose-200'}`}>
+                                  {dashboardFees[student._id]}
+                                </div>
+                              )}
                             </div>
                           </div>
 
@@ -589,14 +602,14 @@ const Dashboard = () => {
                           <div className="relative z-10 flex items-center gap-2 pt-2 border-t border-slate-100 mt-auto">
                             <button
                               onClick={() => handleEdit(student)}
-                              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-2xl text-[11px] font-black text-indigo-600 bg-indigo-50 hover:bg-indigo-600 hover:text-white transition-all shadow-sm border border-indigo-100"
+                              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-[11px] font-black transition-all shadow-sm bg-blue-50 text-blue-600 border border-blue-100 hover:bg-blue-600 hover:text-white"
                               title="Edit Student"
                             >
                               <Edit2 size={12} /> Edit
                             </button>
                             <button
                               onClick={() => handleDelete(student._id)}
-                              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-2xl text-[11px] font-black text-rose-500 bg-rose-50 hover:bg-rose-500 hover:text-white transition-all shadow-sm border border-rose-100"
+                              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-[11px] font-black transition-all shadow-sm bg-rose-50 text-rose-500 border border-rose-100 hover:bg-rose-600 hover:text-white"
                               title="Delete Student"
                             >
                               <Trash2 size={12} /> Delete
@@ -624,45 +637,52 @@ const Dashboard = () => {
                       .map((member, idx) => (
                         <motion.div
                           key={member._id}
-                          initial={{ opacity: 0, y: 20 }}
+                          initial={{ opacity: 0, y: 30 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: idx * 0.05 }}
-                          className="bg-white border-2 border-slate-50 p-6 rounded-3xl flex flex-col gap-5 hover:border-secondary/20 hover:shadow-2xl hover:shadow-secondary/5 transition-all cursor-default relative group"
+                          transition={{ delay: idx * 0.08, type: "spring", stiffness: 100 }}
+                          className="relative overflow-hidden flex flex-col gap-4 p-5 md:p-7 rounded-3xl border-2 border-transparent bg-white cursor-default group shadow-md hover:shadow-2xl hover:shadow-secondary/15 transition-all duration-300"
+                          style={{ background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, #e0f7fa, #fce4ec) border-box' }}
                         >
-                          <div className="flex justify-between items-start">
-                            <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 font-black text-xl border border-blue-100 shadow-sm">
+                          {/* Top color strip */}
+                          <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ background: 'linear-gradient(90deg, var(--secondary), var(--primary), var(--accent))' }} />
+                          {/* Decorative corner blob */}
+                          <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-bl from-secondary/8 to-transparent rounded-bl-full pointer-events-none" />
+
+                          <div className="flex justify-between items-start relative z-10 mt-1">
+                            <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center font-black text-xl md:text-2xl text-white shadow-lg" style={{ background: 'linear-gradient(135deg, var(--secondary), var(--primary))' }}>
                               {member.name.charAt(0)}
                             </div>
-                            <div className="text-[10px] font-black uppercase tracking-widest text-blue-500 bg-blue-50/50 px-3 py-1.5 rounded-xl border border-blue-100/50">
+                            <div className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border" style={{ color: 'var(--secondary)', background: 'rgba(0,180,216,0.08)', borderColor: 'rgba(0,180,216,0.2)' }}>
                               {member.qualification || 'Staff'}
                             </div>
                           </div>
 
-                          <div>
-                            <div className="font-bold text-slate-800 text-xl tracking-tight leading-tight mb-2">{member.name}</div>
-                            <div className="flex flex-wrap items-center justify-between gap-3">
-                              <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 font-bold">
-                                <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><User size={13} className="text-blue-400" /> {member.age} yrs</span>
-                                <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg border border-slate-100"><TrendingUp size={13} className="text-blue-400" /> {member.experience} exp</span>
-                              </div>
-
-                              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                                <button
-                                  onClick={() => handleEdit(member)}
-                                  className="p-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm"
-                                  title="Edit Staff"
-                                >
-                                  <Edit2 size={14} />
-                                </button>
-                                <button
-                                  onClick={() => handleDelete(member._id)}
-                                  className="p-2 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all shadow-sm"
-                                  title="Delete Staff"
-                                >
-                                  <Trash2 size={14} />
-                                </button>
+                          <div className="relative z-10 flex-1">
+                            <div className="font-black text-slate-800 text-lg md:text-xl tracking-tight leading-tight mb-2">{member.name}</div>
+                            <div className="flex flex-col gap-2">
+                              <div className="flex items-center gap-2 text-[11px] text-slate-500 font-bold">
+                                <span className="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-100"><User size={12} className="text-secondary" /> {member.age} yrs</span>
+                                <span className="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-100"><TrendingUp size={12} className="text-primary" /> {member.experience} exp</span>
                               </div>
                             </div>
+                          </div>
+
+                          {/* Always-visible action bar */}
+                          <div className="relative z-10 flex items-center gap-2 pt-2 border-t border-slate-100 mt-auto">
+                            <button
+                              onClick={() => handleEdit(member)}
+                              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-[11px] font-black transition-all shadow-sm bg-blue-50 text-blue-600 border border-blue-100 hover:bg-blue-600 hover:text-white"
+                              title="Edit Staff"
+                            >
+                              <Edit2 size={12} /> Edit
+                            </button>
+                            <button
+                              onClick={() => handleDelete(member._id)}
+                              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-[11px] font-black transition-all shadow-sm bg-rose-50 text-rose-500 border border-rose-100 hover:bg-rose-600 hover:text-white"
+                              title="Delete Staff"
+                            >
+                              <Trash2 size={12} /> Delete
+                            </button>
                           </div>
                         </motion.div>
                       ))
@@ -900,17 +920,36 @@ const Dashboard = () => {
                   </select>
                 </div>
               </div>
-              <div className="grid grid-cols-1 gap-6 max-h-[55vh] overflow-y-auto pr-4 custom-scrollbar">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-h-[60vh] overflow-y-auto pr-4 custom-scrollbar pb-10">
                 {feesList.map((record, idx) => (
-                  <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: idx * 0.05 }} key={record.studentId} className="flex flex-col sm:flex-row items-center justify-between p-8 bg-white border border-slate-100 rounded-[40px] hover:border-orange-200 transition-all gap-8">
-                    <div className="flex items-center gap-8">
-                      <div className="w-12 h-12 md:w-16 md:h-16 bg-orange-50 rounded-2xl md:rounded-[24px] flex items-center justify-center font-black text-xl md:text-2xl text-orange-600 border border-orange-100 shadow-inner">{idx + 1}</div>
-                      <div>
-                        <span className="text-xl md:text-2xl font-black text-slate-800 block mb-1">{record.name}</span>
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{record.class}</span>
+                  <motion.div 
+                    initial={{ opacity: 0, y: 30 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ delay: idx * 0.08, type: "spring", stiffness: 100 }} 
+                    key={record.studentId} 
+                    className="relative overflow-hidden flex flex-col gap-4 p-5 md:p-7 rounded-3xl border-2 border-transparent bg-white cursor-default group shadow-md hover:shadow-2xl hover:shadow-secondary/15 transition-all duration-300"
+                    style={{ background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, #e0f7fa, #fce4ec) border-box' }}
+                  >
+                    {/* Top color strip */}
+                    <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ background: 'linear-gradient(90deg, var(--secondary), var(--primary), var(--accent))' }} />
+                    {/* Decorative corner blob */}
+                    <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-bl from-secondary/8 to-transparent rounded-bl-full pointer-events-none" />
+
+                    <div className="flex justify-between items-start relative z-10 mt-1">
+                      <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center font-black text-xl md:text-2xl text-white shadow-lg shrink-0" style={{ background: 'linear-gradient(135deg, var(--secondary), var(--primary))' }}>
+                        {idx + 1}
+                      </div>
+                      <div className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border" style={{ color: 'var(--secondary)', background: 'rgba(0,180,216,0.08)', borderColor: 'rgba(0,180,216,0.2)' }}>
+                        {record.class}
                       </div>
                     </div>
-                    <div className="flex items-center gap-3 w-full sm:w-auto">
+
+                    <div className="relative z-10 flex-1">
+                      <div className="font-black text-slate-800 text-lg md:text-xl tracking-tight leading-tight mb-2">{record.name}</div>
+                    </div>
+
+                    {/* Always-visible action bar */}
+                    <div className="relative z-10 flex items-center gap-2 pt-2 border-t border-slate-100 mt-auto">
                       {['Paid', 'Unpaid'].map(status => (
                         <button key={status} onClick={async () => {
                           try {
@@ -919,7 +958,7 @@ const Dashboard = () => {
                             await axios.post(`${API_URL}/api/fees`, { month: selectedFeeMonth, feeData: [{ studentId: record.studentId, status }] });
                             setMsg({ type: 'success', text: `${record.name} marked as ${status}` });
                           } catch (err) { setMsg({ type: 'error', text: 'Update failed' }); }
-                        }} className={`flex-1 sm:flex-none px-6 py-2.5 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${record.status === status ? status === 'Paid' ? 'bg-emerald-500 text-white shadow-xl shadow-emerald-500/20' : 'bg-rose-500 text-white shadow-xl shadow-rose-500/20' : 'bg-slate-50 text-slate-300 hover:bg-slate-100'}`}>{status}</button>
+                        }} className={`flex-1 flex items-center justify-center py-2 rounded-xl text-[11px] font-black transition-all shadow-sm border ${record.status === status ? status === 'Paid' ? 'bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600 shadow-emerald-500/30' : 'bg-rose-500 text-white border-rose-500 hover:bg-rose-600 shadow-rose-500/30' : status === 'Paid' ? 'bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-600 hover:text-white' : 'bg-rose-50 text-rose-600 border-rose-100 hover:bg-rose-600 hover:text-white'}`}>{status}</button>
                       ))}
                     </div>
                   </motion.div>
@@ -988,10 +1027,10 @@ const Dashboard = () => {
                     <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-slate-50 to-transparent rounded-bl-full opacity-50 group-hover:from-secondary/10" />
                     {day.day && (
                       <>
-                        <div className="flex justify-between items-center mb-4 relative z-10">
-                          <span className={`text-3xl font-black ${day.isSunday ? 'text-rose-300' : 'text-slate-800'}`}>{day.day}</span>
+                        <div className="flex justify-between items-center mb-2 relative z-10">
+                          <span className={`text-2xl md:text-3xl font-black ${day.isSunday ? 'text-rose-300' : 'text-slate-800'}`}>{day.day}</span>
                           {day.isSunday && (
-                            <span className="holiday-badge scale-90">Off</span>
+                            <span className="bg-rose-100 text-rose-600 font-bold px-2 py-1 rounded-md text-[8px] md:text-[10px] uppercase tracking-widest">Holiday</span>
                           )}
                         </div>
 
@@ -1004,26 +1043,20 @@ const Dashboard = () => {
                             const hasData = present > 0 || absent > 0 || leave > 0;
 
                             return (
-                              <div className="bg-white/90 p-0.5 md:p-1 rounded-xl border border-slate-100 shadow-sm space-y-0.5">
+                              <div className="space-y-1">
                                 {present > 0 && (
-                                  <div className="flex justify-between items-center px-1">
-                                    <span className="hidden md:block text-[6.5px] font-black text-green-600 uppercase tracking-tighter">Present</span>
-                                    <span className="md:hidden w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                                    <span className="text-[7px] md:text-[8px] font-black text-green-700">{present}</span>
+                                  <div className="bg-emerald-100 text-emerald-700 text-[8px] md:text-[10px] font-black uppercase tracking-wider text-center py-1 md:py-1.5 rounded-md">
+                                    Present {present > 1 ? `(${present})` : ''}
                                   </div>
                                 )}
                                 {absent > 0 && (
-                                  <div className="flex justify-between items-center px-1">
-                                    <span className="hidden md:block text-[6.5px] font-black text-red-600 uppercase tracking-tighter">Absent</span>
-                                    <span className="md:hidden w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-                                    <span className="text-[7px] md:text-[8px] font-black text-red-700">{absent}</span>
+                                  <div className="bg-rose-100 text-rose-700 text-[8px] md:text-[10px] font-black uppercase tracking-wider text-center py-1 md:py-1.5 rounded-md">
+                                    Absent {absent > 1 ? `(${absent})` : ''}
                                   </div>
                                 )}
                                 {leave > 0 && (
-                                  <div className="flex justify-between items-center px-1">
-                                    <span className="hidden md:block text-[6.5px] font-black text-orange-600 uppercase tracking-tighter">Leave</span>
-                                    <span className="md:hidden w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
-                                    <span className="text-[7px] md:text-[8px] font-black text-orange-700">{leave}</span>
+                                  <div className="bg-orange-100 text-orange-700 text-[8px] md:text-[10px] font-black uppercase tracking-wider text-center py-1 md:py-1.5 rounded-md">
+                                    Leave {leave > 1 ? `(${leave})` : ''}
                                   </div>
                                 )}
                               </div>
