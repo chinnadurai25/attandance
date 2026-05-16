@@ -318,24 +318,24 @@ const Dashboard = () => {
           <div className="flex items-center gap-8">
             <motion.div 
               whileHover={{ scale: 1.1, rotate: [0, -10, 10, 0] }}
-              className="w-24 h-24 bg-white rounded-[32px] flex items-center justify-center overflow-hidden border-4 border-accent shadow-2xl relative"
+              className="w-16 h-16 md:w-24 md:h-24 bg-white rounded-2xl md:rounded-[32px] flex items-center justify-center overflow-hidden border-2 md:border-4 border-accent shadow-2xl relative"
             >
-              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain p-2" />
+              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain p-1 md:p-2" />
               <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
             </motion.div>
             <div>
-              <h1 className="text-5xl font-black text-slate-800 tracking-tighter leading-none mb-3 rainbow-text">Little Explorers</h1>
+              <h1 className="text-3xl md:text-5xl font-black text-slate-800 tracking-tighter leading-none mb-2 md:mb-3 rainbow-text">Little Explorers</h1>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setActiveTab('students')}
-                  className={`px-8 py-2.5 rounded-2xl font-black text-[12px] uppercase tracking-widest transition-all duration-500 ${activeTab === 'students' ? 'text-white shadow-xl scale-105' : 'bg-slate-50 text-slate-400 border-2 border-slate-100 hover:bg-slate-100'}`}
+                  className={`px-4 md:px-8 py-2 md:py-2.5 rounded-xl md:rounded-2xl font-black text-[10px] md:text-[12px] uppercase tracking-widest transition-all duration-500 ${activeTab === 'students' ? 'text-white shadow-xl scale-105' : 'bg-slate-50 text-slate-400 border-2 border-slate-100 hover:bg-slate-100'}`}
                   style={{ backgroundColor: activeTab === 'students' ? 'var(--primary)' : '' }}
                 >
                   Stars
                 </button>
                 <button
                   onClick={() => setActiveTab('staff')}
-                  className={`px-8 py-2.5 rounded-2xl font-black text-[12px] uppercase tracking-widest transition-all duration-500 ${activeTab === 'staff' ? 'text-white shadow-xl scale-105' : 'bg-slate-50 text-slate-400 border-2 border-slate-100 hover:bg-slate-100'}`}
+                  className={`px-4 md:px-8 py-2 md:py-2.5 rounded-xl md:rounded-2xl font-black text-[10px] md:text-[12px] uppercase tracking-widest transition-all duration-500 ${activeTab === 'staff' ? 'text-white shadow-xl scale-105' : 'bg-slate-50 text-slate-400 border-2 border-slate-100 hover:bg-slate-100'}`}
                   style={{ backgroundColor: activeTab === 'staff' ? 'var(--secondary)' : '' }}
                 >
                   Guides
@@ -408,10 +408,10 @@ const Dashboard = () => {
               whileHover={{ scale: 1.1, rotate: 90, filter: 'brightness(1.2)' }}
               whileTap={{ scale: 0.9 }}
               onClick={handleLogout}
-              className="p-5 rounded-3xl text-white border-2 border-white/50 transition-all shadow-xl shadow-danger/20 ml-auto sm:ml-0"
+              className="p-3 md:p-5 rounded-2xl md:rounded-3xl text-white border-2 border-white/50 transition-all shadow-xl shadow-danger/20 ml-auto sm:ml-0"
               style={{ background: 'linear-gradient(135deg, var(--danger), #ff8b3d)' }}
             >
-              <LogOut size={28} />
+              <LogOut size={20} className="md:w-7 md:h-7" />
             </motion.button>
           </div>
         </motion.header>
@@ -421,41 +421,41 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="glass-card p-10 flex items-center gap-8 group hover:bg-primary transition-all duration-500 border-l-8 border-primary"
+              className="glass-card p-6 md:p-10 flex items-center gap-6 md:gap-8 group hover:bg-primary transition-all duration-500 border-l-4 md:border-l-8 border-primary"
               style={{ '--hover-bg': 'var(--primary)' }}
             >
-              <div className="w-20 h-20 bg-red-50 rounded-[28px] flex items-center justify-center text-primary group-hover:bg-white/20 group-hover:text-white transition-all shadow-inner">
-                <Users size={40} />
+              <div className="w-14 h-14 md:w-20 md:h-20 bg-red-50 rounded-2xl md:rounded-[28px] flex items-center justify-center text-primary group-hover:bg-white/20 group-hover:text-white transition-all shadow-inner">
+                <Users size={28} className="md:w-10 md:h-10" />
               </div>
               <div>
-                <span className="text-primary group-hover:text-white font-black uppercase tracking-[0.2em] mb-1 block font-heading transition-colors">{activeTab === 'students' ? 'Our Buddies' : 'Our Team'}</span>
-                <div className="text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">{activeTab === 'students' ? students.length : staff.length}</div>
+                <span className="text-primary group-hover:text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs mb-1 block font-heading transition-colors">{activeTab === 'students' ? 'Our Buddies' : 'Our Team'}</span>
+                <div className="text-4xl md:text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">{activeTab === 'students' ? students.length : staff.length}</div>
               </div>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="glass-card p-10 flex items-center gap-8 group hover:bg-secondary transition-all duration-500 border-l-8 border-secondary"
+              className="glass-card p-6 md:p-10 flex items-center gap-6 md:gap-8 group hover:bg-secondary transition-all duration-500 border-l-4 md:border-l-8 border-secondary"
             >
-              <div className="w-20 h-20 bg-blue-50 rounded-[28px] flex items-center justify-center text-secondary group-hover:bg-white/20 group-hover:text-white transition-all shadow-inner">
-                <TrendingUp size={40} />
+              <div className="w-14 h-14 md:w-20 md:h-20 bg-blue-50 rounded-2xl md:rounded-[28px] flex items-center justify-center text-secondary group-hover:bg-white/20 group-hover:text-white transition-all shadow-inner">
+                <TrendingUp size={28} className="md:w-10 md:h-10" />
               </div>
               <div>
-                <span className="text-secondary group-hover:text-white font-black uppercase tracking-[0.2em] mb-1 block font-heading transition-colors">Happy Score</span>
-                <div className="text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">94.2%</div>
+                <span className="text-secondary group-hover:text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs mb-1 block font-heading transition-colors">Happy Score</span>
+                <div className="text-4xl md:text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">94.2%</div>
               </div>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-              className="glass-card p-10 flex items-center gap-8 group hover:bg-accent transition-all duration-500 border-l-8 border-accent"
+              className="glass-card p-6 md:p-10 flex items-center gap-6 md:gap-8 group hover:bg-accent transition-all duration-500 border-l-4 md:border-l-8 border-accent"
             >
-              <div className="w-20 h-20 bg-yellow-50 rounded-[28px] flex items-center justify-center text-yellow-600 group-hover:bg-white/20 group-hover:text-white transition-all shadow-inner">
-                <Calendar size={40} />
+              <div className="w-14 h-14 md:w-20 md:h-20 bg-yellow-50 rounded-2xl md:rounded-[28px] flex items-center justify-center text-yellow-600 group-hover:bg-white/20 group-hover:text-white transition-all shadow-inner">
+                <Calendar size={28} className="md:w-10 md:h-10" />
               </div>
               <div>
-                <span className="text-yellow-600 group-hover:text-white font-black uppercase tracking-[0.2em] mb-1 block font-heading transition-colors">Adventure Days</span>
-                <div className="text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">184</div>
+                <span className="text-yellow-600 group-hover:text-white font-black uppercase tracking-[0.2em] text-[10px] md:text-xs mb-1 block font-heading transition-colors">Adventure Days</span>
+                <div className="text-4xl md:text-6xl font-black text-slate-800 group-hover:text-white tracking-tighter leading-none transition-colors">184</div>
               </div>
             </motion.div>
           </div>
@@ -489,11 +489,11 @@ const Dashboard = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.02 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="glass-card p-12"
+              className="glass-card p-6 md:p-12"
             >
               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-12 gap-8">
-                <div className="flex items-center gap-6">
-                  <h2 className="text-3xl font-black text-slate-800 tracking-tighter">Current Roster</h2>
+                <div className="flex items-center gap-4 md:gap-6">
+                  <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">Current Roster</h2>
                   <span className="px-6 py-2.5 bg-accent/10 text-accent text-[12px] font-black uppercase tracking-widest rounded-2xl border-2 border-accent/20">
                     {activeTab === 'students' ? 'Little Explorers' : 'Master Guides'}
                   </span>
@@ -546,12 +546,12 @@ const Dashboard = () => {
                           initial={{ opacity: 0, y: 30 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: idx * 0.08, type: "spring", stiffness: 100 }}
-                          className="bg-white/50 border-2 border-slate-50 p-8 rounded-[36px] flex flex-col gap-6 hover:border-secondary/30 hover:bg-white transition-all cursor-default relative group shadow-sm hover:shadow-2xl hover:shadow-secondary/10 overflow-hidden"
+                          className="bg-white/50 border-2 border-slate-50 p-5 md:p-8 rounded-[28px] md:rounded-[36px] flex flex-col gap-4 md:gap-6 hover:border-secondary/30 hover:bg-white transition-all cursor-default relative group shadow-sm hover:shadow-2xl hover:shadow-secondary/10 overflow-hidden"
                         >
                           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-secondary/5 to-transparent rounded-bl-full pointer-events-none" />
                           
                           <div className="flex justify-between items-start relative z-10">
-                            <div className="w-16 h-16 rounded-3xl bg-secondary/10 flex items-center justify-center text-secondary font-black text-2xl border-2 border-secondary/20 shadow-inner">
+                            <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-3xl bg-secondary/10 flex items-center justify-center text-secondary font-black text-xl md:text-2xl border-2 border-secondary/20 shadow-inner">
                               {student.name.charAt(0)}
                             </div>
                             <div className="text-[11px] font-black uppercase tracking-widest text-secondary bg-secondary/10 px-4 py-2 rounded-2xl border border-secondary/10">
@@ -560,7 +560,7 @@ const Dashboard = () => {
                           </div>
 
                           <div className="relative z-10">
-                            <div className="font-bold text-slate-800 text-2xl tracking-tighter leading-tight mb-3">{student.name}</div>
+                            <div className="font-bold text-slate-800 text-xl md:text-2xl tracking-tighter leading-tight mb-2 md:mb-3">{student.name}</div>
                             <div className="flex flex-col gap-3">
                               <div className="flex items-center gap-3 text-[12px] text-slate-500 font-bold">
                                 <span className="flex items-center gap-2 bg-slate-100/50 px-3 py-1.5 rounded-xl border border-slate-100"><User size={14} className="text-secondary" /> {student.gender}</span>
@@ -662,21 +662,21 @@ const Dashboard = () => {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="flex justify-center"
             >
-              <div className="glass-card p-12 md:p-16 w-full max-w-4xl relative overflow-hidden">
+              <div className="glass-card p-6 md:p-16 w-full max-w-4xl relative overflow-hidden">
                 <img src="/logo.png" alt="" className="absolute top-8 right-8 w-24 h-24 opacity-10 pointer-events-none grayscale" />
                 <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-100/30 rounded-full blur-[100px] -mr-40 -mt-40" />
 
                 <div className="flex items-center gap-10 mb-16 relative z-10">
-                  <div className={`p-8 ${activeTab === 'students' ? 'bg-primary' : 'bg-secondary'} rounded-[32px] text-white shadow-2xl animate-bounce`}>
-                    <UserPlus size={44} />
+                  <div className={`p-5 md:p-8 ${activeTab === 'students' ? 'bg-primary' : 'bg-secondary'} rounded-2xl md:rounded-[32px] text-white shadow-2xl animate-bounce`}>
+                    <UserPlus size={activeTab === 'students' ? 32 : 32} className="md:w-11 md:h-11" />
                   </div>
                   <div>
-                    <h2 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-3">
+                    <h2 className="text-2xl md:text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 md:mb-3">
                       {activeTab === 'students'
                         ? (editingStudent ? 'Update Star Details' : 'New Little Star')
                         : (editingStaff ? 'Update Staff Details' : 'New Staff Member')}
                     </h2>
-                    <p className="text-slate-400 font-bold text-xl">
+                    <p className="text-slate-400 font-bold text-base md:text-xl">
                       {activeTab === 'students'
                         ? (editingStudent ? `Updating records for ${editingStudent.name}` : 'Welcome to the Playground!')
                         : (editingStaff ? `Updating records for ${editingStaff.name}` : 'Join our Elite Team!')}
@@ -840,7 +840,7 @@ const Dashboard = () => {
                       whileTap={{ scale: 0.98 }}
                       type="submit"
                       disabled={loading}
-                      className="btn-premium w-full py-6 text-2xl text-white tracking-tight rounded-[24px] font-black transition-all shadow-2xl"
+                      className="btn-premium w-full py-4 md:py-6 text-xl md:text-2xl text-white tracking-tight rounded-2xl md:rounded-[24px] font-black transition-all shadow-2xl"
                       style={{ backgroundColor: activeTab === 'students' ? 'var(--primary)' : 'var(--secondary)' }}
                     >
                       {loading
@@ -854,10 +854,10 @@ const Dashboard = () => {
               </div>
             </motion.div>
           ) : view === 'fees-sheet' ? (
-            <motion.div key="fees" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} className="glass-card p-12">
+            <motion.div key="fees" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} className="glass-card p-6 md:p-12">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
                 <div>
-                  <h2 className="text-3xl font-black text-slate-800 tracking-tight mb-2">Monthly Fee Registry</h2>
+                  <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight mb-1 md:mb-2">Monthly Fee Registry</h2>
                   <p className="text-slate-500 font-bold tracking-widest uppercase text-[10px]">LITTLE EXPLORERS 2024</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
@@ -887,9 +887,9 @@ const Dashboard = () => {
                 {feesList.map((record, idx) => (
                   <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: idx * 0.05 }} key={record.studentId} className="flex flex-col sm:flex-row items-center justify-between p-8 bg-white border border-slate-100 rounded-[40px] hover:border-orange-200 transition-all gap-8">
                     <div className="flex items-center gap-8">
-                      <div className="w-16 h-16 bg-orange-50 rounded-[24px] flex items-center justify-center font-black text-2xl text-orange-600 border border-orange-100 shadow-inner">{idx + 1}</div>
+                      <div className="w-12 h-12 md:w-16 md:h-16 bg-orange-50 rounded-2xl md:rounded-[24px] flex items-center justify-center font-black text-xl md:text-2xl text-orange-600 border border-orange-100 shadow-inner">{idx + 1}</div>
                       <div>
-                        <span className="text-2xl font-black text-slate-800 block mb-1">{record.name}</span>
+                        <span className="text-xl md:text-2xl font-black text-slate-800 block mb-1">{record.name}</span>
                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{record.class}</span>
                       </div>
                     </div>
@@ -915,12 +915,12 @@ const Dashboard = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
-              className="glass-card p-12"
+              className="glass-card p-6 md:p-12"
             >
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                 <div>
-                  <h2 className="text-2xl font-black text-slate-800 tracking-tight mb-2">{activeTab === 'students' ? 'Student Attendance' : 'Staff Attendance'}</h2>
-                  <p className="text-slate-500 font-bold">{activeTab === 'students' ? 'Select a class and date' : 'Select a date'} to manage records</p>
+                  <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight mb-1 md:mb-2">{activeTab === 'students' ? 'Student Attendance' : 'Staff Attendance'}</h2>
+                  <p className="text-slate-500 font-bold text-xs md:text-base">{activeTab === 'students' ? 'Select a class and date' : 'Select a date'} to manage records</p>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full sm:w-auto">
                   <div className="bg-white p-3 rounded-2xl border-2 border-slate-100 shadow-sm flex items-center gap-3 w-full sm:w-auto">
@@ -1029,7 +1029,7 @@ const Dashboard = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.05 }}
-              className="glass-card p-12"
+              className="glass-card p-6 md:p-12"
             >
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 gap-6">
                 <div className="flex items-center gap-6">
@@ -1037,7 +1037,7 @@ const Dashboard = () => {
                     <Clock size={32} />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2">Mark Attendance</h2>
+                    <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight leading-none mb-1 md:mb-2">Mark Attendance</h2>
                     <div className="flex items-center gap-2">
                       <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">{new Date(selectedDate).toLocaleDateString('en-US', { dateStyle: 'full' })}</span>
                       {activeTab === 'students' && (
@@ -1117,7 +1117,7 @@ const Dashboard = () => {
                     whileTap={{ scale: 0.98 }}
                     onClick={saveAttendance}
                     disabled={loading}
-                    className="flex items-center justify-center gap-3 px-12 py-5 text-white rounded-3xl font-black text-xl shadow-2xl shadow-pink-500/30 border-b-8 border-[#9d174d] hover:brightness-110 transition-all"
+                    className="flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 text-white rounded-2xl md:rounded-3xl font-black text-lg md:text-xl shadow-2xl shadow-pink-500/30 border-b-4 md:border-b-8 border-[#9d174d] hover:brightness-110 transition-all"
                     style={{ backgroundColor: '#ff4d6d' }}
                   >
                     <CheckCircle size={24} />
