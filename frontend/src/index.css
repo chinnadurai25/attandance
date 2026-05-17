@@ -1056,14 +1056,14 @@ button {
 
 @media (max-width: 768px) {
   .cal-day {
-    min-height: 60px;
-    padding: 0.2rem !important;
+    min-height: 80px;
+    padding: 0.35rem !important;
     border-radius: 16px !important;
     border-width: 1px !important;
   }
 
   .cal-day span.text-3xl {
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
 
   .holiday-badge {
@@ -1569,4 +1569,57 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: inherit;
   opacity: 0.5;
 }
+
+/* Escaped utility classes for arbitrary sizes and styling */
+.text-\[7px\] { font-size: 7px; }
+.text-\[8px\] { font-size: 8px; }
+.text-\[9px\] { font-size: 9px; }
+.text-\[10px\] { font-size: 10px; }
+.text-\[11px\] { font-size: 11px; }
+.text-\[12px\] { font-size: 12px; }
+
+.w-36 { width: 9rem; }
+.h-36 { height: 9rem; }
+
+.rounded-\[24px\] { border-radius: 24px; }
+.rounded-\[28px\] { border-radius: 28px; }
+.rounded-\[40px\] { border-radius: 40px; }
+.rounded-\[44px\] { border-radius: 44px; }
+.rounded-\[48px\] { border-radius: 48px; }
+
+.tracking-\[0\.1em\] { letter-spacing: 0.1em; }
+.tracking-\[0\.2em\] { letter-spacing: 0.2em; }
+
+.max-h-\[55vh\] { max-height: 55vh; }
+.max-h-\[60vh\] { max-height: 60vh; }
+
+.min-h-\[80px\] { min-height: 80px; }
+.min-h-\[90px\] { min-height: 90px; }
+
+@media (min-width: 640px) {
+  .sm\:min-w-\[200px\] { min-width: 200px; }
+}
+
+.shadow-pink-500\/30 { box-shadow: 0 10px 30px -10px rgba(255, 77, 109, 0.3); }
+.shadow-emerald-500\/30 { box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.3); }
+.shadow-rose-500\/30 { box-shadow: 0 10px 30px -10px rgba(244, 63, 94, 0.3); }
+.shadow-indigo-500\/20 { box-shadow: 0 10px 30px -10px rgba(79, 70, 229, 0.2); }
+.shadow-emerald-500\/5 { box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.05); }
+.shadow-rose-500\/5 { box-shadow: 0 4px 6px -1px rgba(244, 63, 94, 0.05); }
+.shadow-secondary\/15 { box-shadow: 0 10px 30px -10px rgba(0, 180, 216, 0.15); }
+.hover\:shadow-secondary\/15:hover { box-shadow: 0 20px 40px -10px rgba(0, 180, 216, 0.15); }
+
+/* Added missing background and text colors */
+.bg-emerald-100 { background-color: #d1fae5 !important; }
+.bg-orange-100 { background-color: #ffedd5 !important; }
+.text-orange-700 { color: #c2410c !important; }
+.text-orange-500 { color: #f97316 !important; }
+
+/* Letter spacing compacting for mobile */
+.tracking-tight {
+  letter-spacing: -0.03em !important;
+}
+
+
+
 

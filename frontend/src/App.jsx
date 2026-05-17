@@ -321,10 +321,10 @@ const Dashboard = () => {
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-8 glass-card p-8 md:p-12 shadow-2xl border-none rainbow-border"
         >
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4 sm:gap-8">
             <motion.div 
               whileHover={{ scale: 1.1, rotate: [0, -10, 10, 0] }}
-              className="w-16 h-16 md:w-24 md:h-24 bg-white rounded-2xl md:rounded-[32px] flex items-center justify-center overflow-hidden border-2 md:border-4 border-accent shadow-2xl relative"
+              className="w-16 h-16 md:w-24 md:h-24 bg-white rounded-2xl md:rounded-[32px] flex items-center justify-center overflow-hidden border-2 md:border-4 border-accent shadow-2xl relative shrink-0"
             >
               <img src="/logo.png" alt="Logo" className="w-full h-full object-contain p-1 md:p-2" />
               <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
@@ -892,22 +892,22 @@ const Dashboard = () => {
             </motion.div>
           ) : view === 'fees-sheet' ? (
             <motion.div key="fees" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} className="glass-card p-6 md:p-12">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 md:mb-12">
                 <div>
                   <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-1 md:mb-2 gradient-text-roster">Monthly Fee Registry</h2>
                   <p className="text-slate-500 font-bold tracking-widest uppercase text-[10px]">LITTLE EXPLORERS 2024</p>
                 </div>
-                <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
-                  <div className="bg-white p-3.5 rounded-2xl border-2 border-slate-100 shadow-sm flex items-center gap-3">
-                    <Calendar size={18} className="text-orange-500" />
-                    <input type="month" className="bg-transparent border-none font-black text-slate-700 focus:outline-none" value={selectedFeeMonth} onChange={(e) => setSelectedFeeMonth(e.target.value)} />
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full lg:w-auto">
+                  <div className="bg-white p-3.5 rounded-2xl border-2 border-slate-100 shadow-sm flex items-center gap-3 w-full sm:w-auto">
+                    <Calendar size={18} className="text-orange-500 shrink-0" />
+                    <input type="month" className="bg-transparent border-none font-black text-slate-700 focus:outline-none w-full" value={selectedFeeMonth} onChange={(e) => setSelectedFeeMonth(e.target.value)} />
                   </div>
-                  <select className="bg-white border-2 border-slate-100 p-3.5 rounded-2xl font-black text-slate-700 shadow-sm outline-none" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
+                  <select className="bg-white border-2 border-slate-100 p-3.5 rounded-2xl font-black text-slate-700 shadow-sm outline-none w-full sm:w-auto" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
                     <option value="">All Classes</option>
                     {[...new Set(students.map(s => s.class))].map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                   <select 
-                    className="bg-white border-2 border-slate-100 p-3.5 rounded-2xl font-black text-slate-700 shadow-sm outline-none" 
+                    className="bg-white border-2 border-slate-100 p-3.5 rounded-2xl font-black text-slate-700 shadow-sm outline-none w-full sm:w-auto" 
                     value={selectedStudent} 
                     onChange={(e) => {
                       setSelectedStudent(e.target.value);
@@ -1003,9 +1003,12 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-7 gap-2 md:gap-6">
+              <div className="grid grid-cols-7 gap-1 md:gap-6">
                 {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(d => (
-                  <div key={d} className="text-center text-[9px] md:text-[11px] font-black tracking-widest text-slate-400 mb-2 md:mb-6">{d}</div>
+                  <div key={d} className="text-center text-[9px] md:text-[11px] font-black tracking-widest text-slate-400 mb-2">
+                    <span className="hidden sm:inline">{d}</span>
+                    <span className="sm:hidden">{d[0]}</span>
+                  </div>
                 ))}
                 {getCalendarDays().map((day, idx) => (
                   <div
@@ -1027,10 +1030,10 @@ const Dashboard = () => {
                     <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-slate-50 to-transparent rounded-bl-full opacity-50 group-hover:from-secondary/10" />
                     {day.day && (
                       <>
-                        <div className="flex justify-between items-center mb-2 relative z-10">
-                          <span className={`text-2xl md:text-3xl font-black ${day.isSunday ? 'text-rose-300' : 'text-slate-800'}`}>{day.day}</span>
+                        <div className="flex justify-between items-center mb-1 sm:mb-2 relative z-10">
+                          <span className={`text-lg md:text-3xl font-black ${day.isSunday ? 'text-rose-300' : 'text-slate-800'}`}>{day.day}</span>
                           {day.isSunday && (
-                            <span className="bg-rose-100 text-rose-600 font-bold px-2 py-1 rounded-md text-[8px] md:text-[10px] uppercase tracking-widest">Holiday</span>
+                            <span className="bg-rose-100 text-rose-600 font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md text-[7px] sm:text-[10px] uppercase tracking-widest">Holiday</span>
                           )}
                         </div>
 
@@ -1040,22 +1043,21 @@ const Dashboard = () => {
                             const present = data.present || data.Present || 0;
                             const absent = data.absent || data.Absent || 0;
                             const leave = data.leave || data.Leave || 0;
-                            const hasData = present > 0 || absent > 0 || leave > 0;
 
                             return (
                               <div className="space-y-1">
                                 {present > 0 && (
-                                  <div className="bg-emerald-100 text-emerald-700 text-[8px] md:text-[10px] font-black uppercase tracking-wider text-center py-1 md:py-1.5 rounded-md">
+                                  <div className="bg-emerald-100 text-emerald-700 text-[7px] sm:text-[8px] md:text-[10px] font-black uppercase tracking-tight text-center py-0.5 sm:py-1 md:py-1.5 rounded-md px-0.5">
                                     Present {present > 1 ? `(${present})` : ''}
                                   </div>
                                 )}
                                 {absent > 0 && (
-                                  <div className="bg-rose-100 text-rose-700 text-[8px] md:text-[10px] font-black uppercase tracking-wider text-center py-1 md:py-1.5 rounded-md">
+                                  <div className="bg-rose-100 text-rose-700 text-[7px] sm:text-[8px] md:text-[10px] font-black uppercase tracking-tight text-center py-0.5 sm:py-1 md:py-1.5 rounded-md px-0.5">
                                     Absent {absent > 1 ? `(${absent})` : ''}
                                   </div>
                                 )}
                                 {leave > 0 && (
-                                  <div className="bg-orange-100 text-orange-700 text-[8px] md:text-[10px] font-black uppercase tracking-wider text-center py-1 md:py-1.5 rounded-md">
+                                  <div className="bg-orange-100 text-orange-700 text-[7px] sm:text-[8px] md:text-[10px] font-black uppercase tracking-tight text-center py-0.5 sm:py-1 md:py-1.5 rounded-md px-0.5">
                                     Leave {leave > 1 ? `(${leave})` : ''}
                                   </div>
                                 )}
@@ -1124,12 +1126,12 @@ const Dashboard = () => {
               ) : (
                 <div className="space-y-4 max-h-[55vh] overflow-y-auto pr-4 custom-scrollbar mb-10">
                   {attendanceList.map((record, idx) => (
-                    <div key={activeTab === 'students' ? record.studentId : record.staffId} className={`flex items-center justify-between p-6 bg-white border border-slate-100 rounded-3xl hover:border-${activeTab === 'students' ? 'indigo' : 'blue'}-200 transition-all`}>
-                      <div className="flex items-center gap-6">
-                        <div className={`w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center font-bold text-${activeTab === 'students' ? 'indigo' : 'blue'}-600 border border-slate-100`}>{idx + 1}</div>
-                        <span className="text-lg font-black text-slate-700">{record.name}</span>
+                    <div key={activeTab === 'students' ? record.studentId : record.staffId} className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 bg-white border border-slate-100 rounded-3xl hover:border-${activeTab === 'students' ? 'indigo' : 'blue'}-200 gap-4 transition-all`}>
+                      <div className="flex items-center gap-4 sm:gap-6">
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 bg-slate-50 rounded-2xl flex items-center justify-center font-bold text-${activeTab === 'students' ? 'indigo' : 'blue'}-600 border border-slate-100 shrink-0`}>{idx + 1}</div>
+                        <span className="text-base sm:text-lg font-black text-slate-700">{record.name}</span>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex flex-row gap-2 w-full sm:w-auto">
                         {['Present', 'Absent', 'Leave'].map(status => (
                           <button
                             key={status}
@@ -1138,7 +1140,7 @@ const Dashboard = () => {
                               newList[idx].status = status;
                               setAttendanceList(newList);
                             }}
-                            className={`px-6 py-2.5 rounded-xl font-black text-[11px] uppercase tracking-widest transition-all ${record.status === status
+                            className={`flex-1 sm:flex-initial text-center py-2.5 rounded-xl font-black text-[10px] sm:text-[11px] uppercase tracking-widest transition-all ${record.status === status
                               ? status === 'Present' ? 'bg-green-500 text-white shadow-lg shadow-green-500/20'
                                 : status === 'Absent' ? 'bg-red-500 text-white shadow-lg shadow-red-500/20'
                                   : 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
@@ -1155,11 +1157,11 @@ const Dashboard = () => {
               )}
 
               {(activeTab === 'staff' || selectedClass) && (
-                <div className="flex justify-end gap-4 mt-8">
+                <div className="flex flex-col sm:flex-row justify-end items-stretch sm:items-center gap-4 mt-8">
                   {activeTab === 'staff' && (
-                    <div className="mr-auto flex items-center gap-3 bg-blue-50 px-6 py-3 rounded-2xl border border-blue-100">
+                    <div className="sm:mr-auto flex items-center justify-center gap-3 bg-blue-50 px-6 py-3.5 rounded-2xl border border-blue-100 w-full sm:w-auto">
                       <Clock size={18} className="text-blue-500" />
-                      <span className="text-blue-700 font-black text-sm uppercase tracking-widest">Limit: 9:30 AM</span>
+                      <span className="text-blue-700 font-black text-xs sm:text-sm uppercase tracking-widest">Limit: 9:30 AM</span>
                     </div>
                   )}
                   <motion.button
@@ -1167,10 +1169,10 @@ const Dashboard = () => {
                     whileTap={{ scale: 0.98 }}
                     onClick={saveAttendance}
                     disabled={loading}
-                    className="flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 text-white rounded-2xl md:rounded-3xl font-black text-lg md:text-xl shadow-2xl shadow-pink-500/30 border-b-4 md:border-b-8 border-[#9d174d] hover:brightness-110 transition-all"
+                    className="flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 text-white rounded-2xl md:rounded-3xl font-black text-base sm:text-lg md:text-xl shadow-2xl shadow-pink-500/30 border-b-4 md:border-b-8 border-[#9d174d] hover:brightness-110 transition-all w-full sm:w-auto"
                     style={{ backgroundColor: '#ff4d6d' }}
                   >
-                    <CheckCircle size={24} />
+                    <CheckCircle size={22} />
                     {loading ? 'Submitting Data...' : 'Finalize Attendance'}
                   </motion.button>
                 </div>
